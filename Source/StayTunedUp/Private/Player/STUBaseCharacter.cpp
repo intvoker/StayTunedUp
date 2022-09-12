@@ -4,6 +4,7 @@
 #include "Player/STUBaseCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 ASTUBaseCharacter::ASTUBaseCharacter()
@@ -11,8 +12,12 @@ ASTUBaseCharacter::ASTUBaseCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
+	SpringArmComponent->SetupAttachment(GetRootComponent());
+	SpringArmComponent->bUsePawnControlRotation = true;
+
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
-	CameraComponent->SetupAttachment(GetRootComponent());
+	CameraComponent->SetupAttachment(SpringArmComponent);
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +39,9 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ThisClass::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ThisClass::MoveRight);
+
+	PlayerInputComponent->BindAxis("LookUp", this, &ThisClass::LookUp);
+	PlayerInputComponent->BindAxis("Turn", this, &ThisClass::Turn);
 }
 
 void ASTUBaseCharacter::MoveForward(float Value)
@@ -44,4 +52,14 @@ void ASTUBaseCharacter::MoveForward(float Value)
 void ASTUBaseCharacter::MoveRight(float Value)
 {
 	AddMovementInput(GetActorRightVector(), Value);
+}
+
+void ASTUBaseCharacter::LookUp(float Value)
+{
+	AddControllerPitchInput(Value);
+}
+
+void ASTUBaseCharacter::Turn(float Value)
+{
+	AddControllerYawInput(Value);
 }
