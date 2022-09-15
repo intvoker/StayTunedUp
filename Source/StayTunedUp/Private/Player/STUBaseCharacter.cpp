@@ -4,10 +4,13 @@
 #include "Player/STUBaseCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/STUCharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
-ASTUBaseCharacter::ASTUBaseCharacter()
+ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer):
+	Super(ObjectInitializer.SetDefaultSubobjectClass<USTUCharacterMovementComponent>(
+		ACharacter::CharacterMovementComponentName))
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -44,6 +47,10 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("Turn", this, &ThisClass::Turn);
 
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ThisClass::Jump);
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ThisClass::StopJumping);
+
+	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ThisClass::Run);
+	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ThisClass::StopRunning);
 }
 
 void ASTUBaseCharacter::MoveForward(float Value)
@@ -64,4 +71,19 @@ void ASTUBaseCharacter::LookUp(float Value)
 void ASTUBaseCharacter::Turn(float Value)
 {
 	AddControllerYawInput(Value);
+}
+
+void ASTUBaseCharacter::Run()
+{
+	bPressedRun = true;
+}
+
+void ASTUBaseCharacter::StopRunning()
+{
+	bPressedRun = false;
+}
+
+bool ASTUBaseCharacter::IsRunning() const
+{
+	return bPressedRun;
 }

@@ -16,7 +16,7 @@ class STAYTUNEDUP_API ASTUBaseCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	ASTUBaseCharacter();
+	ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
@@ -35,10 +35,19 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	bool IsRunning() const;
+
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
 	void LookUp(float Value);
 	void Turn(float Value);
+
+	void Run();
+	void StopRunning();
+
+	UPROPERTY()
+	bool bPressedRun = false;
 };
