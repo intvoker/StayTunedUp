@@ -21,6 +21,16 @@ void USTUAnimInstance::NativeUpdateAnimation(float DeltaTimeX)
 		return;
 
 	Speed = STUBaseCharacter->GetVelocity().Size();
+	MovementOffsetYaw = STUBaseCharacter->GetMovementOffsetYaw();
+
 	bIsFalling = STUBaseCharacter->GetCharacterMovement()->IsFalling();
 	bIsRunning = STUBaseCharacter->IsRunning();
+
+	/*
+	const FString MovementOffsetYawMessage = FString::Printf(TEXT("Movement Offset Yaw: %f"), MovementOffsetYaw);
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 0.f, FColor::White, MovementOffsetYawMessage, false);
+	}
+	*/
 }
