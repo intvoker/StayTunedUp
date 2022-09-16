@@ -27,9 +27,20 @@ void USTUAnimInstance::NativeUpdateAnimation(float DeltaTimeX)
 	bIsRunning = STUBaseCharacter->IsRunning();
 
 	/*
-	const FString MovementOffsetYawMessage = FString::Printf(TEXT("Movement Offset Yaw: %f"), MovementOffsetYaw);
+	const auto Start = STUBaseCharacter->GetActorLocation();
+	const auto ForwardNormal = STUBaseCharacter->GetActorForwardVector();
+	const auto VelocityNormal = STUBaseCharacter->GetVelocity().GetSafeNormal();
+
+	DrawDebugLine(GetWorld(), Start, Start + ForwardNormal * 500, FColor::Red, false, -1, 0, 10);
+	DrawDebugLine(GetWorld(), Start, Start + VelocityNormal * 500, FColor::Blue, false, -1, 0, 10);
+
+	const FString ForwardNormalMessage = FString::Printf(TEXT("ForwardNormal: %s"), *ForwardNormal.ToString());
+	const FString VelocityNormalMessage = FString::Printf(TEXT("VelocityNormal: %s"), *VelocityNormal.ToString());
+	const FString MovementOffsetYawMessage = FString::Printf(TEXT("MovementOffsetYaw: %f"), MovementOffsetYaw);
 	if (GEngine)
 	{
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 0.f, FColor::White, ForwardNormalMessage, false);
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 0.f, FColor::White, VelocityNormalMessage, false);
 		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 0.f, FColor::White, MovementOffsetYawMessage, false);
 	}
 	*/

@@ -36,6 +36,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
+	bool IsMovingForward() const;
+	
+	UFUNCTION(BlueprintCallable, Category = "Movement")
 	bool IsRunning() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")

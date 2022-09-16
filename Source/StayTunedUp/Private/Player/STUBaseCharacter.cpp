@@ -83,9 +83,14 @@ void ASTUBaseCharacter::StopRunning()
 	bPressedRun = false;
 }
 
+bool ASTUBaseCharacter::IsMovingForward() const
+{
+	return FVector::Coincident(GetActorForwardVector(), GetVelocity().GetSafeNormal());
+}
+
 bool ASTUBaseCharacter::IsRunning() const
 {
-	return bPressedRun;
+	return bPressedRun && IsMovingForward();
 }
 
 float ASTUBaseCharacter::GetMovementOffsetYaw() const
