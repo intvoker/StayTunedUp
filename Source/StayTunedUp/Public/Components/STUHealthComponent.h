@@ -29,4 +29,8 @@ protected:
 private:
 	UPROPERTY()
 	float Health = 0.0f;
+
+	UFUNCTION()
+	void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy,
+	                     AActor* DamageCauser);
 };
