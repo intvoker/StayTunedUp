@@ -34,15 +34,16 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer
 void ASTUBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
+	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
+	OnHealthChanged(HealthComponent->GetHealth());
 }
 
 // Called every frame
 void ASTUBaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	const auto Health = HealthComponent->GetHealth();
-	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.f"), Health)));
 }
 
 // Called to bind functionality to input
@@ -91,6 +92,20 @@ void ASTUBaseCharacter::Run()
 void ASTUBaseCharacter::StopRunning()
 {
 	bPressedRun = false;
+}
+
+void ASTUBaseCharacter::OnDeath()
+{
+	PlayAnimMontage(DeathAnimMontage);
+
+	GetCharacterMovement()->DisableMovement();
+
+	SetLifeSpan(5.0f);
+}
+
+void ASTUBaseCharacter::OnHealthChanged(float Health)
+{
+	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.f"), Health)));
 }
 
 bool ASTUBaseCharacter::IsMovingForward() const
