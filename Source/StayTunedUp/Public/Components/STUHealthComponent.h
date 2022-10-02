@@ -6,9 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "STUHealthComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathSignature);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, Health);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChangedSignature, float, Health);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class STAYTUNEDUP_API USTUHealthComponent : public UActorComponent
@@ -25,8 +25,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
-	FOnDeath OnDeath;
-	FOnHealthChanged OnHealthChanged;
+	FDeathSignature OnDeath;
+	FHealthChangedSignature OnHealthChanged;
 
 protected:
 	// Called when the game starts
