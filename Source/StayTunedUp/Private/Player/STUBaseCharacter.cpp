@@ -8,6 +8,7 @@
 #include "Components/STUHealthComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Weapons/STUBaseWeapon.h"
 
 // Sets default values
 ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer):
@@ -40,6 +41,8 @@ void ASTUBaseCharacter::BeginPlay()
 	OnHealthChanged(HealthComponent->GetHealth());
 
 	LandedDelegate.AddDynamic(this, &ThisClass::OnLandedCallback);
+
+	SpawnWeapon();
 }
 
 // Called every frame
@@ -129,6 +132,15 @@ void ASTUBaseCharacter::OnLandedCallback(const FHitResult& Hit)
 	TakeDamage(Damage, FDamageEvent(), nullptr, nullptr);
 
 	//UE_LOG(LogTemp, Warning, TEXT("Damage: %f"), Damage);
+}
+
+void ASTUBaseCharacter::SpawnWeapon()
+{
+	if (WeaponClass && !WeaponAttachPoint.IsNone())
+	{
+		const auto Weapon = GetWorld()->SpawnActor(WeaponClass);
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, WeaponAttachPoint);
+	}
 }
 
 bool ASTUBaseCharacter::IsMovingForward() const

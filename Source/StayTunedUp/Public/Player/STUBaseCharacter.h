@@ -29,6 +29,7 @@ struct FSTURange
 	TRange<float> MakeRange() const { return TRange<float>(Min, Max); }
 };
 
+class ASTUBaseWeapon;
 class UCameraComponent;
 class USpringArmComponent;
 class USTUHealthComponent;
@@ -67,6 +68,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	FSTURange FallDamage = FSTURange(10.0f, 100.0f);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<ASTUBaseWeapon> WeaponClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FName WeaponAttachPoint;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -108,4 +115,7 @@ private:
 
 	UFUNCTION()
 	void OnLandedCallback(const FHitResult& Hit);
+
+	UFUNCTION()
+	void SpawnWeapon();
 };
