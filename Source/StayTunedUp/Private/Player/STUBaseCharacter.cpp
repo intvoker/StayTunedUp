@@ -5,6 +5,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
+#include "Components/STUFallDamageComponent.h"
 #include "Components/STUHealthComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -27,6 +28,8 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer
 
 	HealthComponent = CreateDefaultSubobject<USTUHealthComponent>("HealthComponent");
 
+	FallDamageComponent = CreateDefaultSubobject<USTUFallDamageComponent>("FallDamageComponent");
+
 	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
 	HealthTextComponent->SetupAttachment(GetRootComponent());
 }
@@ -39,8 +42,6 @@ void ASTUBaseCharacter::BeginPlay()
 	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 	OnHealthChanged(HealthComponent->GetHealth());
-
-	LandedDelegate.AddDynamic(this, &ThisClass::OnLandedCallback);
 
 	SpawnWeapon();
 }
@@ -116,22 +117,6 @@ void ASTUBaseCharacter::OnDeath()
 void ASTUBaseCharacter::OnHealthChanged(float Health)
 {
 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.f"), Health)));
-}
-
-void ASTUBaseCharacter::OnLandedCallback(const FHitResult& Hit)
-{
-	const auto VelocityZ = FMath::Abs(GetVelocity().Z);
-
-	//UE_LOG(LogTemp, Warning, TEXT("VelocityZ: %f"), VelocityZ);
-
-	if (VelocityZ < FallDamageVelocity.Min)
-		return;
-
-	const auto Damage = FMath::GetMappedRangeValueClamped<float>(FallDamageVelocity.MakeRange(),
-	                                                             FallDamage.MakeRange(), VelocityZ);
-	TakeDamage(Damage, FDamageEvent(), nullptr, nullptr);
-
-	//UE_LOG(LogTemp, Warning, TEXT("Damage: %f"), Damage);
 }
 
 void ASTUBaseCharacter::SpawnWeapon()

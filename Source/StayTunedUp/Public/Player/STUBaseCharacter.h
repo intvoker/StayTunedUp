@@ -6,32 +6,10 @@
 #include "GameFramework/Character.h"
 #include "STUBaseCharacter.generated.h"
 
-USTRUCT(BlueprintType)
-struct FSTURange
-{
-	GENERATED_USTRUCT_BODY()
-
-	FSTURange()
-	{
-	}
-
-	FSTURange(const float MinParam, const float MaxParam):
-		Min(MinParam), Max(MaxParam)
-	{
-	}
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Min = 0.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Max = 0.0f;
-
-	TRange<float> MakeRange() const { return TRange<float>(Min, Max); }
-};
-
 class ASTUBaseWeapon;
 class UCameraComponent;
 class USpringArmComponent;
+class USTUFallDamageComponent;
 class USTUHealthComponent;
 class UTextRenderComponent;
 
@@ -55,6 +33,9 @@ protected:
 	USTUHealthComponent* HealthComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+	USTUFallDamageComponent* FallDamageComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	UTextRenderComponent* HealthTextComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations")
@@ -62,12 +43,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float LifeSpanOnDeath = 5.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	FSTURange FallDamageVelocity = FSTURange(900.0f, 1200.0f);
-
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	FSTURange FallDamage = FSTURange(10.0f, 100.0f);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ASTUBaseWeapon> WeaponClass;
@@ -112,9 +87,6 @@ private:
 
 	UFUNCTION()
 	void OnHealthChanged(float Health);
-
-	UFUNCTION()
-	void OnLandedCallback(const FHitResult& Hit);
 
 	UFUNCTION()
 	void SpawnWeapon();
