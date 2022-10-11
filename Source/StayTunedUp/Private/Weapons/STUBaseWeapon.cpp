@@ -16,6 +16,11 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 	WeaponMesh->SetupAttachment(GetRootComponent());
 }
 
+void ASTUBaseWeapon::Fire()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Fire"));
+}
+
 // Called when the game starts or when spawned
 void ASTUBaseWeapon::BeginPlay()
 {

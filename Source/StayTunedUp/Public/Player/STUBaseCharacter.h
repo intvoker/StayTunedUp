@@ -11,6 +11,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class USTUFallDamageComponent;
 class USTUHealthComponent;
+class USTUWeaponComponent;
 class UTextRenderComponent;
 
 UCLASS()
@@ -36,6 +37,9 @@ protected:
 	USTUFallDamageComponent* FallDamageComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+	USTUWeaponComponent* WeaponComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	UTextRenderComponent* HealthTextComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations")
@@ -43,12 +47,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float LifeSpanOnDeath = 5.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TSubclassOf<ASTUBaseWeapon> WeaponClass;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	FName WeaponAttachPoint;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -87,7 +85,4 @@ private:
 
 	UFUNCTION()
 	void OnHealthChanged(float Health);
-
-	UFUNCTION()
-	void SpawnWeapon();
 };

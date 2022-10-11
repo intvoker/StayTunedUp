@@ -7,6 +7,7 @@
 #include "Components/STUCharacterMovementComponent.h"
 #include "Components/STUFallDamageComponent.h"
 #include "Components/STUHealthComponent.h"
+#include "Components/STUWeaponComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Weapons/STUBaseWeapon.h"
@@ -30,6 +31,8 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer
 
 	FallDamageComponent = CreateDefaultSubobject<USTUFallDamageComponent>("FallDamageComponent");
 
+	WeaponComponent = CreateDefaultSubobject<USTUWeaponComponent>("WeaponComponent");
+	
 	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
 	HealthTextComponent->SetupAttachment(GetRootComponent());
 }
@@ -42,8 +45,6 @@ void ASTUBaseCharacter::BeginPlay()
 	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 	OnHealthChanged(HealthComponent->GetHealth());
-
-	SpawnWeapon();
 }
 
 // Called every frame
@@ -68,6 +69,8 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ThisClass::Run);
 	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ThisClass::StopRunning);
+
+	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &USTUWeaponComponent::Fire);
 }
 
 void ASTUBaseCharacter::MoveForward(float Value)
@@ -117,15 +120,6 @@ void ASTUBaseCharacter::OnDeath()
 void ASTUBaseCharacter::OnHealthChanged(float Health)
 {
 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.f"), Health)));
-}
-
-void ASTUBaseCharacter::SpawnWeapon()
-{
-	if (WeaponClass && !WeaponAttachPoint.IsNone())
-	{
-		const auto Weapon = GetWorld()->SpawnActor(WeaponClass);
-		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, WeaponAttachPoint);
-	}
 }
 
 bool ASTUBaseCharacter::IsMovingForward() const
