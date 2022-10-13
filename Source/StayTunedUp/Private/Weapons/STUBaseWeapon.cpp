@@ -3,6 +3,8 @@
 
 #include "Weapons/STUBaseWeapon.h"
 
+#include "GameFramework/Character.h"
+
 // Sets default values
 ASTUBaseWeapon::ASTUBaseWeapon()
 {
@@ -18,11 +20,63 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 
 void ASTUBaseWeapon::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Fire"));
+	MakeShot();
 }
 
 // Called when the game starts or when spawned
 void ASTUBaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ASTUBaseWeapon::MakeShot()
+{
+	FVector PlayerViewLocation;
+	FVector PlayerViewDirection;
+	GetPlayerViewPoint(PlayerViewLocation, PlayerViewDirection);
+
+	FVector WeaponViewLocation;
+	FVector WeaponViewDirection;
+	GetWeaponViewPoint(WeaponViewLocation, WeaponViewDirection);
+
+	const FVector Start = PlayerViewLocation;
+	const FVector End = Start + PlayerViewDirection * MaxRange;
+
+	FHitResult HitResult;
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.AddIgnoredActor(GetOwner());
+
+	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
+
+	if (HitResult.bBlockingHit)
+	{
+		DrawDebugLine(GetWorld(), WeaponViewLocation, HitResult.ImpactPoint, FColor::Red, false, 5.0f);
+		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
+	}
+	else
+	{
+		DrawDebugLine(GetWorld(), WeaponViewLocation, End, FColor::Blue, false, 5.0f);
+	}
+}
+
+void ASTUBaseWeapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
+{
+	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
+	if (!PlayerCharacter)
+		return;
+
+	const auto PlayerController = PlayerCharacter->GetController<APlayerController>();
+	if (!PlayerController)
+		return;
+
+	FRotator ViewRotation;
+	PlayerController->GetPlayerViewPoint(OutViewLocation, ViewRotation);
+	OutViewDirection = ViewRotation.Vector();
+}
+
+void ASTUBaseWeapon::GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
+{
+	const FTransform MuzzleFlashSocketTransform = WeaponMesh->GetSocketTransform(MuzzleFlashSocketName);
+	OutViewLocation = MuzzleFlashSocketTransform.GetLocation();
+	OutViewDirection = MuzzleFlashSocketTransform.GetRotation().GetForwardVector();
 }

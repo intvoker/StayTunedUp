@@ -34,17 +34,18 @@ void USTUWeaponComponent::BeginPlay()
 
 void USTUWeaponComponent::SpawnWeapon()
 {
-	const auto ComponentOwner = Cast<ACharacter>(GetOwner());
-	if (!ComponentOwner)
+	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
+	if (!PlayerCharacter)
 		return;
 
-	if (!WeaponClass || WeaponAttachPoint.IsNone())
+	if (!WeaponClass || WeaponAttachPointSocketName.IsNone())
 		return;
 
 	CurrentWeapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass);
 	if (!CurrentWeapon)
 		return;
 
-	CurrentWeapon->AttachToComponent(ComponentOwner->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
-	                                 WeaponAttachPoint);
+	CurrentWeapon->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
+	                                 WeaponAttachPointSocketName);
+	CurrentWeapon->SetOwner(PlayerCharacter);
 }

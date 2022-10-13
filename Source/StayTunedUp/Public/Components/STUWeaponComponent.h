@@ -24,7 +24,7 @@ protected:
 	TSubclassOf<ASTUBaseWeapon> WeaponClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	FName WeaponAttachPoint;
+	FName WeaponAttachPointSocketName = "WeaponPoint";
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
