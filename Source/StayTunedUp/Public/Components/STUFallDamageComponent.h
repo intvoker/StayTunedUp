@@ -49,7 +49,6 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	
 	UFUNCTION()
 	void OnLandedCallback(const FHitResult& Hit);
 };

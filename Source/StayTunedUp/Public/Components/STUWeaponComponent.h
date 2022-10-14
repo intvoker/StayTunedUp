@@ -32,7 +32,7 @@ protected:
 private:
 	UPROPERTY()
 	ASTUBaseWeapon* CurrentWeapon = nullptr;
-	
+
 	UFUNCTION()
 	void SpawnWeapon();
 };

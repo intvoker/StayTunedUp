@@ -33,7 +33,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer
 	FallDamageComponent = CreateDefaultSubobject<USTUFallDamageComponent>("FallDamageComponent");
 
 	WeaponComponent = CreateDefaultSubobject<USTUWeaponComponent>("WeaponComponent");
-	
+
 	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
 	HealthTextComponent->SetupAttachment(GetRootComponent());
 }
