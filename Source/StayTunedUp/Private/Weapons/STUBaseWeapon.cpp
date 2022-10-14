@@ -3,6 +3,7 @@
 
 #include "Weapons/STUBaseWeapon.h"
 
+#include "Animations/STUAnimUtility.h"
 #include "GameFramework/Character.h"
 
 // Sets default values
@@ -21,6 +22,13 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 void ASTUBaseWeapon::Fire()
 {
 	MakeShot();
+}
+
+void ASTUBaseWeapon::OnOwnerDeath()
+{
+	STUAnimUtility::SetRagdoll(this, WeaponMesh);
+
+	WeaponMesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 }
 
 // Called when the game starts or when spawned

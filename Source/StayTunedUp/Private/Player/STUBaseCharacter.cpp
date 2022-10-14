@@ -3,6 +3,7 @@
 
 #include "Player/STUBaseCharacter.h"
 
+#include "Animations/STUAnimUtility.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
@@ -44,6 +45,8 @@ void ASTUBaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
+	HealthComponent->OnDeath.AddDynamic(WeaponComponent, &USTUWeaponComponent::OnOwnerDeath);
+
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 	OnHealthChanged(HealthComponent->GetHealth());
 }
@@ -106,23 +109,18 @@ void ASTUBaseCharacter::StopRunning()
 
 void ASTUBaseCharacter::OnDeath()
 {
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+
 	DetachFromControllerPendingDestroy();
 
-	GetMesh()->SetCollisionProfileName(FName(TEXT("Ragdoll")));
-	SetActorEnableCollision(true);
+	STUAnimUtility::SetRagdoll(this, GetMesh());
 
 	// PlayAnimMontage(DeathAnimMontage);
 
-	GetMesh()->SetSimulatePhysics(true);
-	GetMesh()->WakeAllRigidBodies();
-	GetMesh()->bBlendPhysics = true;
-
 	GetCharacterMovement()->DisableMovement();
 
-	SetLifeSpan(LifeSpanOnDeath);
-
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	// SetLifeSpan(LifeSpanOnDeath);
 
 	// if (Controller)
 	// {

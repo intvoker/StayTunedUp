@@ -19,6 +19,9 @@ public:
 
 	void Fire();
 
+	UFUNCTION()
+	void OnOwnerDeath();
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ASTUBaseWeapon> WeaponClass;

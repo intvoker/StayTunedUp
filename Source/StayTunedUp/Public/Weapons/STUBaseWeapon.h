@@ -17,6 +17,8 @@ public:
 
 	virtual void Fire();
 
+	void OnOwnerDeath();
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	USceneComponent* SceneComponent;

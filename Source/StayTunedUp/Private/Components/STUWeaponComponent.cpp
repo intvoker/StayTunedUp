@@ -24,6 +24,14 @@ void USTUWeaponComponent::Fire()
 	CurrentWeapon->Fire();
 }
 
+void USTUWeaponComponent::OnOwnerDeath()
+{
+	if (!CurrentWeapon)
+		return;
+
+	CurrentWeapon->OnOwnerDeath();
+}
+
 // Called when the game starts
 void USTUWeaponComponent::BeginPlay()
 {
