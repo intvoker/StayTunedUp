@@ -42,7 +42,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	UTextRenderComponent* HealthTextComponent;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations")
+	UPROPERTY(EditDefaultsOnly, Category="Animations")
 	UAnimMontage* DeathAnimMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")

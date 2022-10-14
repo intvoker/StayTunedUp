@@ -27,13 +27,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName MuzzleFlashSocketName = "MuzzleFlashSocket";
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float MaxRange = 1500.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float DamageAmount = 10.0f;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void MakeShot();
+	void DealDamage(FHitResult& HitResult);
 
 	void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
 	void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);

@@ -4,6 +4,7 @@
 #include "Player/STUBaseCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
 #include "Components/STUFallDamageComponent.h"
 #include "Components/STUHealthComponent.h"
@@ -105,16 +106,28 @@ void ASTUBaseCharacter::StopRunning()
 
 void ASTUBaseCharacter::OnDeath()
 {
-	PlayAnimMontage(DeathAnimMontage);
+	DetachFromControllerPendingDestroy();
+
+	GetMesh()->SetCollisionProfileName(FName(TEXT("Ragdoll")));
+	SetActorEnableCollision(true);
+
+	// PlayAnimMontage(DeathAnimMontage);
+
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->WakeAllRigidBodies();
+	GetMesh()->bBlendPhysics = true;
 
 	GetCharacterMovement()->DisableMovement();
 
 	SetLifeSpan(LifeSpanOnDeath);
 
-	if (Controller)
-	{
-		Controller->ChangeState(NAME_Spectating);
-	}
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	// if (Controller)
+	// {
+	// 	Controller->ChangeState(NAME_Spectating);
+	// }
 }
 
 void ASTUBaseCharacter::OnHealthChanged(float Health)

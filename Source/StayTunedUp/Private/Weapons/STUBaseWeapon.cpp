@@ -52,11 +52,23 @@ void ASTUBaseWeapon::MakeShot()
 	{
 		DrawDebugLine(GetWorld(), WeaponViewLocation, HitResult.ImpactPoint, FColor::Red, false, 5.0f);
 		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
+
+		DealDamage(HitResult);
 	}
 	else
 	{
 		DrawDebugLine(GetWorld(), WeaponViewLocation, End, FColor::Blue, false, 5.0f);
+		DrawDebugSphere(GetWorld(), End, 10.0f, 24, FColor::Blue, false, 5.0f);
 	}
+}
+
+void ASTUBaseWeapon::DealDamage(FHitResult& HitResult)
+{
+	const auto EnemyCharacter = Cast<ACharacter>(HitResult.GetActor());
+	if (!EnemyCharacter)
+		return;
+
+	EnemyCharacter->TakeDamage(DamageAmount, FDamageEvent(), nullptr, GetOwner());
 }
 
 void ASTUBaseWeapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
