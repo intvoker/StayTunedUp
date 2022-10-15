@@ -19,9 +19,16 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 	WeaponMesh->SetupAttachment(GetRootComponent());
 }
 
-void ASTUBaseWeapon::Fire()
+void ASTUBaseWeapon::StartFire()
 {
 	MakeShot();
+
+	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ThisClass::MakeShot, TimeBetweenShots, true);
+}
+
+void ASTUBaseWeapon::StopFire()
+{
+	GetWorldTimerManager().ClearTimer(ShotTimerHandle);
 }
 
 void ASTUBaseWeapon::OnOwnerDeath()
@@ -37,6 +44,13 @@ void ASTUBaseWeapon::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ASTUBaseWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
+}
+
 void ASTUBaseWeapon::MakeShot()
 {
 	FVector PlayerViewLocation;
@@ -47,14 +61,15 @@ void ASTUBaseWeapon::MakeShot()
 	FVector WeaponViewDirection;
 	GetWeaponViewPoint(WeaponViewLocation, WeaponViewDirection);
 
-	const FVector Start = PlayerViewLocation;
-	const FVector End = Start + PlayerViewDirection * MaxRange;
+	FVector Start;
+	FVector End;
+	GetTraceData(PlayerViewLocation, PlayerViewDirection, Start, End);
 
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionQueryParams;
 	CollisionQueryParams.AddIgnoredActor(GetOwner());
 
-	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
+	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionQueryParams);
 
 	if (HitResult.bBlockingHit)
 	{
@@ -99,4 +114,12 @@ void ASTUBaseWeapon::GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutVi
 	const FTransform MuzzleFlashSocketTransform = WeaponMesh->GetSocketTransform(MuzzleFlashSocketName);
 	OutViewLocation = MuzzleFlashSocketTransform.GetLocation();
 	OutViewDirection = MuzzleFlashSocketTransform.GetRotation().GetForwardVector();
+}
+
+void ASTUBaseWeapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)
+{
+	Direction = FMath::VRandCone(Direction, FMath::DegreesToRadians(ShotSpread));
+	
+	OutTraceStart = Location;
+	OutTraceEnd = OutTraceStart + Direction * MaxRange;
 }
