@@ -142,17 +142,3 @@ bool ASTUBaseCharacter::IsRunning() const
 {
 	return bPressedRun && IsMovingForward();
 }
-
-float ASTUBaseCharacter::GetMovementOffsetYaw() const
-{
-	const auto ForwardNormal = GetActorForwardVector();
-	const auto VelocityNormal = GetVelocity().GetSafeNormal();
-
-	const auto DotProduct = ForwardNormal | VelocityNormal;
-	const auto CrossProduct = ForwardNormal ^ VelocityNormal;
-
-	const auto Angle = FMath::RadiansToDegrees(FMath::Acos(DotProduct));
-	const auto Sign = FMath::Sign(CrossProduct.Z);
-
-	return CrossProduct.IsZero() ? Angle : Angle * Sign;
-}

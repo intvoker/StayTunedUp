@@ -64,9 +64,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	bool IsRunning() const;
 
-	UFUNCTION(BlueprintCallable, Category = "Movement")
-	float GetMovementOffsetYaw() const;
-
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);

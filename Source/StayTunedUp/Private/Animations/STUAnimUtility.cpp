@@ -11,6 +11,20 @@ STUAnimUtility::~STUAnimUtility()
 {
 }
 
+float STUAnimUtility::GetMovementOffsetYaw(APawn* Pawn)
+{
+	const auto ForwardNormal = Pawn->GetActorForwardVector();
+	const auto VelocityNormal = Pawn->GetVelocity().GetSafeNormal();
+
+	const auto DotProduct = ForwardNormal | VelocityNormal;
+	const auto CrossProduct = ForwardNormal ^ VelocityNormal;
+
+	const auto Angle = FMath::RadiansToDegrees(FMath::Acos(DotProduct));
+	const auto Sign = FMath::Sign(CrossProduct.Z);
+
+	return CrossProduct.IsZero() ? Angle : Angle * Sign;
+}
+
 void STUAnimUtility::SetRagdoll(AActor* Actor, USkeletalMeshComponent* Mesh)
 {
 	Mesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));

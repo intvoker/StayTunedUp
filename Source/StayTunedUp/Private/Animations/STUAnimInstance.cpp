@@ -3,6 +3,7 @@
 
 #include "Animations/STUAnimInstance.h"
 
+#include "Animations/STUAnimUtility.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/STUBaseCharacter.h"
 
@@ -21,7 +22,7 @@ void USTUAnimInstance::NativeUpdateAnimation(float DeltaTimeX)
 		return;
 
 	Speed = STUBaseCharacter->GetVelocity().Size();
-	MovementOffsetYaw = STUBaseCharacter->GetMovementOffsetYaw();
+	MovementOffsetYaw = STUAnimUtility::GetMovementOffsetYaw(STUBaseCharacter);
 
 	AimOffsetPitch = STUBaseCharacter->GetBaseAimRotation().Pitch;
 	AimOffsetYaw = STUBaseCharacter->GetBaseAimRotation().Yaw;
