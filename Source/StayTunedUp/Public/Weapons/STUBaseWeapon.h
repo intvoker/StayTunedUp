@@ -15,8 +15,8 @@ public:
 	// Sets default values for this actor's properties
 	ASTUBaseWeapon();
 
-	virtual void StartFire();
-	virtual void StopFire();
+	virtual void Fire();
+	virtual void StopFiring();
 
 	void OnOwnerDeath();
 

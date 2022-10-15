@@ -19,14 +19,14 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 	WeaponMesh->SetupAttachment(GetRootComponent());
 }
 
-void ASTUBaseWeapon::StartFire()
+void ASTUBaseWeapon::Fire()
 {
 	MakeShot();
 
 	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ThisClass::MakeShot, TimeBetweenShots, true);
 }
 
-void ASTUBaseWeapon::StopFire()
+void ASTUBaseWeapon::StopFiring()
 {
 	GetWorldTimerManager().ClearTimer(ShotTimerHandle);
 }

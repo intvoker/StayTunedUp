@@ -16,20 +16,20 @@ USTUWeaponComponent::USTUWeaponComponent()
 	// ...
 }
 
-void USTUWeaponComponent::StartFire()
+void USTUWeaponComponent::Fire()
 {
 	if (!CurrentWeapon)
 		return;
 
-	CurrentWeapon->StartFire();
+	CurrentWeapon->Fire();
 }
 
-void USTUWeaponComponent::StopFire()
+void USTUWeaponComponent::StopFiring()
 {
 	if (!CurrentWeapon)
 		return;
 
-	CurrentWeapon->StopFire();
+	CurrentWeapon->StopFiring();
 }
 
 void USTUWeaponComponent::OnOwnerDeath()

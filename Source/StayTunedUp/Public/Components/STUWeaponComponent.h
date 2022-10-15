@@ -17,8 +17,8 @@ public:
 	// Sets default values for this component's properties
 	USTUWeaponComponent();
 
-	void StartFire();
-	void StopFire();
+	void Fire();
+	void StopFiring();
 
 	UFUNCTION()
 	void OnOwnerDeath();
