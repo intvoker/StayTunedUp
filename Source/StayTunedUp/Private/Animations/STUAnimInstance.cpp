@@ -23,6 +23,9 @@ void USTUAnimInstance::NativeUpdateAnimation(float DeltaTimeX)
 	Speed = STUBaseCharacter->GetVelocity().Size();
 	MovementOffsetYaw = STUBaseCharacter->GetMovementOffsetYaw();
 
+	AimOffsetPitch = STUBaseCharacter->GetBaseAimRotation().Pitch;
+	AimOffsetYaw = STUBaseCharacter->GetBaseAimRotation().Yaw;
+
 	bIsFalling = STUBaseCharacter->GetCharacterMovement()->IsFalling();
 	bIsRunning = STUBaseCharacter->IsRunning();
 

@@ -30,6 +30,12 @@ protected:
 	float MovementOffsetYaw;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float AimOffsetPitch;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float AimOffsetYaw;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bIsFalling;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
