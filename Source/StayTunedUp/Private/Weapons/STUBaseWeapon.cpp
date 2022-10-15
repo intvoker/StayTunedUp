@@ -22,13 +22,11 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 void ASTUBaseWeapon::Fire()
 {
 	MakeShot();
-
-	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ThisClass::MakeShot, TimeBetweenShots, true);
 }
 
 void ASTUBaseWeapon::StopFiring()
 {
-	GetWorldTimerManager().ClearTimer(ShotTimerHandle);
+
 }
 
 void ASTUBaseWeapon::OnOwnerDeath()
@@ -47,8 +45,6 @@ void ASTUBaseWeapon::BeginPlay()
 void ASTUBaseWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-
-	GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
 }
 
 void ASTUBaseWeapon::MakeShot()
@@ -118,8 +114,6 @@ void ASTUBaseWeapon::GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutVi
 
 void ASTUBaseWeapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)
 {
-	Direction = FMath::VRandCone(Direction, FMath::DegreesToRadians(ShotSpread));
-	
 	OutTraceStart = Location;
 	OutTraceEnd = OutTraceStart + Direction * MaxRange;
 }

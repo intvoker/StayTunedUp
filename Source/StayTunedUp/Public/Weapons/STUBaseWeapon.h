@@ -36,12 +36,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float DamageAmount = 10.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	float TimeBetweenShots = 0.1f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	float ShotSpread = 1.5f;
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -52,8 +46,5 @@ protected:
 
 	void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
 	void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
-	void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd);
-
-private:
-	FTimerHandle ShotTimerHandle;
+	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd);
 };
