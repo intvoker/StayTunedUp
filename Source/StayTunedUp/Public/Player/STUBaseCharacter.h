@@ -65,6 +65,8 @@ public:
 	bool IsRunning() const;
 
 private:
+	bool bPressedRun = false;
+
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
@@ -73,9 +75,6 @@ private:
 
 	void Run();
 	void StopRunning();
-
-	UPROPERTY()
-	bool bPressedRun = false;
 
 	UFUNCTION()
 	void OnDeath();
