@@ -29,19 +29,19 @@ public:
 	bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Health", meta=(ClampMin="0.0", ClampMax="1000.0"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health", meta = (ClampMin = "0.0", ClampMax = "1000.0"))
 	float MaxHealth = 100.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
 	bool bAutoHeal = true;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta = (EditCondition = "bAutoHeal"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "bAutoHeal"))
 	float HealUpdateTime = 1.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta = (EditCondition = "bAutoHeal"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "bAutoHeal"))
 	float HealDelay = 1.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta = (EditCondition = "bAutoHeal"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "bAutoHeal"))
 	float HealModifier = 1.0f;
 
 	// Called when the game starts
@@ -51,9 +51,9 @@ protected:
 
 private:
 	float Health = 0.0f;
-	
+
 	FTimerHandle HealTimerHandle;
-	
+
 	void SetHealth(float NewHealth);
 
 	UFUNCTION()
