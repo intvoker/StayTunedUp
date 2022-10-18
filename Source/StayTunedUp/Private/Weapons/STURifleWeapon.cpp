@@ -5,7 +5,7 @@
 
 void ASTURifleWeapon::Fire()
 {
-	MakeShot();
+	Super::Fire();
 
 	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ThisClass::MakeShot, TimeBetweenShots, true);
 }
@@ -29,12 +29,13 @@ void ASTURifleWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ASTURifleWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
 {
-	const auto DebugColor = HitResult.bBlockingHit ? FColor::Red : FColor::Blue;
+	Super::ProcessShot(TraceStart, TraceEnd, HitResult);
 
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, DebugColor, false, 5.0f);
-	DrawDebugSphere(GetWorld(), TraceEnd, 10.0f, 24, DebugColor, false, 5.0f);
+	const auto DamagedActor = HitResult.GetActor();
+	if (!DamagedActor)
+		return;
 
-	DealDamage(HitResult);
+	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetOwner()->GetInstigatorController(), GetOwner());
 }
 
 void ASTURifleWeapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)

@@ -5,22 +5,17 @@
 
 #include "Weapons/STUProjectile.h"
 
-void ASTULauncherWeapon::Fire()
-{
-	MakeShot();
-}
-
-void ASTULauncherWeapon::StopFiring()
-{
-}
-
 void ASTULauncherWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
 {
-	FTransform ProjectileTransform = FTransform(FRotator::ZeroRotator, TraceStart);
+	Super::ProcessShot(TraceStart, TraceEnd, HitResult);
 
-	auto Projectile = GetWorld()->SpawnActorDeferred<ASTUProjectile>(ProjectileClass, ProjectileTransform);
-	if (Projectile)
+	FVector ProjectileDirection = (TraceEnd - TraceStart).GetSafeNormal();
+	FTransform ProjectileTransform = FTransform(ProjectileDirection.Rotation(), TraceStart);
+
+	if (const auto Projectile = GetWorld()->SpawnActorDeferred<ASTUProjectile>(ProjectileClass, ProjectileTransform))
 	{
+		Projectile->SetProjectileDirection(ProjectileDirection);
+		Projectile->SetOwner(GetOwner());
 		Projectile->FinishSpawning(ProjectileTransform);
 	}
 }

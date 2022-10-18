@@ -38,14 +38,12 @@ protected:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	void MakeShot();
+	virtual void MakeShot();
 	virtual void ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult);
-	void DealDamage(FHitResult& HitResult);
 
-	void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
-	void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
+	virtual void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
+	virtual void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
 	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd);
 };

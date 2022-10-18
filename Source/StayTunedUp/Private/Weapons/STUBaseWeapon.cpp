@@ -72,16 +72,9 @@ void ASTUBaseWeapon::MakeShot()
 
 void ASTUBaseWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
 {
-	DealDamage(HitResult);
-}
-
-void ASTUBaseWeapon::DealDamage(FHitResult& HitResult)
-{
-	const auto EnemyCharacter = Cast<ACharacter>(HitResult.GetActor());
-	if (!EnemyCharacter)
-		return;
-
-	EnemyCharacter->TakeDamage(DamageAmount, FDamageEvent(), nullptr, GetOwner());
+	const auto DebugColor = HitResult.bBlockingHit ? FColor::Red : FColor::Blue;
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, DebugColor, false, 5.0f);
+	DrawDebugSphere(GetWorld(), TraceEnd, 10.0f, 24, DebugColor, false, 5.0f);
 }
 
 void ASTUBaseWeapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
