@@ -34,6 +34,8 @@ void ASTUProjectile::BeginPlay()
 	ProjectileMovementComponent->Velocity = ProjectileDirection * ProjectileMovementComponent->InitialSpeed;
 	CollisionSphereComponent->OnComponentHit.AddDynamic(this, &ThisClass::OnProjectileHit);
 	//UE_LOG(LogTemp, Warning, TEXT("ProjectileDirection: %s"), *ProjectileDirection.ToString());
+
+	SetLifeSpan(LifeSpan);
 }
 
 void ASTUProjectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,

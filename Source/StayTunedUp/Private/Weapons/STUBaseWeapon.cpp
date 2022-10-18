@@ -33,6 +33,8 @@ void ASTUBaseWeapon::OnOwnerDeath()
 	STUAnimUtility::SetRagdoll(this, WeaponMesh);
 
 	WeaponMesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+
+	SetLifeSpan(LifeSpan);
 }
 
 // Called when the game starts or when spawned

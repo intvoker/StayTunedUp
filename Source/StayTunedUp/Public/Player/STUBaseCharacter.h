@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	UAnimMontage* DeathAnimMontage;
 
+	UPROPERTY(EditDefaultsOnly)
+	float LifeSpan = 10.0f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

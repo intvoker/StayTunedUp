@@ -121,7 +121,7 @@ void ASTUBaseCharacter::OnDeath()
 
 	GetCharacterMovement()->DisableMovement();
 
-	// SetLifeSpan(LifeSpanOnDeath);
+	SetLifeSpan(LifeSpan);
 
 	// if (Controller)
 	// {

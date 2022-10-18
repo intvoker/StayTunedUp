@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	bool bDoFullDamage = false;
 
+	UPROPERTY(EditDefaultsOnly)
+	float LifeSpan = 10.0f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
