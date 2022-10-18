@@ -26,7 +26,6 @@ void ASTUBaseWeapon::Fire()
 
 void ASTUBaseWeapon::StopFiring()
 {
-
 }
 
 void ASTUBaseWeapon::OnOwnerDeath()
@@ -67,18 +66,13 @@ void ASTUBaseWeapon::MakeShot()
 
 	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionQueryParams);
 
-	if (HitResult.bBlockingHit)
-	{
-		DrawDebugLine(GetWorld(), WeaponViewLocation, HitResult.ImpactPoint, FColor::Red, false, 5.0f);
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
+	FVector TraceEnd = HitResult.bBlockingHit ? HitResult.ImpactPoint : End;
+	ProcessShot(WeaponViewLocation, TraceEnd, HitResult);
+}
 
-		DealDamage(HitResult);
-	}
-	else
-	{
-		DrawDebugLine(GetWorld(), WeaponViewLocation, End, FColor::Blue, false, 5.0f);
-		DrawDebugSphere(GetWorld(), End, 10.0f, 24, FColor::Blue, false, 5.0f);
-	}
+void ASTUBaseWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
+{
+	DealDamage(HitResult);
 }
 
 void ASTUBaseWeapon::DealDamage(FHitResult& HitResult)

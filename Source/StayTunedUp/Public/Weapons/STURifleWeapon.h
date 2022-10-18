@@ -30,7 +30,10 @@ protected:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd) override;
+	virtual void ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult) override;
+
+	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart,
+	                          FVector& OutTraceEnd) override;
 
 private:
 	FTimerHandle ShotTimerHandle;
