@@ -32,12 +32,19 @@ void USTUWeaponComponent::StopFiring()
 	CurrentWeapon->StopFiring();
 }
 
+void USTUWeaponComponent::SwitchWeapon()
+{
+	EquipWeapon(SelectNextWeapon(CurrentWeapon));
+}
+
 void USTUWeaponComponent::OnOwnerDeath()
 {
-	if (!CurrentWeapon)
-		return;
+	StopFiring();
 
-	CurrentWeapon->OnOwnerDeath();
+	for (auto Weapon : Weapons)
+	{
+		Weapon->OnOwnerDeath();
+	}
 }
 
 // Called when the game starts
@@ -45,23 +52,73 @@ void USTUWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpawnWeapon();
+	SpawnWeapons();
+	EquipWeapon(SelectNextWeapon(CurrentWeapon));
 }
 
-void USTUWeaponComponent::SpawnWeapon()
+void USTUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	Weapons.Empty();
+	CurrentWeapon = nullptr;
+}
+
+void USTUWeaponComponent::SpawnWeapons()
 {
 	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
 	if (!PlayerCharacter)
 		return;
 
-	if (!WeaponClass || WeaponAttachPointSocketName.IsNone())
+	for (auto WeaponClass : WeaponClasses)
+	{
+		auto Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass);
+		if (!Weapon)
+			continue;
+
+		Weapon->SetOwner(PlayerCharacter);
+		Weapons.Add(Weapon);
+
+		AttachWeaponToSocket(PlayerCharacter->GetMesh(), Weapon, SecondaryWeaponAttachPointSocketName);
+	}
+}
+
+void USTUWeaponComponent::EquipWeapon(ASTUBaseWeapon* Weapon)
+{
+	if (!Weapon || Weapon == CurrentWeapon)
 		return;
 
-	CurrentWeapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass);
-	if (!CurrentWeapon)
+	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
+	if (!PlayerCharacter)
 		return;
 
-	CurrentWeapon->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
-	                                 WeaponAttachPointSocketName);
-	CurrentWeapon->SetOwner(PlayerCharacter);
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->StopFiring();
+		AttachWeaponToSocket(PlayerCharacter->GetMesh(), CurrentWeapon, SecondaryWeaponAttachPointSocketName);
+	}
+
+	CurrentWeapon = Weapon;
+	AttachWeaponToSocket(PlayerCharacter->GetMesh(), CurrentWeapon, WeaponAttachPointSocketName);
+}
+
+void USTUWeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTUBaseWeapon* Weapon, FName& WeaponSocketName)
+{
+	if (WeaponSocketName.IsNone())
+		return;
+
+	Weapon->AttachToComponent(Parent, FAttachmentTransformRules::KeepRelativeTransform, WeaponSocketName);
+}
+
+ASTUBaseWeapon* USTUWeaponComponent::SelectNextWeapon(ASTUBaseWeapon* OtherWeapon)
+{
+	for (auto Weapon : Weapons)
+	{
+		if (Weapon != OtherWeapon)
+		{
+			return Weapon;
+		}
+	}
+
+	return nullptr;
 }
