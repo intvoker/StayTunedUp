@@ -26,6 +26,9 @@ public:
 	void OnOwnerDeath();
 
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	UAnimMontage* EquipAnimMontage;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TArray<TSubclassOf<ASTUBaseWeapon>> WeaponClasses;
 
@@ -40,11 +43,15 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 private:
+	bool EquipInProgress = false;
+
 	UPROPERTY()
 	ASTUBaseWeapon* CurrentWeapon = nullptr;
 
 	UPROPERTY()
 	TArray<ASTUBaseWeapon*> Weapons;
+
+	void InitAnimNotifies();
 
 	void SpawnWeapons();
 
@@ -53,4 +60,7 @@ private:
 	void AttachWeaponToSocket(USceneComponent* Parent, ASTUBaseWeapon* Weapon, FName& WeaponSocketName);
 
 	ASTUBaseWeapon* SelectNextWeapon(ASTUBaseWeapon* OtherWeapon);
+
+	UFUNCTION()
+	void OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp);
 };
