@@ -6,7 +6,6 @@
 #include "GameFramework/Character.h"
 #include "STU_Character.generated.h"
 
-class ASTU_Weapon;
 class UCameraComponent;
 class USpringArmComponent;
 class USTU_FallDamageComponent;

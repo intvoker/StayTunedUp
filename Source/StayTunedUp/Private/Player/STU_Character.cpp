@@ -12,7 +12,6 @@
 #include "Components/STU_WeaponComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Weapons/STU_Weapon.h"
 
 // Sets default values
 ASTU_Character::ASTU_Character(const FObjectInitializer& ObjectInitializer):
