@@ -1,13 +1,13 @@
 // Stay Tuned Up Game
 
 
-#include "Components/STUCharacterMovementComponent.h"
+#include "Components/STU_CharacterMovementComponent.h"
 
-#include "Player/STUBaseCharacter.h"
+#include "Player/STU_Character.h"
 
-float USTUCharacterMovementComponent::GetMaxSpeed() const
+float USTU_CharacterMovementComponent::GetMaxSpeed() const
 {
-	const auto STUBaseCharacter = Cast<ASTUBaseCharacter>(GetPawnOwner());
+	const auto STU_Character = Cast<ASTU_Character>(GetPawnOwner());
 
-	return STUBaseCharacter && STUBaseCharacter->IsRunning() ? MaxRunSpeed : Super::GetMaxSpeed();
+	return STU_Character && STU_Character->IsRunning() ? MaxRunSpeed : Super::GetMaxSpeed();
 }

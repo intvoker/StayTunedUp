@@ -1,33 +1,33 @@
 // Stay Tuned Up Game
 
 
-#include "Weapons/STURifleWeapon.h"
+#include "Weapons/STU_RifleWeapon.h"
 
-void ASTURifleWeapon::Fire()
+void ASTU_RifleWeapon::Fire()
 {
 	Super::Fire();
 
 	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ThisClass::MakeShot, TimeBetweenShots, true);
 }
 
-void ASTURifleWeapon::StopFiring()
+void ASTU_RifleWeapon::StopFiring()
 {
 	GetWorldTimerManager().ClearTimer(ShotTimerHandle);
 }
 
-void ASTURifleWeapon::BeginPlay()
+void ASTU_RifleWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void ASTURifleWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void ASTU_RifleWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
 	GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
 }
 
-void ASTURifleWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
+void ASTU_RifleWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
 {
 	Super::ProcessShot(TraceStart, TraceEnd, HitResult);
 
@@ -38,7 +38,7 @@ void ASTURifleWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitRe
 	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetOwner()->GetInstigatorController(), GetOwner());
 }
 
-void ASTURifleWeapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)
+void ASTU_RifleWeapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)
 {
 	Direction = FMath::VRandCone(Direction, FMath::DegreesToRadians(ShotSpread));
 

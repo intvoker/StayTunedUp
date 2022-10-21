@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "STUProjectile.generated.h"
+#include "STU_Projectile.generated.h"
 
 class UProjectileMovementComponent;
 class USphereComponent;
 
 UCLASS()
-class STAYTUNEDUP_API ASTUProjectile : public AActor
+class STAYTUNEDUP_API ASTU_Projectile : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASTUProjectile();
+	ASTU_Projectile();
 
 	void SetProjectileDirection(FVector ProjectileDirectionParam) { ProjectileDirection = ProjectileDirectionParam; };
 

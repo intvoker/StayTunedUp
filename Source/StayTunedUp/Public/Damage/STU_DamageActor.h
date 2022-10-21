@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "STUDamageActor.generated.h"
+#include "STU_DamageActor.generated.h"
 
 UCLASS()
-class STAYTUNEDUP_API ASTUDamageActor : public AActor
+class STAYTUNEDUP_API ASTU_DamageActor : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASTUDamageActor();
+	ASTU_DamageActor();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")

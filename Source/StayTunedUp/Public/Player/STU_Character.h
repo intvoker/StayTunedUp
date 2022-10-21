@@ -4,24 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "STUBaseCharacter.generated.h"
+#include "STU_Character.generated.h"
 
-class ASTUBaseWeapon;
+class ASTU_Weapon;
 class UCameraComponent;
 class USpringArmComponent;
-class USTUFallDamageComponent;
-class USTUHealthComponent;
-class USTUWeaponComponent;
+class USTU_FallDamageComponent;
+class USTU_HealthComponent;
+class USTU_WeaponComponent;
 class UTextRenderComponent;
 
 UCLASS()
-class STAYTUNEDUP_API ASTUBaseCharacter : public ACharacter
+class STAYTUNEDUP_API ASTU_Character : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer);
+	ASTU_Character(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -31,13 +31,13 @@ protected:
 	USpringArmComponent* SpringArmComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	USTUHealthComponent* HealthComponent;
+	USTU_HealthComponent* HealthComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	USTUFallDamageComponent* FallDamageComponent;
+	USTU_FallDamageComponent* FallDamageComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	USTUWeaponComponent* WeaponComponent;
+	USTU_WeaponComponent* WeaponComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UTextRenderComponent* HealthTextComponent;

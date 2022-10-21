@@ -1,10 +1,10 @@
 // Stay Tuned Up Game
 
 
-#include "Components/STUHealthComponent.h"
+#include "Components/STU_HealthComponent.h"
 
 // Sets default values for this component's properties
-USTUHealthComponent::USTUHealthComponent()
+USTU_HealthComponent::USTU_HealthComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -15,7 +15,7 @@ USTUHealthComponent::USTUHealthComponent()
 
 
 // Called when the game starts
-void USTUHealthComponent::BeginPlay()
+void USTU_HealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -27,21 +27,21 @@ void USTUHealthComponent::BeginPlay()
 	}
 }
 
-void USTUHealthComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void USTU_HealthComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
 	GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
 }
 
-void USTUHealthComponent::SetHealth(float NewHealth)
+void USTU_HealthComponent::SetHealth(float NewHealth)
 {
 	Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
 	OnHealthChanged.Broadcast(Health);
 }
 
-void USTUHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
-                                          AController* InstigatedBy, AActor* DamageCauser)
+void USTU_HealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+                                           AController* InstigatedBy, AActor* DamageCauser)
 {
 	if (IsDead())
 		return;
@@ -60,7 +60,7 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, co
 	}
 }
 
-void USTUHealthComponent::OnHealTimer()
+void USTU_HealthComponent::OnHealTimer()
 {
 	SetHealth(Health + HealModifier);
 

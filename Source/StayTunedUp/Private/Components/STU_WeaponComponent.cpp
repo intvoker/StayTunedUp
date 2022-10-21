@@ -1,14 +1,14 @@
 // Stay Tuned Up Game
 
 
-#include "Components/STUWeaponComponent.h"
+#include "Components/STU_WeaponComponent.h"
 
-#include "Animations/STUEquipFinishedAnimNotify.h"
+#include "Animations/STU_EquipFinishedAnimNotify.h"
 #include "GameFramework/Character.h"
-#include "Weapons/STUBaseWeapon.h"
+#include "Weapons/STU_Weapon.h"
 
 // Sets default values for this component's properties
-USTUWeaponComponent::USTUWeaponComponent()
+USTU_WeaponComponent::USTU_WeaponComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -17,7 +17,7 @@ USTUWeaponComponent::USTUWeaponComponent()
 	// ...
 }
 
-void USTUWeaponComponent::Fire()
+void USTU_WeaponComponent::Fire()
 {
 	if (EquipInProgress)
 		return;
@@ -28,7 +28,7 @@ void USTUWeaponComponent::Fire()
 	CurrentWeapon->Fire();
 }
 
-void USTUWeaponComponent::StopFiring()
+void USTU_WeaponComponent::StopFiring()
 {
 	if (!CurrentWeapon)
 		return;
@@ -36,7 +36,7 @@ void USTUWeaponComponent::StopFiring()
 	CurrentWeapon->StopFiring();
 }
 
-void USTUWeaponComponent::SwitchWeapon()
+void USTU_WeaponComponent::SwitchWeapon()
 {
 	if (EquipInProgress)
 		return;
@@ -44,7 +44,7 @@ void USTUWeaponComponent::SwitchWeapon()
 	EquipWeapon(SelectNextWeapon(CurrentWeapon));
 }
 
-void USTUWeaponComponent::OnOwnerDeath()
+void USTU_WeaponComponent::OnOwnerDeath()
 {
 	StopFiring();
 
@@ -55,7 +55,7 @@ void USTUWeaponComponent::OnOwnerDeath()
 }
 
 // Called when the game starts
-void USTUWeaponComponent::BeginPlay()
+void USTU_WeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -65,7 +65,7 @@ void USTUWeaponComponent::BeginPlay()
 	EquipWeapon(SelectNextWeapon(CurrentWeapon));
 }
 
-void USTUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void USTU_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
@@ -73,14 +73,14 @@ void USTUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	CurrentWeapon = nullptr;
 }
 
-void USTUWeaponComponent::InitAnimNotifies()
+void USTU_WeaponComponent::InitAnimNotifies()
 {
 	if (!EquipAnimMontage)
 		return;
 
 	for (auto AnimNotifyEvent : EquipAnimMontage->Notifies)
 	{
-		if (auto EquipAnimNotify = Cast<USTUEquipFinishedAnimNotify>(AnimNotifyEvent.Notify))
+		if (auto EquipAnimNotify = Cast<USTU_EquipFinishedAnimNotify>(AnimNotifyEvent.Notify))
 		{
 			EquipAnimNotify->OnEquipFinishedNotify.AddDynamic(this, &ThisClass::OnEquipFinishedNotify);
 			break;
@@ -88,7 +88,7 @@ void USTUWeaponComponent::InitAnimNotifies()
 	}
 }
 
-void USTUWeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp)
+void USTU_WeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp)
 {
 	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
 	if (!PlayerCharacter)
@@ -100,7 +100,7 @@ void USTUWeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp
 	EquipInProgress = false;
 }
 
-void USTUWeaponComponent::SpawnWeapons()
+void USTU_WeaponComponent::SpawnWeapons()
 {
 	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
 	if (!PlayerCharacter)
@@ -108,7 +108,7 @@ void USTUWeaponComponent::SpawnWeapons()
 
 	for (auto WeaponClass : WeaponClasses)
 	{
-		auto Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass);
+		auto Weapon = GetWorld()->SpawnActor<ASTU_Weapon>(WeaponClass);
 		if (!Weapon)
 			continue;
 
@@ -119,7 +119,7 @@ void USTUWeaponComponent::SpawnWeapons()
 	}
 }
 
-void USTUWeaponComponent::EquipWeapon(ASTUBaseWeapon* Weapon)
+void USTU_WeaponComponent::EquipWeapon(ASTU_Weapon* Weapon)
 {
 	if (!Weapon || Weapon == CurrentWeapon)
 		return;
@@ -141,7 +141,7 @@ void USTUWeaponComponent::EquipWeapon(ASTUBaseWeapon* Weapon)
 	PlayerCharacter->PlayAnimMontage(EquipAnimMontage);
 }
 
-void USTUWeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTUBaseWeapon* Weapon, FName& WeaponSocketName)
+void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName)
 {
 	if (WeaponSocketName.IsNone())
 		return;
@@ -149,7 +149,7 @@ void USTUWeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTUBase
 	Weapon->AttachToComponent(Parent, FAttachmentTransformRules::KeepRelativeTransform, WeaponSocketName);
 }
 
-ASTUBaseWeapon* USTUWeaponComponent::SelectNextWeapon(ASTUBaseWeapon* OtherWeapon)
+ASTU_Weapon* USTU_WeaponComponent::SelectNextWeapon(ASTU_Weapon* OtherWeapon)
 {
 	for (auto Weapon : Weapons)
 	{

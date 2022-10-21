@@ -1,18 +1,18 @@
 // Stay Tuned Up Game
 
 
-#include "Weapons/STULauncherWeapon.h"
+#include "Weapons/STU_LauncherWeapon.h"
 
-#include "Weapons/STUProjectile.h"
+#include "Weapons/STU_Projectile.h"
 
-void ASTULauncherWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
+void ASTU_LauncherWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
 {
 	Super::ProcessShot(TraceStart, TraceEnd, HitResult);
 
 	FVector ProjectileDirection = (TraceEnd - TraceStart).GetSafeNormal();
 	FTransform ProjectileTransform = FTransform(ProjectileDirection.Rotation(), TraceStart);
 
-	if (const auto Projectile = GetWorld()->SpawnActorDeferred<ASTUProjectile>(ProjectileClass, ProjectileTransform))
+	if (const auto Projectile = GetWorld()->SpawnActorDeferred<ASTU_Projectile>(ProjectileClass, ProjectileTransform))
 	{
 		Projectile->SetProjectileDirection(ProjectileDirection);
 		Projectile->SetOwner(GetOwner());

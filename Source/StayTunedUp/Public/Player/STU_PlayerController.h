@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "STUPlayerController.generated.h"
+#include "STU_PlayerController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API ASTUPlayerController : public APlayerController
+class STAYTUNEDUP_API ASTU_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
 };

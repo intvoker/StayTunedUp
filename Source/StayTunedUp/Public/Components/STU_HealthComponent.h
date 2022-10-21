@@ -4,20 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "STUHealthComponent.generated.h"
+#include "STU_HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathSignature);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChangedSignature, float, Health);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class STAYTUNEDUP_API USTUHealthComponent : public UActorComponent
+class STAYTUNEDUP_API USTU_HealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this component's properties
-	USTUHealthComponent();
+	USTU_HealthComponent();
 
 	FDeathSignature OnDeath;
 	FHealthChangedSignature OnHealthChanged;

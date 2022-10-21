@@ -1,15 +1,15 @@
 // Stay Tuned Up Game
 
 
-#include "STUGameModeBase.h"
+#include "STU_GameModeBase.h"
 
-#include "Player/STUBaseCharacter.h"
-#include "Player/STUPlayerController.h"
-#include "UI/STUGameHUD.h"
+#include "Player/STU_Character.h"
+#include "Player/STU_PlayerController.h"
+#include "UI/STU_HUD.h"
 
-ASTUGameModeBase::ASTUGameModeBase()
+ASTU_GameModeBase::ASTU_GameModeBase()
 {
-	DefaultPawnClass = ASTUBaseCharacter::StaticClass();
-	PlayerControllerClass = ASTUPlayerController::StaticClass();
-	HUDClass = ASTUGameHUD::StaticClass();
+	DefaultPawnClass = ASTU_Character::StaticClass();
+	PlayerControllerClass = ASTU_PlayerController::StaticClass();
+	HUDClass = ASTU_HUD::StaticClass();
 }

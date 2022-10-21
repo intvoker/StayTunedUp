@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "STUFallDamageComponent.generated.h"
+#include "STU_FallDamageComponent.generated.h"
 
 USTRUCT(BlueprintType)
-struct FSTURange
+struct FSTU_Range
 {
 	GENERATED_USTRUCT_BODY()
 
-	FSTURange()
+	FSTU_Range()
 	{
 	}
 
-	FSTURange(const float MinParam, const float MaxParam):
+	FSTU_Range(const float MinParam, const float MaxParam):
 		Min(MinParam), Max(MaxParam)
 	{
 	}
@@ -30,20 +30,20 @@ struct FSTURange
 };
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class STAYTUNEDUP_API USTUFallDamageComponent : public UActorComponent
+class STAYTUNEDUP_API USTU_FallDamageComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this component's properties
-	USTUFallDamageComponent();
+	USTU_FallDamageComponent();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	FSTURange FallDamageVelocity = FSTURange(900.0f, 1200.0f);
+	FSTU_Range FallDamageVelocity = FSTU_Range(900.0f, 1200.0f);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	FSTURange FallDamage = FSTURange(10.0f, 100.0f);
+	FSTU_Range FallDamage = FSTU_Range(10.0f, 100.0f);
 
 	// Called when the game starts
 	virtual void BeginPlay() override;

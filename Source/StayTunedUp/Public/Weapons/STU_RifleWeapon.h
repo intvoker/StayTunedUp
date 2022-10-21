@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Weapons/STUBaseWeapon.h"
-#include "STURifleWeapon.generated.h"
+#include "Weapons/STU_Weapon.h"
+#include "STU_RifleWeapon.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API ASTURifleWeapon : public ASTUBaseWeapon
+class STAYTUNEDUP_API ASTU_RifleWeapon : public ASTU_Weapon
 {
 	GENERATED_BODY()
 

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "STUCharacterMovementComponent.generated.h"
+#include "STU_CharacterMovementComponent.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API USTUCharacterMovementComponent : public UCharacterMovementComponent
+class STAYTUNEDUP_API USTU_CharacterMovementComponent : public UCharacterMovementComponent
 {
 	GENERATED_BODY()
 

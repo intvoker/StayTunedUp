@@ -1,18 +1,18 @@
 // Stay Tuned Up Game
 
 
-#include "UI/STUGameHUD.h"
+#include "UI/STU_HUD.h"
 
 #include "Engine/Canvas.h"
 
-void ASTUGameHUD::DrawHUD()
+void ASTU_HUD::DrawHUD()
 {
 	Super::DrawHUD();
 
 	DrawCrosshair();
 }
 
-void ASTUGameHUD::DrawCrosshair()
+void ASTU_HUD::DrawCrosshair()
 {
 	const float LineHalfSize = 10.0f;
 	const float LineThickness = 2.0f;

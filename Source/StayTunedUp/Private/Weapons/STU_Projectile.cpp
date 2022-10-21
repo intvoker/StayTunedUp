@@ -1,14 +1,14 @@
 ﻿// Stay Tuned Up Game
 
 
-#include "Weapons/STUProjectile.h"
+#include "Weapons/STU_Projectile.h"
 
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-ASTUProjectile::ASTUProjectile()
+ASTU_Projectile::ASTU_Projectile()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -27,7 +27,7 @@ ASTUProjectile::ASTUProjectile()
 }
 
 // Called when the game starts or when spawned
-void ASTUProjectile::BeginPlay()
+void ASTU_Projectile::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -38,8 +38,8 @@ void ASTUProjectile::BeginPlay()
 	SetLifeSpan(LifeSpan);
 }
 
-void ASTUProjectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-                                     UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ASTU_Projectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+                                      UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius,
 	                                    UDamageType::StaticClass(), {}, this, GetOwner()->GetInstigatorController(),

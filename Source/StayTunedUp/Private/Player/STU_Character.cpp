@@ -1,22 +1,22 @@
 // Stay Tuned Up Game
 
 
-#include "Player/STUBaseCharacter.h"
+#include "Player/STU_Character.h"
 
-#include "Animations/STUAnimUtility.h"
+#include "Animations/STU_AnimUtility.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/STUCharacterMovementComponent.h"
-#include "Components/STUFallDamageComponent.h"
-#include "Components/STUHealthComponent.h"
-#include "Components/STUWeaponComponent.h"
+#include "Components/STU_CharacterMovementComponent.h"
+#include "Components/STU_FallDamageComponent.h"
+#include "Components/STU_HealthComponent.h"
+#include "Components/STU_WeaponComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Weapons/STUBaseWeapon.h"
+#include "Weapons/STU_Weapon.h"
 
 // Sets default values
-ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer):
-	Super(ObjectInitializer.SetDefaultSubobjectClass<USTUCharacterMovementComponent>(
+ASTU_Character::ASTU_Character(const FObjectInitializer& ObjectInitializer):
+	Super(ObjectInitializer.SetDefaultSubobjectClass<USTU_CharacterMovementComponent>(
 		ACharacter::CharacterMovementComponentName))
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -29,36 +29,36 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
-	HealthComponent = CreateDefaultSubobject<USTUHealthComponent>("HealthComponent");
+	HealthComponent = CreateDefaultSubobject<USTU_HealthComponent>("HealthComponent");
 
-	FallDamageComponent = CreateDefaultSubobject<USTUFallDamageComponent>("FallDamageComponent");
+	FallDamageComponent = CreateDefaultSubobject<USTU_FallDamageComponent>("FallDamageComponent");
 
-	WeaponComponent = CreateDefaultSubobject<USTUWeaponComponent>("WeaponComponent");
+	WeaponComponent = CreateDefaultSubobject<USTU_WeaponComponent>("WeaponComponent");
 
 	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
 	HealthTextComponent->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
-void ASTUBaseCharacter::BeginPlay()
+void ASTU_Character::BeginPlay()
 {
 	Super::BeginPlay();
 
 	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
-	HealthComponent->OnDeath.AddDynamic(WeaponComponent, &USTUWeaponComponent::OnOwnerDeath);
+	HealthComponent->OnDeath.AddDynamic(WeaponComponent, &USTU_WeaponComponent::OnOwnerDeath);
 
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 	OnHealthChanged(HealthComponent->GetHealth());
 }
 
 // Called every frame
-void ASTUBaseCharacter::Tick(float DeltaTime)
+void ASTU_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
 // Called to bind functionality to input
-void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASTU_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -74,52 +74,52 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ThisClass::Run);
 	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ThisClass::StopRunning);
 
-	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &USTUWeaponComponent::Fire);
+	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Fire);
 	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, WeaponComponent,
-	                                 &USTUWeaponComponent::StopFiring);
+	                                 &USTU_WeaponComponent::StopFiring);
 
 	PlayerInputComponent->BindAction("SwitchWeapon", EInputEvent::IE_Pressed, WeaponComponent,
-	                                 &USTUWeaponComponent::SwitchWeapon);
+	                                 &USTU_WeaponComponent::SwitchWeapon);
 }
 
-void ASTUBaseCharacter::MoveForward(float Value)
+void ASTU_Character::MoveForward(float Value)
 {
 	AddMovementInput(GetActorForwardVector(), Value);
 }
 
-void ASTUBaseCharacter::MoveRight(float Value)
+void ASTU_Character::MoveRight(float Value)
 {
 	AddMovementInput(GetActorRightVector(), Value);
 }
 
-void ASTUBaseCharacter::LookUp(float Value)
+void ASTU_Character::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
 }
 
-void ASTUBaseCharacter::Turn(float Value)
+void ASTU_Character::Turn(float Value)
 {
 	AddControllerYawInput(Value);
 }
 
-void ASTUBaseCharacter::Run()
+void ASTU_Character::Run()
 {
 	bPressedRun = true;
 }
 
-void ASTUBaseCharacter::StopRunning()
+void ASTU_Character::StopRunning()
 {
 	bPressedRun = false;
 }
 
-void ASTUBaseCharacter::OnDeath()
+void ASTU_Character::OnDeath()
 {
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 
 	DetachFromControllerPendingDestroy();
 
-	STUAnimUtility::SetRagdoll(this, GetMesh());
+	STU_AnimUtility::SetRagdoll(this, GetMesh());
 
 	// PlayAnimMontage(DeathAnimMontage);
 
@@ -133,17 +133,17 @@ void ASTUBaseCharacter::OnDeath()
 	// }
 }
 
-void ASTUBaseCharacter::OnHealthChanged(float Health)
+void ASTU_Character::OnHealthChanged(float Health)
 {
 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.f"), Health)));
 }
 
-bool ASTUBaseCharacter::IsMovingForward() const
+bool ASTU_Character::IsMovingForward() const
 {
 	return FVector::Coincident(GetActorForwardVector(), GetVelocity().GetSafeNormal());
 }
 
-bool ASTUBaseCharacter::IsRunning() const
+bool ASTU_Character::IsRunning() const
 {
 	return bPressedRun && IsMovingForward();
 }

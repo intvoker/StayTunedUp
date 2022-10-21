@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "STUGameModeBase.generated.h"
+#include "STU_GameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API ASTUGameModeBase : public AGameModeBase
+class STAYTUNEDUP_API ASTU_GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
-	ASTUGameModeBase();
+	ASTU_GameModeBase();
 };

@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "STUBaseWeapon.generated.h"
+#include "STU_Weapon.generated.h"
 
 UCLASS()
-class STAYTUNEDUP_API ASTUBaseWeapon : public AActor
+class STAYTUNEDUP_API ASTU_Weapon : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASTUBaseWeapon();
+	ASTU_Weapon();
 
 	virtual void Fire();
 	virtual void StopFiring();

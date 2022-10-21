@@ -1,39 +1,39 @@
 // Stay Tuned Up Game
 
 
-#include "Animations/STUAnimInstance.h"
+#include "Animations/STU_AnimInstance.h"
 
-#include "Animations/STUAnimUtility.h"
+#include "Animations/STU_AnimUtility.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Player/STUBaseCharacter.h"
+#include "Player/STU_Character.h"
 
-void USTUAnimInstance::NativeInitializeAnimation()
+void USTU_AnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
-	STUBaseCharacter = Cast<ASTUBaseCharacter>(TryGetPawnOwner());
+	STU_Character = Cast<ASTU_Character>(TryGetPawnOwner());
 }
 
-void USTUAnimInstance::NativeUpdateAnimation(float DeltaTimeX)
+void USTU_AnimInstance::NativeUpdateAnimation(float DeltaTimeX)
 {
 	Super::NativeUpdateAnimation(DeltaTimeX);
 
-	if (!STUBaseCharacter)
+	if (!STU_Character)
 		return;
 
-	Speed = STUBaseCharacter->GetVelocity().Size();
-	MovementOffsetYaw = STUAnimUtility::GetMovementOffsetYaw(STUBaseCharacter);
+	Speed = STU_Character->GetVelocity().Size();
+	MovementOffsetYaw = STU_AnimUtility::GetMovementOffsetYaw(STU_Character);
 
-	AimOffsetPitch = STUBaseCharacter->GetBaseAimRotation().Pitch;
-	AimOffsetYaw = STUBaseCharacter->GetBaseAimRotation().Yaw;
+	AimOffsetPitch = STU_Character->GetBaseAimRotation().Pitch;
+	AimOffsetYaw = STU_Character->GetBaseAimRotation().Yaw;
 
-	bIsFalling = STUBaseCharacter->GetCharacterMovement()->IsFalling();
-	bIsRunning = STUBaseCharacter->IsRunning();
+	bIsFalling = STU_Character->GetCharacterMovement()->IsFalling();
+	bIsRunning = STU_Character->IsRunning();
 
 	/*
-	const auto Start = STUBaseCharacter->GetActorLocation();
-	const auto ForwardNormal = STUBaseCharacter->GetActorForwardVector();
-	const auto VelocityNormal = STUBaseCharacter->GetVelocity().GetSafeNormal();
+	const auto Start = STU_Character->GetActorLocation();
+	const auto ForwardNormal = STU_Character->GetActorForwardVector();
+	const auto VelocityNormal = STU_Character->GetVelocity().GetSafeNormal();
 
 	DrawDebugLine(GetWorld(), Start, Start + ForwardNormal * 500, FColor::Red, false, -1, 0, 10);
 	DrawDebugLine(GetWorld(), Start, Start + VelocityNormal * 500, FColor::Blue, false, -1, 0, 10);

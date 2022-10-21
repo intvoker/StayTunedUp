@@ -1,13 +1,13 @@
 // Stay Tuned Up Game
 
 
-#include "Weapons/STUBaseWeapon.h"
+#include "Weapons/STU_Weapon.h"
 
-#include "Animations/STUAnimUtility.h"
+#include "Animations/STU_AnimUtility.h"
 #include "GameFramework/Character.h"
 
 // Sets default values
-ASTUBaseWeapon::ASTUBaseWeapon()
+ASTU_Weapon::ASTU_Weapon()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -19,18 +19,18 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 	WeaponMesh->SetupAttachment(GetRootComponent());
 }
 
-void ASTUBaseWeapon::Fire()
+void ASTU_Weapon::Fire()
 {
 	MakeShot();
 }
 
-void ASTUBaseWeapon::StopFiring()
+void ASTU_Weapon::StopFiring()
 {
 }
 
-void ASTUBaseWeapon::OnOwnerDeath()
+void ASTU_Weapon::OnOwnerDeath()
 {
-	STUAnimUtility::SetRagdoll(this, WeaponMesh);
+	STU_AnimUtility::SetRagdoll(this, WeaponMesh);
 
 	WeaponMesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 
@@ -38,17 +38,17 @@ void ASTUBaseWeapon::OnOwnerDeath()
 }
 
 // Called when the game starts or when spawned
-void ASTUBaseWeapon::BeginPlay()
+void ASTU_Weapon::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void ASTUBaseWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void ASTU_Weapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ASTUBaseWeapon::MakeShot()
+void ASTU_Weapon::MakeShot()
 {
 	FVector PlayerViewLocation;
 	FVector PlayerViewDirection;
@@ -72,14 +72,14 @@ void ASTUBaseWeapon::MakeShot()
 	ProcessShot(WeaponViewLocation, TraceEnd, HitResult);
 }
 
-void ASTUBaseWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
+void ASTU_Weapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
 {
 	const auto DebugColor = HitResult.bBlockingHit ? FColor::Red : FColor::Blue;
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, DebugColor, false, 5.0f);
 	DrawDebugSphere(GetWorld(), TraceEnd, 10.0f, 24, DebugColor, false, 5.0f);
 }
 
-void ASTUBaseWeapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
+void ASTU_Weapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
 {
 	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
 	if (!PlayerCharacter)
@@ -94,14 +94,14 @@ void ASTUBaseWeapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutVi
 	OutViewDirection = ViewRotation.Vector();
 }
 
-void ASTUBaseWeapon::GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
+void ASTU_Weapon::GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
 {
 	const FTransform MuzzleFlashSocketTransform = WeaponMesh->GetSocketTransform(MuzzleFlashSocketName);
 	OutViewLocation = MuzzleFlashSocketTransform.GetLocation();
 	OutViewDirection = MuzzleFlashSocketTransform.GetRotation().GetForwardVector();
 }
 
-void ASTUBaseWeapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)
+void ASTU_Weapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)
 {
 	OutTraceStart = Location;
 	OutTraceEnd = OutTraceStart + Direction * MaxRange;

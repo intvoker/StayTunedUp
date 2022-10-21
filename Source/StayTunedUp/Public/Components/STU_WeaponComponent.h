@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "STUWeaponComponent.generated.h"
+#include "STU_WeaponComponent.generated.h"
 
-class ASTUBaseWeapon;
+class ASTU_Weapon;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class STAYTUNEDUP_API USTUWeaponComponent : public UActorComponent
+class STAYTUNEDUP_API USTU_WeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this component's properties
-	USTUWeaponComponent();
+	USTU_WeaponComponent();
 
 	void Fire();
 	void StopFiring();
@@ -30,7 +30,7 @@ protected:
 	UAnimMontage* EquipAnimMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TArray<TSubclassOf<ASTUBaseWeapon>> WeaponClasses;
+	TArray<TSubclassOf<ASTU_Weapon>> WeaponClasses;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName WeaponAttachPointSocketName = "WeaponPoint";
@@ -46,20 +46,20 @@ private:
 	bool EquipInProgress = false;
 
 	UPROPERTY()
-	ASTUBaseWeapon* CurrentWeapon = nullptr;
+	ASTU_Weapon* CurrentWeapon = nullptr;
 
 	UPROPERTY()
-	TArray<ASTUBaseWeapon*> Weapons;
+	TArray<ASTU_Weapon*> Weapons;
 
 	void InitAnimNotifies();
 
 	void SpawnWeapons();
 
-	void EquipWeapon(ASTUBaseWeapon* Weapon);
+	void EquipWeapon(ASTU_Weapon* Weapon);
 
-	void AttachWeaponToSocket(USceneComponent* Parent, ASTUBaseWeapon* Weapon, FName& WeaponSocketName);
+	void AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName);
 
-	ASTUBaseWeapon* SelectNextWeapon(ASTUBaseWeapon* OtherWeapon);
+	ASTU_Weapon* SelectNextWeapon(ASTU_Weapon* OtherWeapon);
 
 	UFUNCTION()
 	void OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp);

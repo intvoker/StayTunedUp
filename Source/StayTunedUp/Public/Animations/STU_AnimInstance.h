@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "STUAnimInstance.generated.h"
+#include "STU_AnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API USTUAnimInstance : public UAnimInstance
+class STAYTUNEDUP_API USTU_AnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
@@ -21,7 +21,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	class ASTUBaseCharacter* STUBaseCharacter;
+	class ASTU_Character* STU_Character;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Speed;

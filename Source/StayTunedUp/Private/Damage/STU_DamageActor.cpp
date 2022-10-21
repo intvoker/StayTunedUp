@@ -1,12 +1,12 @@
 // Stay Tuned Up Game
 
 
-#include "Damage/STUDamageActor.h"
+#include "Damage/STU_DamageActor.h"
 
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-ASTUDamageActor::ASTUDamageActor()
+ASTU_DamageActor::ASTU_DamageActor()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -16,13 +16,13 @@ ASTUDamageActor::ASTUDamageActor()
 }
 
 // Called when the game starts or when spawned
-void ASTUDamageActor::BeginPlay()
+void ASTU_DamageActor::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
 // Called every frame
-void ASTUDamageActor::Tick(float DeltaTime)
+void ASTU_DamageActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 

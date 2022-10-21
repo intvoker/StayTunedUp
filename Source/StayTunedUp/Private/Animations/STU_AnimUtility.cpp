@@ -1,17 +1,17 @@
 // Stay Tuned Up Game
 
 
-#include "Animations/STUAnimUtility.h"
+#include "Animations/STU_AnimUtility.h"
 
-STUAnimUtility::STUAnimUtility()
+STU_AnimUtility::STU_AnimUtility()
 {
 }
 
-STUAnimUtility::~STUAnimUtility()
+STU_AnimUtility::~STU_AnimUtility()
 {
 }
 
-float STUAnimUtility::GetMovementOffsetYaw(APawn* Pawn)
+float STU_AnimUtility::GetMovementOffsetYaw(APawn* Pawn)
 {
 	const auto ForwardNormal = Pawn->GetActorForwardVector();
 	const auto VelocityNormal = Pawn->GetVelocity().GetSafeNormal();
@@ -25,7 +25,7 @@ float STUAnimUtility::GetMovementOffsetYaw(APawn* Pawn)
 	return CrossProduct.IsZero() ? Angle : Angle * Sign;
 }
 
-void STUAnimUtility::SetRagdoll(AActor* Actor, USkeletalMeshComponent* Mesh)
+void STU_AnimUtility::SetRagdoll(AActor* Actor, USkeletalMeshComponent* Mesh)
 {
 	Mesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
 	Actor->SetActorEnableCollision(true);

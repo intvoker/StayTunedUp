@@ -1,12 +1,12 @@
 // Stay Tuned Up Game
 
 
-#include "Components/STUFallDamageComponent.h"
+#include "Components/STU_FallDamageComponent.h"
 
 #include "GameFramework/Character.h"
 
 // Sets default values for this component's properties
-USTUFallDamageComponent::USTUFallDamageComponent()
+USTU_FallDamageComponent::USTU_FallDamageComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -16,7 +16,7 @@ USTUFallDamageComponent::USTUFallDamageComponent()
 }
 
 // Called when the game starts
-void USTUFallDamageComponent::BeginPlay()
+void USTU_FallDamageComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -27,7 +27,7 @@ void USTUFallDamageComponent::BeginPlay()
 	ComponentOwner->LandedDelegate.AddDynamic(this, &ThisClass::OnLandedCallback);
 }
 
-void USTUFallDamageComponent::OnLandedCallback(const FHitResult& Hit)
+void USTU_FallDamageComponent::OnLandedCallback(const FHitResult& Hit)
 {
 	const auto ComponentOwner = Cast<ACharacter>(GetOwner());
 	if (!ComponentOwner)

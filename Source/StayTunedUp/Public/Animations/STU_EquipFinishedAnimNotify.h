@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotify.h"
-#include "STUEquipFinishedAnimNotify.generated.h"
+#include "STU_EquipFinishedAnimNotify.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEquipFinishedNotifySignature, USkeletalMeshComponent*, MeshComp);
 
@@ -12,7 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEquipFinishedNotifySignature, USkel
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API USTUEquipFinishedAnimNotify : public UAnimNotify
+class STAYTUNEDUP_API USTU_EquipFinishedAnimNotify : public UAnimNotify
 {
 	GENERATED_BODY()
 
