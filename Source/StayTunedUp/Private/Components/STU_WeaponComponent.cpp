@@ -90,11 +90,11 @@ void USTU_WeaponComponent::InitAnimNotifies()
 
 void USTU_WeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp)
 {
-	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
-	if (!PlayerCharacter)
+	const auto Character = Cast<ACharacter>(GetOwner());
+	if (!Character)
 		return;
 
-	if (PlayerCharacter->GetMesh() != MeshComp)
+	if (Character->GetMesh() != MeshComp)
 		return;
 
 	EquipInProgress = false;
@@ -102,8 +102,8 @@ void USTU_WeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshCom
 
 void USTU_WeaponComponent::SpawnWeapons()
 {
-	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
-	if (!PlayerCharacter)
+	const auto Character = Cast<ACharacter>(GetOwner());
+	if (!Character)
 		return;
 
 	for (auto WeaponClass : WeaponClasses)
@@ -112,10 +112,10 @@ void USTU_WeaponComponent::SpawnWeapons()
 		if (!Weapon)
 			continue;
 
-		Weapon->SetOwner(PlayerCharacter);
+		Weapon->SetOwner(Character);
 		Weapons.Add(Weapon);
 
-		AttachWeaponToSocket(PlayerCharacter->GetMesh(), Weapon, SecondaryWeaponAttachPointSocketName);
+		AttachWeaponToSocket(Character->GetMesh(), Weapon, SecondaryWeaponAttachPointSocketName);
 	}
 }
 
@@ -124,21 +124,21 @@ void USTU_WeaponComponent::EquipWeapon(ASTU_Weapon* Weapon)
 	if (!Weapon || Weapon == CurrentWeapon)
 		return;
 
-	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
-	if (!PlayerCharacter)
+	const auto Character = Cast<ACharacter>(GetOwner());
+	if (!Character)
 		return;
 
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->StopFiring();
-		AttachWeaponToSocket(PlayerCharacter->GetMesh(), CurrentWeapon, SecondaryWeaponAttachPointSocketName);
+		AttachWeaponToSocket(Character->GetMesh(), CurrentWeapon, SecondaryWeaponAttachPointSocketName);
 	}
 
 	CurrentWeapon = Weapon;
-	AttachWeaponToSocket(PlayerCharacter->GetMesh(), CurrentWeapon, WeaponAttachPointSocketName);
+	AttachWeaponToSocket(Character->GetMesh(), CurrentWeapon, WeaponAttachPointSocketName);
 
 	EquipInProgress = true;
-	PlayerCharacter->PlayAnimMontage(EquipAnimMontage);
+	Character->PlayAnimMontage(EquipAnimMontage);
 }
 
 void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName)

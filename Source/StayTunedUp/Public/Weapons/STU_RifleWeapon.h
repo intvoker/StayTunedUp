@@ -29,7 +29,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	virtual void ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult) override;
+	virtual void ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult) override;
 
 	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart,
 	                          FVector& OutTraceEnd) override;

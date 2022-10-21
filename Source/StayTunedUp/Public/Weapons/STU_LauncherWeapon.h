@@ -19,5 +19,5 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ASTU_Projectile> ProjectileClass;
 
-	virtual void ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult) override;
+	virtual void ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult) override;
 };

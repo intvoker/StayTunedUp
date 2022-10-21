@@ -58,34 +58,37 @@ void ASTU_Weapon::MakeShot()
 	FVector WeaponViewDirection;
 	GetWeaponViewPoint(WeaponViewLocation, WeaponViewDirection);
 
-	FVector Start;
-	FVector End;
-	GetTraceData(PlayerViewLocation, PlayerViewDirection, Start, End);
+	FVector TraceStart;
+	FVector TraceEnd;
+	GetTraceData(PlayerViewLocation, PlayerViewDirection, TraceStart, TraceEnd);
 
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionQueryParams;
 	CollisionQueryParams.AddIgnoredActor(GetOwner());
 
-	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionQueryParams);
+	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, CollisionQueryParams);
 
-	FVector TraceEnd = HitResult.bBlockingHit ? HitResult.ImpactPoint : End;
+	if (HitResult.bBlockingHit)
+	{
+		TraceEnd = HitResult.ImpactPoint;
+	}
 	ProcessShot(WeaponViewLocation, TraceEnd, HitResult);
 }
 
-void ASTU_Weapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
+void ASTU_Weapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult)
 {
 	const auto DebugColor = HitResult.bBlockingHit ? FColor::Red : FColor::Blue;
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, DebugColor, false, 5.0f);
-	DrawDebugSphere(GetWorld(), TraceEnd, 10.0f, 24, DebugColor, false, 5.0f);
+	DrawDebugLine(GetWorld(), ShotStart, ShotEnd, DebugColor, false, 5.0f);
+	DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, DebugColor, false, 5.0f);
 }
 
 void ASTU_Weapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
 {
-	const auto PlayerCharacter = Cast<ACharacter>(GetOwner());
-	if (!PlayerCharacter)
+	const auto Character = Cast<ACharacter>(GetOwner());
+	if (!Character)
 		return;
 
-	const auto PlayerController = PlayerCharacter->GetController<APlayerController>();
+	const auto PlayerController = Character->GetController<APlayerController>();
 	if (!PlayerController)
 		return;
 

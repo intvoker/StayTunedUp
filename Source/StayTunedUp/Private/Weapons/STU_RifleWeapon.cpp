@@ -27,9 +27,9 @@ void ASTU_RifleWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
 }
 
-void ASTU_RifleWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
+void ASTU_RifleWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult)
 {
-	Super::ProcessShot(TraceStart, TraceEnd, HitResult);
+	Super::ProcessShot(ShotStart, ShotEnd, HitResult);
 
 	const auto DamagedActor = HitResult.GetActor();
 	if (!DamagedActor)

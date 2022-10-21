@@ -44,7 +44,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	virtual void MakeShot();
-	virtual void ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult);
+	virtual void ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult);
 
 	virtual void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
 	virtual void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);

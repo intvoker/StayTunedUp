@@ -5,12 +5,12 @@
 
 #include "Weapons/STU_Projectile.h"
 
-void ASTU_LauncherWeapon::ProcessShot(FVector& TraceStart, FVector& TraceEnd, FHitResult& HitResult)
+void ASTU_LauncherWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult)
 {
-	Super::ProcessShot(TraceStart, TraceEnd, HitResult);
+	Super::ProcessShot(ShotStart, ShotEnd, HitResult);
 
-	FVector ProjectileDirection = (TraceEnd - TraceStart).GetSafeNormal();
-	FTransform ProjectileTransform = FTransform(ProjectileDirection.Rotation(), TraceStart);
+	FVector ProjectileDirection = (ShotEnd - ShotStart).GetSafeNormal();
+	FTransform ProjectileTransform = FTransform(ProjectileDirection.Rotation(), ShotStart);
 
 	if (const auto Projectile = GetWorld()->SpawnActorDeferred<ASTU_Projectile>(ProjectileClass, ProjectileTransform))
 	{
