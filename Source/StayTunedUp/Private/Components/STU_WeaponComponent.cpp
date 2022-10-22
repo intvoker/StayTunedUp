@@ -41,7 +41,12 @@ void USTU_WeaponComponent::SwitchWeapon()
 	if (EquipInProgress)
 		return;
 
-	EquipWeapon(SelectNextWeapon(CurrentWeapon));
+	EquipWeapon(FindNextWeapon(CurrentWeapon));
+}
+
+void USTU_WeaponComponent::Reload()
+{
+	PlayAnimMontage(CurrentReloadAnimMontage);
 }
 
 void USTU_WeaponComponent::OnOwnerDeath()
@@ -62,7 +67,7 @@ void USTU_WeaponComponent::BeginPlay()
 	InitAnimNotifies();
 
 	SpawnWeapons();
-	EquipWeapon(SelectNextWeapon(CurrentWeapon));
+	EquipWeapon(FindNextWeapon(CurrentWeapon));
 }
 
 void USTU_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -106,9 +111,9 @@ void USTU_WeaponComponent::SpawnWeapons()
 	if (!Character)
 		return;
 
-	for (auto WeaponClass : WeaponClasses)
+	for (auto WeaponData : WeaponDataArray)
 	{
-		auto Weapon = GetWorld()->SpawnActor<ASTU_Weapon>(WeaponClass);
+		auto Weapon = GetWorld()->SpawnActor<ASTU_Weapon>(WeaponData.WeaponClass);
 		if (!Weapon)
 			continue;
 
@@ -137,8 +142,10 @@ void USTU_WeaponComponent::EquipWeapon(ASTU_Weapon* Weapon)
 	CurrentWeapon = Weapon;
 	AttachWeaponToSocket(Character->GetMesh(), CurrentWeapon, WeaponAttachPointSocketName);
 
+	CurrentReloadAnimMontage = FindReloadAnimMontage(CurrentWeapon);
+
 	EquipInProgress = true;
-	Character->PlayAnimMontage(EquipAnimMontage);
+	PlayAnimMontage(EquipAnimMontage);
 }
 
 void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName)
@@ -149,15 +156,25 @@ void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_We
 	Weapon->AttachToComponent(Parent, FAttachmentTransformRules::KeepRelativeTransform, WeaponSocketName);
 }
 
-ASTU_Weapon* USTU_WeaponComponent::SelectNextWeapon(ASTU_Weapon* OtherWeapon)
+ASTU_Weapon* USTU_WeaponComponent::FindNextWeapon(ASTU_Weapon* Weapon)
 {
-	for (auto Weapon : Weapons)
-	{
-		if (Weapon != OtherWeapon)
-		{
-			return Weapon;
-		}
-	}
+	return *Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem) { return WeaponElem != Weapon; });
+}
 
-	return nullptr;
+UAnimMontage* USTU_WeaponComponent::FindReloadAnimMontage(ASTU_Weapon* Weapon)
+{
+	const auto FoundWeaponData = WeaponDataArray.FindByPredicate([Weapon](const FSTU_WeaponData& WeaponDataElem)
+	{
+		return WeaponDataElem.WeaponClass == Weapon->GetClass();
+	});
+	return FoundWeaponData ? FoundWeaponData->ReloadAnimMontage : nullptr;
+}
+
+void USTU_WeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage)
+{
+	const auto Character = Cast<ACharacter>(GetOwner());
+	if (!Character)
+		return;
+
+	Character->PlayAnimMontage(AnimMontage);
 }

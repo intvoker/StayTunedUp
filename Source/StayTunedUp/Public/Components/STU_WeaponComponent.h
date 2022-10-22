@@ -8,6 +8,18 @@
 
 class ASTU_Weapon;
 
+USTRUCT(BlueprintType)
+struct FSTU_WeaponData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	UAnimMontage* ReloadAnimMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<ASTU_Weapon> WeaponClass;
+};
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class STAYTUNEDUP_API USTU_WeaponComponent : public UActorComponent
 {
@@ -22,6 +34,8 @@ public:
 
 	void SwitchWeapon();
 
+	void Reload();
+
 	UFUNCTION()
 	void OnOwnerDeath();
 
@@ -30,7 +44,7 @@ protected:
 	UAnimMontage* EquipAnimMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TArray<TSubclassOf<ASTU_Weapon>> WeaponClasses;
+	TArray<FSTU_WeaponData> WeaponDataArray;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName WeaponAttachPointSocketName = "WeaponPoint";
@@ -51,6 +65,9 @@ private:
 	UPROPERTY()
 	TArray<ASTU_Weapon*> Weapons;
 
+	UPROPERTY()
+	UAnimMontage* CurrentReloadAnimMontage = nullptr;
+
 	void InitAnimNotifies();
 
 	void SpawnWeapons();
@@ -59,7 +76,11 @@ private:
 
 	void AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName);
 
-	ASTU_Weapon* SelectNextWeapon(ASTU_Weapon* OtherWeapon);
+	ASTU_Weapon* FindNextWeapon(ASTU_Weapon* Weapon);
+
+	UAnimMontage* FindReloadAnimMontage(ASTU_Weapon* Weapon);
+
+	void PlayAnimMontage(UAnimMontage* AnimMontage);
 
 	UFUNCTION()
 	void OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp);

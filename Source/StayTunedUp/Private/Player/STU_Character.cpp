@@ -67,18 +67,18 @@ void ASTU_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("LookUp", this, &ThisClass::LookUp);
 	PlayerInputComponent->BindAxis("Turn", this, &ThisClass::Turn);
 
-	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ThisClass::Jump);
-	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ThisClass::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ThisClass::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ThisClass::StopJumping);
 
-	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ThisClass::Run);
-	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ThisClass::StopRunning);
+	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ThisClass::Run);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &ThisClass::StopRunning);
 
-	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Fire);
-	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, WeaponComponent,
-	                                 &USTU_WeaponComponent::StopFiring);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Fire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTU_WeaponComponent::StopFiring);
 
-	PlayerInputComponent->BindAction("SwitchWeapon", EInputEvent::IE_Pressed, WeaponComponent,
-	                                 &USTU_WeaponComponent::SwitchWeapon);
+	PlayerInputComponent->BindAction("SwitchWeapon", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::SwitchWeapon);
+
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Reload);
 }
 
 void ASTU_Character::MoveForward(float Value)
