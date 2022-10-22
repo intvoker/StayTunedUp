@@ -41,6 +41,8 @@ void ASTU_Weapon::OnOwnerDeath()
 void ASTU_Weapon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CurrentAmmo = DefaultAmmo;
 }
 
 void ASTU_Weapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -50,6 +52,12 @@ void ASTU_Weapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ASTU_Weapon::MakeShot()
 {
+	if (IsAmmoEmpty())
+	{
+		StopFiring();
+		return;
+	}
+
 	FVector PlayerViewLocation;
 	FVector PlayerViewDirection;
 	GetPlayerViewPoint(PlayerViewLocation, PlayerViewDirection);
@@ -67,6 +75,8 @@ void ASTU_Weapon::MakeShot()
 	CollisionQueryParams.AddIgnoredActor(GetOwner());
 
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, CollisionQueryParams);
+
+	UseAmmo();
 
 	if (HitResult.bBlockingHit)
 	{
@@ -108,4 +118,42 @@ void ASTU_Weapon::GetTraceData(FVector& Location, FVector& Direction, FVector& O
 {
 	OutTraceStart = Location;
 	OutTraceEnd = OutTraceStart + Direction * MaxRange;
+}
+
+bool ASTU_Weapon::IsAmmoEmpty() const
+{
+	return !CurrentAmmo.bInfinite && CurrentAmmo.Clips == 0 && CurrentAmmo.Rounds == 0;
+}
+
+bool ASTU_Weapon::IsClipEmpty() const
+{
+	return CurrentAmmo.Rounds == 0;
+}
+
+void ASTU_Weapon::UseAmmo()
+{
+	CurrentAmmo.Rounds--;
+	LogAmmo();
+
+	if (!IsAmmoEmpty() && IsClipEmpty())
+	{
+		UseClip();
+	}
+}
+
+void ASTU_Weapon::UseClip()
+{
+	CurrentAmmo.Rounds = DefaultAmmo.Rounds;
+
+	if (!CurrentAmmo.bInfinite)
+	{
+		CurrentAmmo.Clips--;
+	}
+}
+
+void ASTU_Weapon::LogAmmo()
+{
+	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Rounds) + " / ";
+	AmmoInfo += CurrentAmmo.bInfinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
+	UE_LOG(LogTemp, Display, TEXT("%s"), *AmmoInfo);
 }

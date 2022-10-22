@@ -6,6 +6,21 @@
 #include "GameFramework/Actor.h"
 #include "STU_Weapon.generated.h"
 
+USTRUCT(BlueprintType)
+struct FSTU_AmmoData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	int32 Rounds;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon", meta = (EditCondition = "!bInfinite"))
+	int32 Clips;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	bool bInfinite;
+};
+
 UCLASS()
 class STAYTUNEDUP_API ASTU_Weapon : public AActor
 {
@@ -36,6 +51,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float DamageAmount = 10.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	FSTU_AmmoData DefaultAmmo{15, 10, false};
+
 	UPROPERTY(EditDefaultsOnly)
 	float LifeSpan = 10.0f;
 
@@ -43,10 +61,19 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	virtual void MakeShot();
+	void MakeShot();
 	virtual void ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult);
 
-	virtual void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
-	virtual void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
+	void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
+	void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
 	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd);
+
+private:
+	FSTU_AmmoData CurrentAmmo;
+
+	bool IsAmmoEmpty() const;
+	bool IsClipEmpty() const;
+	void UseAmmo();
+	void UseClip();
+	void LogAmmo();
 };

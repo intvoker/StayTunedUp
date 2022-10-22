@@ -11,15 +11,6 @@ struct FSTU_Range
 {
 	GENERATED_USTRUCT_BODY()
 
-	FSTU_Range()
-	{
-	}
-
-	FSTU_Range(const float MinParam, const float MaxParam):
-		Min(MinParam), Max(MaxParam)
-	{
-	}
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Min = 0.0f;
 
@@ -40,10 +31,10 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	FSTU_Range FallDamageVelocity = FSTU_Range(900.0f, 1200.0f);
+	FSTU_Range FallDamageVelocity = FSTU_Range{900.0f, 1200.0f};
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	FSTU_Range FallDamage = FSTU_Range(10.0f, 100.0f);
+	FSTU_Range FallDamage = FSTU_Range{10.0f, 100.0f};
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
