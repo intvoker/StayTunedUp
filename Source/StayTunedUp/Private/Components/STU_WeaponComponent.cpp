@@ -3,6 +3,7 @@
 
 #include "Components/STU_WeaponComponent.h"
 
+#include "Animations/STU_AnimUtility.h"
 #include "Animations/STU_EquipFinishedAnimNotify.h"
 #include "Animations/STU_ReloadFinishedAnimNotify.h"
 #include "GameFramework/Character.h"
@@ -100,35 +101,19 @@ void USTU_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void USTU_WeaponComponent::InitAnimNotifies()
 {
-	if (const auto EquipAnimNotify = FindNotifyByClass<USTU_EquipFinishedAnimNotify>(EquipAnimMontage))
+	if (const auto EquipAnimNotify = STU_AnimUtility::FindNotifyByClass<USTU_EquipFinishedAnimNotify>(EquipAnimMontage))
 	{
 		EquipAnimNotify->OnNotify.AddDynamic(this, &ThisClass::OnEquipFinishedNotify);
 	}
 
 	for (const auto [ReloadAnimMontage, WeaponClass] : WeaponDataArray)
 	{
-		if (const auto ReloadAnimNotify = FindNotifyByClass<USTU_ReloadFinishedAnimNotify>(ReloadAnimMontage))
+		if (const auto ReloadAnimNotify = STU_AnimUtility::FindNotifyByClass<USTU_ReloadFinishedAnimNotify>(
+			ReloadAnimMontage))
 		{
 			ReloadAnimNotify->OnNotify.AddDynamic(this, &ThisClass::OnReloadFinishedNotify);
 		}
 	}
-}
-
-template <typename T>
-T* USTU_WeaponComponent::FindNotifyByClass(UAnimSequenceBase* AnimSequenceBase)
-{
-	if (!AnimSequenceBase)
-		return nullptr;
-
-	for (auto AnimNotifyEvent : AnimSequenceBase->Notifies)
-	{
-		if (auto AnimNotify = Cast<T>(AnimNotifyEvent.Notify))
-		{
-			return AnimNotify;
-		}
-	}
-
-	return nullptr;
 }
 
 void USTU_WeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp)
@@ -176,7 +161,7 @@ void USTU_WeaponComponent::SpawnWeapons()
 	}
 }
 
-inline void USTU_WeaponComponent::OnClipEmpty()
+void USTU_WeaponComponent::OnClipEmpty()
 {
 	Reload();
 }

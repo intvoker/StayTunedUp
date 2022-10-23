@@ -71,9 +71,6 @@ private:
 
 	void InitAnimNotifies();
 
-	template <typename T>
-	T* FindNotifyByClass(UAnimSequenceBase* AnimSequenceBase);
-
 	UFUNCTION()
 	void OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp);
 
