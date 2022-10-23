@@ -30,10 +30,10 @@ public:
 	USTU_FallDamageComponent();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	FSTU_Range FallDamageVelocity = FSTU_Range{900.0f, 1200.0f};
 
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	FSTU_Range FallDamage = FSTU_Range{10.0f, 100.0f};
 
 	// Called when the game starts
