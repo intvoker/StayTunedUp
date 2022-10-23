@@ -45,6 +45,8 @@ void USTU_WeaponComponent::SwitchWeapon()
 	StopFiring();
 	EquipWeapon(FindNextWeapon(CurrentWeapon));
 
+	CurrentWeapon->LogAmmo();
+
 	EquipInProgress = true;
 	PlayAnimMontage(EquipAnimMontage);
 }
@@ -54,7 +56,14 @@ void USTU_WeaponComponent::Reload()
 	if (EquipInProgress || ReloadInProgress)
 		return;
 
+	if (!CurrentWeapon)
+		return;
+
+	if (!CurrentWeapon->CanUseClip())
+		return;
+
 	StopFiring();
+	CurrentWeapon->UseClip();
 
 	ReloadInProgress = true;
 	PlayAnimMontage(CurrentReloadAnimMontage);
@@ -160,10 +169,16 @@ void USTU_WeaponComponent::SpawnWeapons()
 			continue;
 
 		Weapon->SetOwner(Character);
+		Weapon->OnClipEmpty.AddDynamic(this, &ThisClass::OnClipEmpty);
 		Weapons.Add(Weapon);
 
 		AttachWeaponToSocket(Character->GetMesh(), Weapon, SecondaryWeaponAttachPointSocketName);
 	}
+}
+
+inline void USTU_WeaponComponent::OnClipEmpty()
+{
+	Reload();
 }
 
 void USTU_WeaponComponent::EquipWeapon(ASTU_Weapon* Weapon)

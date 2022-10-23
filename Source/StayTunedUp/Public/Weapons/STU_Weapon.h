@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "STU_Weapon.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FClipEmptySignature);
+
 USTRUCT(BlueprintType)
 struct FSTU_AmmoData
 {
@@ -30,8 +32,17 @@ public:
 	// Sets default values for this actor's properties
 	ASTU_Weapon();
 
+	FClipEmptySignature OnClipEmpty;
+
 	virtual void Fire();
 	virtual void StopFiring();
+
+	bool IsAmmoEmpty() const;
+	bool CanUseClip() const;
+	void UseClip();
+	bool CanUseRound() const;
+	void UseRound();
+	void LogAmmo();
 
 	void OnOwnerDeath();
 
@@ -70,10 +81,4 @@ protected:
 
 private:
 	FSTU_AmmoData CurrentAmmo;
-
-	bool IsAmmoEmpty() const;
-	bool IsClipEmpty() const;
-	void UseAmmo();
-	void UseClip();
-	void LogAmmo();
 };

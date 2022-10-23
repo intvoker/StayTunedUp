@@ -52,7 +52,7 @@ void ASTU_Weapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ASTU_Weapon::MakeShot()
 {
-	if (IsAmmoEmpty())
+	if (!CanUseRound())
 	{
 		StopFiring();
 		return;
@@ -76,7 +76,7 @@ void ASTU_Weapon::MakeShot()
 
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, CollisionQueryParams);
 
-	UseAmmo();
+	UseRound();
 
 	if (HitResult.bBlockingHit)
 	{
@@ -125,35 +125,48 @@ bool ASTU_Weapon::IsAmmoEmpty() const
 	return !CurrentAmmo.bInfinite && CurrentAmmo.Clips == 0 && CurrentAmmo.Rounds == 0;
 }
 
-bool ASTU_Weapon::IsClipEmpty() const
+bool ASTU_Weapon::CanUseRound() const
 {
-	return CurrentAmmo.Rounds == 0;
+	return CurrentAmmo.Rounds > 0;
 }
 
-void ASTU_Weapon::UseAmmo()
+void ASTU_Weapon::UseRound()
 {
+	if (!CanUseRound())
+		return;
+
 	CurrentAmmo.Rounds--;
 	LogAmmo();
 
-	if (!IsAmmoEmpty() && IsClipEmpty())
+	if (!CanUseRound())
 	{
-		UseClip();
+		OnClipEmpty.Broadcast();
 	}
+}
+
+bool ASTU_Weapon::CanUseClip() const
+{
+	return CurrentAmmo.Clips > 0;
 }
 
 void ASTU_Weapon::UseClip()
 {
+	if (!CanUseClip())
+		return;
+
 	CurrentAmmo.Rounds = DefaultAmmo.Rounds;
+	UE_LOG(LogTemp, Warning, TEXT("Use Clip"));
 
 	if (!CurrentAmmo.bInfinite)
 	{
 		CurrentAmmo.Clips--;
 	}
+	LogAmmo();
 }
 
 void ASTU_Weapon::LogAmmo()
 {
 	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Rounds) + " / ";
 	AmmoInfo += CurrentAmmo.bInfinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
-	UE_LOG(LogTemp, Display, TEXT("%s"), *AmmoInfo);
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *AmmoInfo);
 }

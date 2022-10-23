@@ -84,6 +84,9 @@ private:
 
 	void SpawnWeapons();
 
+	UFUNCTION()
+	void OnClipEmpty();
+
 	void EquipWeapon(ASTU_Weapon* Weapon);
 
 	void AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName);
