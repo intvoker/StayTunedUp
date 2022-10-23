@@ -58,6 +58,7 @@ protected:
 
 private:
 	bool EquipInProgress = false;
+	bool ReloadInProgress = false;
 
 	UPROPERTY()
 	ASTU_Weapon* CurrentWeapon = nullptr;
@@ -70,6 +71,17 @@ private:
 
 	void InitAnimNotifies();
 
+	template <typename T>
+	T* FindNotifyByClass(UAnimSequenceBase* AnimSequenceBase);
+
+	UFUNCTION()
+	void OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp);
+
+	UFUNCTION()
+	void OnReloadFinishedNotify(USkeletalMeshComponent* MeshComp);
+
+	bool IsOwnerMesh(const USkeletalMeshComponent* MeshComp) const;
+
 	void SpawnWeapons();
 
 	void EquipWeapon(ASTU_Weapon* Weapon);
@@ -81,7 +93,4 @@ private:
 	UAnimMontage* FindReloadAnimMontage(ASTU_Weapon* Weapon);
 
 	void PlayAnimMontage(UAnimMontage* AnimMontage);
-
-	UFUNCTION()
-	void OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp);
 };
