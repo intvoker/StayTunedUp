@@ -17,6 +17,12 @@ class STAYTUNEDUP_API ASTU_HUD : public AHUD
 public:
 	virtual void DrawHUD() override;
 
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> PlayerHUDWidgetClass;
+
+	virtual void BeginPlay() override;
+
 private:
 	void DrawCrosshair();
 };
