@@ -46,8 +46,6 @@ void USTU_WeaponComponent::SwitchWeapon()
 	StopFiring();
 	EquipWeapon(FindNextWeapon(CurrentWeapon));
 
-	CurrentWeapon->LogAmmo();
-
 	EquipInProgress = true;
 	PlayAnimMontage(EquipAnimMontage);
 }

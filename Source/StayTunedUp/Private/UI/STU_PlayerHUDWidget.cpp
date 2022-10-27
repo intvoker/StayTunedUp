@@ -3,43 +3,62 @@
 
 #include "UI/STU_PlayerHUDWidget.h"
 
-#include "Brushes/SlateImageBrush.h"
 #include "Components/STU_HealthComponent.h"
 #include "Components/STU_WeaponComponent.h"
 #include "Weapons/STU_Weapon.h"
 
 float USTU_PlayerHUDWidget::GetHealthPercent()
 {
-	const auto PlayerPawn = GetOwningPlayerPawn();
-	if (!PlayerPawn)
-		return 0.f;
-
-	const auto ActorComponent = PlayerPawn->FindComponentByClass(USTU_HealthComponent::StaticClass());
-	const auto HealthComponent = Cast<USTU_HealthComponent>(ActorComponent);
+	const auto HealthComponent = GetComponent<USTU_HealthComponent>();
 	if (!HealthComponent)
 		return 0.f;
 
 	return HealthComponent->GetHealthPercent();
 }
 
+ASTU_Weapon* USTU_PlayerHUDWidget::GetCurrentWeapon()
+{
+	const auto WeaponComponent = GetComponent<USTU_WeaponComponent>();
+	if (!WeaponComponent)
+		return nullptr;
+
+	return WeaponComponent->GetCurrentWeapon();
+}
+
+FSlateBrush USTU_PlayerHUDWidget::CreateBrush(UTexture2D* Icon)
+{
+	auto Brush = FSlateBrush();
+	if (!Icon)
+		return Brush;
+
+	Brush.SetResourceObject(Icon);
+	Brush.ImageSize = FVector2D(Icon->GetSizeX(), Icon->GetSizeY());
+	return Brush;
+}
+
 FSlateBrush USTU_PlayerHUDWidget::GeCurrentWeaponCrosshairIcon()
 {
-	const auto PlayerPawn = GetOwningPlayerPawn();
-	if (!PlayerPawn)
-		return FSlateBrush();
-
-	const auto ActorComponent = PlayerPawn->FindComponentByClass(USTU_WeaponComponent::StaticClass());
-	const auto WeaponComponent = Cast<USTU_WeaponComponent>(ActorComponent);
-	if (!WeaponComponent)
-		return FSlateBrush();
-
-	const auto Weapon = WeaponComponent->GetCurrentWeapon();
+	const auto Weapon = GetCurrentWeapon();
 	if (!Weapon)
 		return FSlateBrush();
 
-	const auto CrosshairIcon = Weapon->GetWeaponUIData().CrosshairIcon;
-	if (!CrosshairIcon)
+	return CreateBrush(Weapon->GetWeaponUIData().CrosshairIcon);
+}
+
+FSlateBrush USTU_PlayerHUDWidget::GeCurrentWeaponMainIcon()
+{
+	const auto Weapon = GetCurrentWeapon();
+	if (!Weapon)
 		return FSlateBrush();
 
-	return FSlateImageBrush(CrosshairIcon, FVector2d(CrosshairIcon->GetSizeX(), CrosshairIcon->GetSizeY()));
+	return CreateBrush(Weapon->GetWeaponUIData().MainIcon);
+}
+
+FText USTU_PlayerHUDWidget::GeCurrentWeaponAmmoInfo()
+{
+	const auto Weapon = GetCurrentWeapon();
+	if (!Weapon)
+		return FText::GetEmpty();
+
+	return Weapon->GetAmmoInfo();
 }

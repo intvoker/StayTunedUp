@@ -120,11 +120,6 @@ void ASTU_Weapon::GetTraceData(FVector& Location, FVector& Direction, FVector& O
 	OutTraceEnd = OutTraceStart + Direction * MaxRange;
 }
 
-bool ASTU_Weapon::IsAmmoEmpty() const
-{
-	return !CurrentAmmo.bInfinite && CurrentAmmo.Clips == 0 && CurrentAmmo.Rounds == 0;
-}
-
 bool ASTU_Weapon::CanUseRound() const
 {
 	return CurrentAmmo.Rounds > 0;
@@ -136,7 +131,6 @@ void ASTU_Weapon::UseRound()
 		return;
 
 	CurrentAmmo.Rounds--;
-	LogAmmo();
 
 	if (!CanUseRound())
 	{
@@ -155,18 +149,16 @@ void ASTU_Weapon::UseClip()
 		return;
 
 	CurrentAmmo.Rounds = DefaultAmmo.Rounds;
-	UE_LOG(LogTemp, Warning, TEXT("Use Clip"));
 
 	if (!CurrentAmmo.bInfinite)
 	{
 		CurrentAmmo.Clips--;
 	}
-	LogAmmo();
 }
 
-void ASTU_Weapon::LogAmmo()
+FText ASTU_Weapon::GetAmmoInfo()
 {
 	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Rounds) + " / ";
 	AmmoInfo += CurrentAmmo.bInfinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *AmmoInfo);
+	return FText::FromString(AmmoInfo);
 }

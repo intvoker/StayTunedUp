@@ -49,12 +49,10 @@ public:
 	virtual void Fire();
 	virtual void StopFiring();
 
-	bool IsAmmoEmpty() const;
 	bool CanUseClip() const;
 	void UseClip();
-	bool CanUseRound() const;
-	void UseRound();
-	void LogAmmo();
+
+	FText GetAmmoInfo();
 
 	void OnOwnerDeath();
 
@@ -96,6 +94,8 @@ protected:
 	void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
 	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd);
 
+	bool CanUseRound() const;
+	void UseRound();
 private:
 	FSTU_AmmoData CurrentAmmo;
 };
