@@ -20,6 +20,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float GetHealthPercent();
 
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	bool IsAlive();
+
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	FSlateBrush GeCurrentWeaponCrosshairIcon();
 

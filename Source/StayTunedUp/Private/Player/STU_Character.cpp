@@ -116,20 +116,20 @@ void ASTU_Character::OnDeath()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 
-	DetachFromControllerPendingDestroy();
+	//DetachFromControllerPendingDestroy();
 
 	STU_AnimUtility::SetRagdoll(this, GetMesh());
 
-	// PlayAnimMontage(DeathAnimMontage);
+	//PlayAnimMontage(DeathAnimMontage);
 
 	GetCharacterMovement()->DisableMovement();
 
 	SetLifeSpan(LifeSpan);
 
-	// if (Controller)
-	// {
-	// 	Controller->ChangeState(NAME_Spectating);
-	// }
+	if (Controller)
+	{
+		Controller->ChangeState(NAME_Spectating);
+	}
 }
 
 void ASTU_Character::OnHealthChanged(float Health)

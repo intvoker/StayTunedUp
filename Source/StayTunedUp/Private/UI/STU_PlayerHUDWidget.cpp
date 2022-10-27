@@ -16,6 +16,15 @@ float USTU_PlayerHUDWidget::GetHealthPercent()
 	return HealthComponent->GetHealthPercent();
 }
 
+bool USTU_PlayerHUDWidget::IsAlive()
+{
+	const auto HealthComponent = GetComponent<USTU_HealthComponent>();
+	if (!HealthComponent)
+		return false;
+
+	return !HealthComponent->IsDead();
+}
+
 ASTU_Weapon* USTU_PlayerHUDWidget::GetCurrentWeapon()
 {
 	const auto WeaponComponent = GetComponent<USTU_WeaponComponent>();
