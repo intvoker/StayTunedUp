@@ -1,0 +1,4 @@
+magick convert -gravity SouthWest -crop 70x70+43+371 HUDMain.TGA RifleCrosshairIcon.TGA
+magick convert -gravity SouthWest -crop 50x50+54+453 HUDMain.TGA LauncherCrosshairIcon.TGA
+magick convert -gravity SouthWest -crop 144x58+285+278 HUDMain.TGA RifleMainIcon.TGA
+magick convert -gravity SouthWest -crop 147x67+282+389 HUDMain.TGA LauncherMainIcon.TGA

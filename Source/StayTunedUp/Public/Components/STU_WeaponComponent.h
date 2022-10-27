@@ -39,6 +39,8 @@ public:
 	UFUNCTION()
 	void OnOwnerDeath();
 
+	ASTU_Weapon* GetCurrentWeapon() const { return CurrentWeapon; }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	UAnimMontage* EquipAnimMontage;

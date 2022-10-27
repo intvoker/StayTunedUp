@@ -10,7 +10,7 @@ void ASTU_HUD::DrawHUD()
 {
 	Super::DrawHUD();
 
-	DrawCrosshair();
+	//DrawCrosshair();
 }
 
 void ASTU_HUD::BeginPlay()

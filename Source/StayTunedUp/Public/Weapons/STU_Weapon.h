@@ -23,6 +23,18 @@ struct FSTU_AmmoData
 	bool bInfinite;
 };
 
+USTRUCT(BlueprintType)
+struct FSTU_WeaponUIData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	UTexture2D* MainIcon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	UTexture2D* CrosshairIcon;
+};
+
 UCLASS()
 class STAYTUNEDUP_API ASTU_Weapon : public AActor
 {
@@ -46,6 +58,8 @@ public:
 
 	void OnOwnerDeath();
 
+	FSTU_WeaponUIData GetWeaponUIData() const { return WeaponUIData; }
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* SceneComponent;
@@ -64,6 +78,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	FSTU_AmmoData DefaultAmmo{15, 10, false};
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FSTU_WeaponUIData WeaponUIData;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Life")
 	float LifeSpan = 10.0f;

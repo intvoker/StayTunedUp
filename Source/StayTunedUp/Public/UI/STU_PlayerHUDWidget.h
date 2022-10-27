@@ -17,4 +17,7 @@ class STAYTUNEDUP_API USTU_PlayerHUDWidget : public UUserWidget
 public:
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float GetHealthPercent();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	FSlateBrush GeCurrentWeaponCrosshairIcon();
 };
