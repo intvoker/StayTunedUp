@@ -28,6 +28,31 @@ void ASTU_Weapon::StopFiring()
 {
 }
 
+bool ASTU_Weapon::CanUseClip() const
+{
+	return CurrentAmmo.Clips > 0;
+}
+
+void ASTU_Weapon::UseClip()
+{
+	if (!CanUseClip())
+		return;
+
+	CurrentAmmo.Rounds = DefaultAmmo.Rounds;
+
+	if (!CurrentAmmo.bInfinite)
+	{
+		CurrentAmmo.Clips--;
+	}
+}
+
+FText ASTU_Weapon::GetAmmoInfo()
+{
+	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Rounds) + " / ";
+	AmmoInfo += CurrentAmmo.bInfinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
+	return FText::FromString(AmmoInfo);
+}
+
 void ASTU_Weapon::OnOwnerDeath()
 {
 	STU_AnimUtility::SetRagdoll(this, WeaponMesh);
@@ -136,29 +161,4 @@ void ASTU_Weapon::UseRound()
 	{
 		OnClipEmpty.Broadcast();
 	}
-}
-
-bool ASTU_Weapon::CanUseClip() const
-{
-	return CurrentAmmo.Clips > 0;
-}
-
-void ASTU_Weapon::UseClip()
-{
-	if (!CanUseClip())
-		return;
-
-	CurrentAmmo.Rounds = DefaultAmmo.Rounds;
-
-	if (!CurrentAmmo.bInfinite)
-	{
-		CurrentAmmo.Clips--;
-	}
-}
-
-FText ASTU_Weapon::GetAmmoInfo()
-{
-	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Rounds) + " / ";
-	AmmoInfo += CurrentAmmo.bInfinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
-	return FText::FromString(AmmoInfo);
 }

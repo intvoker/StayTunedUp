@@ -25,26 +25,6 @@ bool USTU_PlayerHUDWidget::IsAlive()
 	return !HealthComponent->IsDead();
 }
 
-ASTU_Weapon* USTU_PlayerHUDWidget::GetCurrentWeapon()
-{
-	const auto WeaponComponent = GetComponent<USTU_WeaponComponent>();
-	if (!WeaponComponent)
-		return nullptr;
-
-	return WeaponComponent->GetCurrentWeapon();
-}
-
-FSlateBrush USTU_PlayerHUDWidget::CreateBrush(UTexture2D* Icon)
-{
-	auto Brush = FSlateBrush();
-	if (!Icon)
-		return Brush;
-
-	Brush.SetResourceObject(Icon);
-	Brush.ImageSize = FVector2D(Icon->GetSizeX(), Icon->GetSizeY());
-	return Brush;
-}
-
 FSlateBrush USTU_PlayerHUDWidget::GeCurrentWeaponCrosshairIcon()
 {
 	const auto Weapon = GetCurrentWeapon();
@@ -70,4 +50,24 @@ FText USTU_PlayerHUDWidget::GeCurrentWeaponAmmoInfo()
 		return FText::GetEmpty();
 
 	return Weapon->GetAmmoInfo();
+}
+
+ASTU_Weapon* USTU_PlayerHUDWidget::GetCurrentWeapon()
+{
+	const auto WeaponComponent = GetComponent<USTU_WeaponComponent>();
+	if (!WeaponComponent)
+		return nullptr;
+
+	return WeaponComponent->GetCurrentWeapon();
+}
+
+FSlateBrush USTU_PlayerHUDWidget::CreateBrush(UTexture2D* Icon)
+{
+	auto Brush = FSlateBrush();
+	if (!Icon)
+		return Brush;
+
+	Brush.SetResourceObject(Icon);
+	Brush.ImageSize = FVector2D(Icon->GetSizeX(), Icon->GetSizeY());
+	return Brush;
 }

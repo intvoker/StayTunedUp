@@ -81,6 +81,16 @@ void ASTU_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Reload);
 }
 
+bool ASTU_Character::IsMovingForward() const
+{
+	return FVector::Coincident(GetActorForwardVector(), GetVelocity().GetSafeNormal());
+}
+
+bool ASTU_Character::IsRunning() const
+{
+	return bPressedRun && IsMovingForward();
+}
+
 void ASTU_Character::MoveForward(float Value)
 {
 	AddMovementInput(GetActorForwardVector(), Value);
@@ -135,14 +145,4 @@ void ASTU_Character::OnDeath()
 void ASTU_Character::OnHealthChanged(float Health)
 {
 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.f"), Health)));
-}
-
-bool ASTU_Character::IsMovingForward() const
-{
-	return FVector::Coincident(GetActorForwardVector(), GetVelocity().GetSafeNormal());
-}
-
-bool ASTU_Character::IsRunning() const
-{
-	return bPressedRun && IsMovingForward();
 }

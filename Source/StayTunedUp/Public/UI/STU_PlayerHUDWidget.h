@@ -37,6 +37,7 @@ private:
 	T* GetComponent();
 
 	ASTU_Weapon* GetCurrentWeapon();
+
 	FSlateBrush CreateBrush(UTexture2D* Icon);
 };
 
