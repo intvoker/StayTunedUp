@@ -96,6 +96,7 @@ protected:
 
 	bool CanUseRound() const;
 	void UseRound();
+
 private:
 	FSTU_AmmoData CurrentAmmo;
 };

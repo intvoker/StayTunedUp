@@ -5,6 +5,7 @@
 
 #include "Components/SphereComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Player/STU_Character.h"
 
 // Sets default values
 ASTU_Pickup::ASTU_Pickup()
@@ -22,27 +23,86 @@ ASTU_Pickup::ASTU_Pickup()
 	ParticleSystemComponent->SetupAttachment(GetRootComponent());
 }
 
+void ASTU_Pickup::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+
+	DoPickup(Cast<ASTU_Character>(OtherActor));
+}
+
 // Called when the game starts or when spawned
 void ASTU_Pickup::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ParticleSystem)
-	{
-		ParticleSystemComponent->SetTemplate(ParticleSystem);
-		ParticleSystemComponent->ActivateSystem();
-	}
+	Respawn();
 }
 
-void ASTU_Pickup::NotifyActorBeginOverlap(AActor* OtherActor)
+void ASTU_Pickup::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Super::NotifyActorBeginOverlap(OtherActor);
+	Super::EndPlay(EndPlayReason);
 
-	Destroy();
+	GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(CheckOverlappingActorsTimerHandle);
+}
+
+void ASTU_Pickup::DoPickup(ASTU_Character* STU_Character)
+{
+	if (!bActive || !STU_Character || !CanUsePickup(STU_Character))
+		return;
+
+	UsePickup(STU_Character);
+
+	Despawn();
+
+	GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &ThisClass::Respawn, RespawnTime);
+}
+
+bool ASTU_Pickup::CanUsePickup(ASTU_Character* STU_Character)
+{
+	return false;
+}
+
+void ASTU_Pickup::UsePickup(ASTU_Character* STU_Character)
+{
 }
 
 // Called every frame
 void ASTU_Pickup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ASTU_Pickup::Respawn()
+{
+	bActive = true;
+
+	if (ParticleSystem)
+	{
+		ParticleSystemComponent->SetTemplate(ParticleSystem);
+		ParticleSystemComponent->ActivateSystem();
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(CheckOverlappingActorsTimerHandle, this, &ThisClass::CheckOverlappingActors,
+	                                       CheckOverlappingActorsTime, true);
+}
+
+void ASTU_Pickup::Despawn()
+{
+	bActive = false;
+
+	ParticleSystemComponent->DeactivateSystem();
+
+	GetWorld()->GetTimerManager().ClearTimer(CheckOverlappingActorsTimerHandle);
+}
+
+void ASTU_Pickup::CheckOverlappingActors()
+{
+	TSet<AActor*> OverlappingActors;
+	GetOverlappingActors(OverlappingActors, ASTU_Character::StaticClass());
+
+	for (AActor* OverlappingActor : OverlappingActors)
+	{
+		DoPickup(Cast<ASTU_Character>(OverlappingActor));
+	}
 }
