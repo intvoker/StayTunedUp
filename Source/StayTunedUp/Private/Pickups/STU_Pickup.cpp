@@ -48,23 +48,17 @@ void ASTU_Pickup::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ASTU_Pickup::DoPickup(ASTU_Character* STU_Character)
 {
-	if (!bActive || !STU_Character || !CanUsePickup(STU_Character))
+	if (!bActive || !STU_Character || !TryUsePickup(STU_Character))
 		return;
-
-	UsePickup(STU_Character);
 
 	Despawn();
 
 	GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &ThisClass::Respawn, RespawnTime);
 }
 
-bool ASTU_Pickup::CanUsePickup(ASTU_Character* STU_Character)
+bool ASTU_Pickup::TryUsePickup(ASTU_Character* STU_Character)
 {
 	return false;
-}
-
-void ASTU_Pickup::UsePickup(ASTU_Character* STU_Character)
-{
 }
 
 // Called every frame

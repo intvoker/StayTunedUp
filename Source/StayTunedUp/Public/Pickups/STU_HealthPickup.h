@@ -14,9 +14,9 @@ class STAYTUNEDUP_API ASTU_HealthPickup : public ASTU_Pickup
 {
 	GENERATED_BODY()
 
-public:
-	virtual bool CanUsePickup(ASTU_Character* STU_Character) override;
-
 protected:
-	virtual void UsePickup(ASTU_Character* STU_Character) override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	float HealthAmount = 50.0f;
+
+	virtual bool TryUsePickup(ASTU_Character* STU_Character) override;
 };

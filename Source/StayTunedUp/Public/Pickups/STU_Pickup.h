@@ -42,8 +42,7 @@ protected:
 
 	void DoPickup(ASTU_Character* STU_Character);
 
-	virtual bool CanUsePickup(ASTU_Character* STU_Character);
-	virtual void UsePickup(ASTU_Character* STU_Character);
+	virtual bool TryUsePickup(ASTU_Character* STU_Character);
 
 public:
 	// Called every frame

@@ -31,6 +31,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	bool IsMaxHealth() const { return FMath::IsNearlyEqual(Health, MaxHealth); }
+
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	bool TryAddHealth(float HealthAmount);
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (ClampMin = "0.0", ClampMax = "1000.0"))
 	float MaxHealth = 100.0f;

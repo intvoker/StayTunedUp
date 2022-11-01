@@ -29,17 +29,25 @@ public:
 	// Sets default values for this component's properties
 	USTU_WeaponComponent();
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void StopFiring();
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SwitchWeapon();
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Reload();
 
 	UFUNCTION()
 	void OnOwnerDeath();
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	ASTU_Weapon* GetCurrentWeapon() const { return CurrentWeapon; }
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	bool TryAddClip(TSubclassOf<ASTU_Weapon> WeaponClass, float ClipAmount);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
@@ -84,13 +92,15 @@ private:
 	void SpawnWeapons();
 
 	UFUNCTION()
-	void OnClipEmpty();
+	void OnClipEmpty(ASTU_Weapon* Weapon);
 
 	void EquipWeapon(ASTU_Weapon* Weapon);
 
 	void AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName);
 
+	ASTU_Weapon* FindWeapon(ASTU_Weapon* Weapon);
 	ASTU_Weapon* FindNextWeapon(ASTU_Weapon* Weapon);
+	ASTU_Weapon* FindWeaponByClass(TSubclassOf<ASTU_Weapon> WeaponClass);
 
 	UAnimMontage* FindReloadAnimMontage(ASTU_Weapon* Weapon);
 

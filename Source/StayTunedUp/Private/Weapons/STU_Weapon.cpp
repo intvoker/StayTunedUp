@@ -62,6 +62,19 @@ void ASTU_Weapon::OnOwnerDeath()
 	SetLifeSpan(LifeSpan);
 }
 
+bool ASTU_Weapon::TryAddClip(float ClipAmount)
+{
+	if (CurrentAmmo.bInfinite)
+		return false;
+
+	if (CurrentAmmo.Clips == DefaultAmmo.Clips && CurrentAmmo.Rounds == DefaultAmmo.Rounds)
+		return false;
+
+	SetClips(CurrentAmmo.Clips + ClipAmount);
+
+	return true;
+}
+
 // Called when the game starts or when spawned
 void ASTU_Weapon::BeginPlay()
 {
@@ -159,6 +172,21 @@ void ASTU_Weapon::UseRound()
 
 	if (!CanUseRound())
 	{
-		OnClipEmpty.Broadcast();
+		OnClipEmpty.Broadcast(this);
+	}
+}
+
+void ASTU_Weapon::SetClips(float NewClips)
+{
+	CurrentAmmo.Clips = FMath::Clamp(NewClips, 0.0f, DefaultAmmo.Clips);
+
+	if (NewClips > DefaultAmmo.Clips)
+	{
+		CurrentAmmo.Rounds = DefaultAmmo.Rounds;
+	}
+
+	if (!CanUseRound())
+	{
+		OnClipEmpty.Broadcast(this);
 	}
 }

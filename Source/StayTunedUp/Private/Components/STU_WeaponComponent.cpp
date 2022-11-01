@@ -78,6 +78,18 @@ void USTU_WeaponComponent::OnOwnerDeath()
 	}
 }
 
+bool USTU_WeaponComponent::TryAddClip(TSubclassOf<ASTU_Weapon> WeaponClass, float ClipAmount)
+{
+	if (!WeaponClass)
+		return false;
+
+	const auto Weapon = FindWeaponByClass(WeaponClass);
+	if (!Weapon)
+		return false;
+
+	return Weapon->TryAddClip(ClipAmount);
+}
+
 // Called when the game starts
 void USTU_WeaponComponent::BeginPlay()
 {
@@ -159,9 +171,23 @@ void USTU_WeaponComponent::SpawnWeapons()
 	}
 }
 
-void USTU_WeaponComponent::OnClipEmpty()
+void USTU_WeaponComponent::OnClipEmpty(ASTU_Weapon* Weapon)
 {
-	Reload();
+	if (!Weapon)
+		return;
+
+	const auto WeaponToReload = FindWeapon(Weapon);
+	if (!WeaponToReload)
+		return;
+
+	if (WeaponToReload == CurrentWeapon)
+	{
+		Reload();
+	}
+	else
+	{
+		WeaponToReload->UseClip();
+	}
 }
 
 void USTU_WeaponComponent::EquipWeapon(ASTU_Weapon* Weapon)
@@ -192,9 +218,22 @@ void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_We
 	Weapon->AttachToComponent(Parent, FAttachmentTransformRules::KeepRelativeTransform, WeaponSocketName);
 }
 
+ASTU_Weapon* USTU_WeaponComponent::FindWeapon(ASTU_Weapon* Weapon)
+{
+	return *Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem) { return WeaponElem == Weapon; });
+}
+
 ASTU_Weapon* USTU_WeaponComponent::FindNextWeapon(ASTU_Weapon* Weapon)
 {
 	return *Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem) { return WeaponElem != Weapon; });
+}
+
+ASTU_Weapon* USTU_WeaponComponent::FindWeaponByClass(TSubclassOf<ASTU_Weapon> WeaponClass)
+{
+	return *Weapons.FindByPredicate([WeaponClass](const ASTU_Weapon* WeaponElem)
+	{
+		return WeaponElem->IsA(WeaponClass);
+	});
 }
 
 UAnimMontage* USTU_WeaponComponent::FindReloadAnimMontage(ASTU_Weapon* Weapon)

@@ -3,13 +3,17 @@
 
 #include "Pickups/STU_HealthPickup.h"
 
+#include "Components/STU_HealthComponent.h"
 #include "Player/STU_Character.h"
 
-bool ASTU_HealthPickup::CanUsePickup(ASTU_Character* STU_Character)
+bool ASTU_HealthPickup::TryUsePickup(ASTU_Character* STU_Character)
 {
-	return true;
-}
+	if (!STU_Character)
+		return false;
 
-void ASTU_HealthPickup::UsePickup(ASTU_Character* STU_Character)
-{
+	const auto HealthComponent = STU_Character->FindComponentByClass<USTU_HealthComponent>();
+	if (!HealthComponent || HealthComponent->IsDead())
+		return false;
+
+	return HealthComponent->TryAddHealth(HealthAmount);
 }

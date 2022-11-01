@@ -6,7 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "STU_Weapon.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FClipEmptySignature);
+class ASTU_Weapon;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FClipEmptySignature, ASTU_Weapon*, Weapon);
 
 USTRUCT(BlueprintType)
 struct FSTU_AmmoData
@@ -58,6 +60,8 @@ public:
 
 	FSTU_WeaponUIData GetWeaponUIData() const { return WeaponUIData; }
 
+	bool TryAddClip(float ClipAmount);
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* SceneComponent;
@@ -99,4 +103,6 @@ protected:
 
 private:
 	FSTU_AmmoData CurrentAmmo;
+
+	void SetClips(float NewClips);
 };
