@@ -27,9 +27,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UParticleSystemComponent* ParticleSystemComponent;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Pickup")
-	UParticleSystem* ParticleSystem;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	float RespawnTime = 5.0f;
 

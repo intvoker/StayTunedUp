@@ -71,11 +71,7 @@ void ASTU_Pickup::Respawn()
 {
 	bActive = true;
 
-	if (ParticleSystem)
-	{
-		ParticleSystemComponent->SetTemplate(ParticleSystem);
-		ParticleSystemComponent->ActivateSystem();
-	}
+	ParticleSystemComponent->ActivateSystem();
 
 	GetWorld()->GetTimerManager().SetTimer(CheckOverlappingActorsTimerHandle, this, &ThisClass::CheckOverlappingActors,
 	                                       CheckOverlappingActorsTime, true);
