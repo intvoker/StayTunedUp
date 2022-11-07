@@ -14,6 +14,8 @@ void ASTU_RifleWeapon::Fire()
 
 void ASTU_RifleWeapon::StopFiring()
 {
+	Super::StopFiring();
+
 	GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
 }
 
@@ -35,7 +37,7 @@ void ASTU_RifleWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitRes
 
 	if (HitResult.bBlockingHit)
 	{
-		WeaponEffectsComponent->PlayImpactEffect(HitResult);
+		WeaponEffectsComponent->SpawnImpactEffect(HitResult);
 	}
 
 	const auto DamagedActor = HitResult.GetActor();

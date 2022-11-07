@@ -43,7 +43,7 @@ public:
 	USTU_WeaponEffectsComponent();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void PlayImpactEffect(const FHitResult& HitResult);
+	void SpawnImpactEffect(const FHitResult& HitResult);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")

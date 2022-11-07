@@ -51,7 +51,7 @@ void ASTU_Projectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor*
 {
 	ParticleSystemComponent->DeactivateSystem();
 
-	WeaponEffectsComponent->PlayImpactEffect(Hit);
+	WeaponEffectsComponent->SpawnImpactEffect(Hit);
 
 	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius,
 	                                    UDamageType::StaticClass(), {}, this, GetOwner()->GetInstigatorController(),

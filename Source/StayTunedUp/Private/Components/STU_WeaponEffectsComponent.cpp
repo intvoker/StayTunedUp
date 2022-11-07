@@ -15,7 +15,7 @@ USTU_WeaponEffectsComponent::USTU_WeaponEffectsComponent()
 	// ...
 }
 
-void USTU_WeaponEffectsComponent::PlayImpactEffect(const FHitResult& HitResult)
+void USTU_WeaponEffectsComponent::SpawnImpactEffect(const FHitResult& HitResult)
 {
 	auto ImpactData = DefaultImpactData;
 

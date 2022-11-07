@@ -6,6 +6,7 @@
 #include "Animations/STU_AnimUtility.h"
 #include "Components/STU_WeaponEffectsComponent.h"
 #include "GameFramework/Character.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 ASTU_Weapon::ASTU_Weapon()
@@ -19,6 +20,10 @@ ASTU_Weapon::ASTU_Weapon()
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
 	WeaponMesh->SetupAttachment(GetRootComponent());
 
+	MuzzleEffectComponent = CreateDefaultSubobject<UParticleSystemComponent>("MuzzleEffectComponent");
+	MuzzleEffectComponent->bAutoActivate = false;
+	MuzzleEffectComponent->SetupAttachment(WeaponMesh, MuzzleFlashSocketName);
+
 	WeaponEffectsComponent = CreateDefaultSubobject<USTU_WeaponEffectsComponent>("WeaponEffectsComponent");
 }
 
@@ -29,6 +34,7 @@ void ASTU_Weapon::Fire()
 
 void ASTU_Weapon::StopFiring()
 {
+	MuzzleEffectComponent->DeactivateSystem();
 }
 
 bool ASTU_Weapon::CanUseClip() const
@@ -98,6 +104,8 @@ void ASTU_Weapon::MakeShot()
 		StopFiring();
 		return;
 	}
+
+	MuzzleEffectComponent->ActivateSystem();
 
 	FVector PlayerViewLocation;
 	FVector PlayerViewDirection;
