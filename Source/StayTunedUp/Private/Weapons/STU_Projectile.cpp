@@ -4,6 +4,7 @@
 #include "Weapons/STU_Projectile.h"
 
 #include "Components/SphereComponent.h"
+#include "Components/STU_WeaponEffectsComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -24,6 +25,8 @@ ASTU_Projectile::ASTU_Projectile()
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
 	ProjectileMovementComponent->InitialSpeed = 1000.0f;
 	ProjectileMovementComponent->ProjectileGravityScale = 0.f;
+
+	WeaponEffectsComponent = CreateDefaultSubobject<USTU_WeaponEffectsComponent>("WeaponEffectsComponent");
 }
 
 // Called when the game starts or when spawned
@@ -41,11 +44,13 @@ void ASTU_Projectile::BeginPlay()
 void ASTU_Projectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	WeaponEffectsComponent->PlayImpactEffect(Hit);
+
 	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius,
 	                                    UDamageType::StaticClass(), {}, this, GetOwner()->GetInstigatorController(),
 	                                    bDoFullDamage);
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
+	//DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
 
 	Destroy();
 }

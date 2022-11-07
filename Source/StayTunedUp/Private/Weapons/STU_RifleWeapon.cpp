@@ -3,6 +3,8 @@
 
 #include "Weapons/STU_RifleWeapon.h"
 
+#include "Components/STU_WeaponEffectsComponent.h"
+
 void ASTU_RifleWeapon::Fire()
 {
 	Super::Fire();
@@ -30,6 +32,11 @@ void ASTU_RifleWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void ASTU_RifleWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult)
 {
 	Super::ProcessShot(ShotStart, ShotEnd, HitResult);
+
+	if (HitResult.bBlockingHit)
+	{
+		WeaponEffectsComponent->PlayImpactEffect(HitResult);
+	}
 
 	const auto DamagedActor = HitResult.GetActor();
 	if (!DamagedActor)

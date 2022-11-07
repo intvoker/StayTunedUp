@@ -4,6 +4,7 @@
 #include "Weapons/STU_Weapon.h"
 
 #include "Animations/STU_AnimUtility.h"
+#include "Components/STU_WeaponEffectsComponent.h"
 #include "GameFramework/Character.h"
 
 // Sets default values
@@ -17,6 +18,8 @@ ASTU_Weapon::ASTU_Weapon()
 
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
 	WeaponMesh->SetupAttachment(GetRootComponent());
+
+	WeaponEffectsComponent = CreateDefaultSubobject<USTU_WeaponEffectsComponent>("WeaponEffectsComponent");
 }
 
 void ASTU_Weapon::Fire()
@@ -125,9 +128,11 @@ void ASTU_Weapon::MakeShot()
 
 void ASTU_Weapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult)
 {
+	/*
 	const auto DebugColor = HitResult.bBlockingHit ? FColor::Red : FColor::Blue;
 	DrawDebugLine(GetWorld(), ShotStart, ShotEnd, DebugColor, false, 5.0f);
 	DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, DebugColor, false, 5.0f);
+	*/
 }
 
 void ASTU_Weapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)

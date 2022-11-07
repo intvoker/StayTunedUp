@@ -7,6 +7,7 @@
 #include "STU_Weapon.generated.h"
 
 class ASTU_Weapon;
+class USTU_WeaponEffectsComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FClipEmptySignature, ASTU_Weapon*, Weapon);
 
@@ -68,6 +69,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USkeletalMeshComponent* WeaponMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USTU_WeaponEffectsComponent* WeaponEffectsComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName MuzzleFlashSocketName = "MuzzleFlashSocket";
