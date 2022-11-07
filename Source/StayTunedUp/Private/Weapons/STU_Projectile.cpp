@@ -18,6 +18,7 @@ ASTU_Projectile::ASTU_Projectile()
 	CollisionSphereComponent->InitSphereRadius(5.0f);
 	CollisionSphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	CollisionSphereComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+	CollisionSphereComponent->bReturnMaterialOnMove = true;
 	//CollisionSphereComponent->SetEnableGravity(false);
 	//CollisionSphereComponent->SetSimulatePhysics(true);
 	SetRootComponent(CollisionSphereComponent);

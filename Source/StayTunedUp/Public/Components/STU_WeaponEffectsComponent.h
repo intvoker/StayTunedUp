@@ -23,6 +23,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	UParticleSystem* ImpactEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TMap<UPhysicalMaterial*, UParticleSystem*> ImpactEffects;
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 

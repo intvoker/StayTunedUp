@@ -17,7 +17,17 @@ USTU_WeaponEffectsComponent::USTU_WeaponEffectsComponent()
 
 void USTU_WeaponEffectsComponent::PlayImpactEffect(const FHitResult& HitResult)
 {
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, HitResult.ImpactPoint,
+	auto Effect = ImpactEffect;
+
+	if (HitResult.PhysMaterial.IsValid())
+	{
+		if (const auto PhysMaterial = HitResult.PhysMaterial.Get(); ImpactEffects.Contains(PhysMaterial))
+		{
+			Effect = ImpactEffects[PhysMaterial];
+		}
+	}
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Effect, HitResult.ImpactPoint,
 	                                         HitResult.ImpactNormal.Rotation());
 }
 
