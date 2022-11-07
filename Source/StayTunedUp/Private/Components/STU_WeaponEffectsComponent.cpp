@@ -17,18 +17,29 @@ USTU_WeaponEffectsComponent::USTU_WeaponEffectsComponent()
 
 void USTU_WeaponEffectsComponent::PlayImpactEffect(const FHitResult& HitResult)
 {
-	auto Effect = ImpactEffect;
+	auto ImpactData = DefaultImpactData;
 
 	if (HitResult.PhysMaterial.IsValid())
 	{
-		if (const auto PhysMaterial = HitResult.PhysMaterial.Get(); ImpactEffects.Contains(PhysMaterial))
+		if (const auto PhysMaterial = HitResult.PhysMaterial.Get(); ImpactDataMap.Contains(PhysMaterial))
 		{
-			Effect = ImpactEffects[PhysMaterial];
+			ImpactData = ImpactDataMap[PhysMaterial];
 		}
 	}
 
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Effect, HitResult.ImpactPoint,
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactData.Effect, HitResult.ImpactPoint,
 	                                         HitResult.ImpactNormal.Rotation());
+
+	if (ImpactData.DecalData.Material)
+	{
+		FRotator RandomDecalRotation = HitResult.ImpactNormal.Rotation();
+		RandomDecalRotation.Roll = FMath::FRandRange(-180.0f, 180.0f);
+
+		UGameplayStatics::SpawnDecalAttached(ImpactData.DecalData.Material, ImpactData.DecalData.Size,
+		                                     HitResult.Component.Get(), HitResult.BoneName, HitResult.ImpactPoint,
+		                                     RandomDecalRotation, EAttachLocation::KeepWorldPosition,
+		                                     ImpactData.DecalData.LifeSpan);
+	}
 }
 
 // Called when the game starts
