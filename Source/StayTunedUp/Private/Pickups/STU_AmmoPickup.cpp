@@ -6,7 +6,6 @@
 #include "Components/STU_HealthComponent.h"
 #include "Components/STU_WeaponComponent.h"
 #include "Player/STU_Character.h"
-#include "Weapons/STU_Weapon.h"
 
 bool ASTU_AmmoPickup::TryUsePickup(ASTU_Character* STU_Character)
 {

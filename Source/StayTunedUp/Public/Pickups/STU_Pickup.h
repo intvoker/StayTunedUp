@@ -42,10 +42,6 @@ protected:
 
 	virtual bool TryUsePickup(ASTU_Character* STU_Character);
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 private:
 	bool bActive = false;
 

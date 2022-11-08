@@ -11,7 +11,7 @@
 ASTU_Pickup::ASTU_Pickup()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	CollisionSphereComponent = CreateDefaultSubobject<USphereComponent>("CollisionSphereComponent");
 	CollisionSphereComponent->InitSphereRadius(50.0f);
@@ -59,12 +59,6 @@ void ASTU_Pickup::DoPickup(ASTU_Character* STU_Character)
 bool ASTU_Pickup::TryUsePickup(ASTU_Character* STU_Character)
 {
 	return false;
-}
-
-// Called every frame
-void ASTU_Pickup::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void ASTU_Pickup::Respawn()
