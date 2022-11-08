@@ -42,6 +42,9 @@ protected:
 	UTextRenderComponent* HealthTextComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	TSubclassOf<UCameraShakeBase> DamageCameraShakeClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	UAnimMontage* DeathAnimMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Life")
@@ -79,5 +82,5 @@ private:
 	void OnDeath();
 
 	UFUNCTION()
-	void OnHealthChanged(float Health);
+	void OnHealthChanged(float Health, float HealthDelta);
 };

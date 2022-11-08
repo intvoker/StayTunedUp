@@ -47,7 +47,7 @@ void ASTU_Character::BeginPlay()
 	HealthComponent->OnDeath.AddDynamic(WeaponComponent, &USTU_WeaponComponent::OnOwnerDeath);
 
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
-	OnHealthChanged(HealthComponent->GetHealth());
+	OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
 }
 
 // Called every frame
@@ -142,7 +142,16 @@ void ASTU_Character::OnDeath()
 	}
 }
 
-void ASTU_Character::OnHealthChanged(float Health)
+void ASTU_Character::OnHealthChanged(float Health, float HealthDelta)
 {
-	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.f"), Health)));
+	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.0f"), Health)));
+
+	if (HealthDelta >= 0.0f)
+		return;
+
+	const auto PlayerController = GetController<APlayerController>();
+	if (!PlayerController || !PlayerController->PlayerCameraManager)
+		return;
+
+	PlayerController->PlayerCameraManager->StartCameraShake(DamageCameraShakeClass);
 }

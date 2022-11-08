@@ -17,6 +17,8 @@ class STAYTUNEDUP_API USTU_PlayerHUDWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	virtual bool Initialize() override;
+
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	float GetHealthPercent();
 
@@ -32,6 +34,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	FText GeCurrentWeaponAmmoInfo();
 
+protected:
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UWidgetAnimation* DamageAnimation;
+
 private:
 	template <typename T>
 	T* GetComponent();
@@ -39,6 +45,9 @@ private:
 	ASTU_Weapon* GetCurrentWeapon();
 
 	FSlateBrush CreateBrush(UTexture2D* Icon);
+
+	UFUNCTION()
+	void OnHealthChanged(float Health, float HealthDelta);
 };
 
 template <typename T>

@@ -7,11 +7,21 @@
 #include "Components/STU_WeaponComponent.h"
 #include "Weapons/STU_Weapon.h"
 
+bool USTU_PlayerHUDWidget::Initialize()
+{
+	if (const auto HealthComponent = GetComponent<USTU_HealthComponent>())
+	{
+		HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
+	}
+
+	return Super::Initialize();
+}
+
 float USTU_PlayerHUDWidget::GetHealthPercent()
 {
 	const auto HealthComponent = GetComponent<USTU_HealthComponent>();
 	if (!HealthComponent)
-		return 0.f;
+		return 0.0f;
 
 	return HealthComponent->GetHealthPercent();
 }
@@ -70,4 +80,15 @@ FSlateBrush USTU_PlayerHUDWidget::CreateBrush(UTexture2D* Icon)
 	Brush.SetResourceObject(Icon);
 	Brush.ImageSize = FVector2D(Icon->GetSizeX(), Icon->GetSizeY());
 	return Brush;
+}
+
+void USTU_PlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
+{
+	if (HealthDelta >= 0.0f)
+		return;
+
+	if (!DamageAnimation && !IsAnimationPlaying(DamageAnimation))
+		return;
+
+	PlayAnimation(DamageAnimation);
 }

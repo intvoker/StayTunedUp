@@ -45,8 +45,11 @@ void USTU_HealthComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void USTU_HealthComponent::SetHealth(float NewHealth)
 {
-	Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
-	OnHealthChanged.Broadcast(Health);
+	NewHealth = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
+	const auto HealthDelta = NewHealth - Health;
+
+	Health = NewHealth;
+	OnHealthChanged.Broadcast(Health, HealthDelta);
 }
 
 void USTU_HealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,

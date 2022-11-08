@@ -26,7 +26,7 @@ ASTU_Projectile::ASTU_Projectile()
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
 	ProjectileMovementComponent->InitialSpeed = 1000.0f;
-	ProjectileMovementComponent->ProjectileGravityScale = 0.f;
+	ProjectileMovementComponent->ProjectileGravityScale = 0.0f;
 
 	EffectComponent = CreateDefaultSubobject<USTU_EffectComponent>("EffectComponent");
 	EffectComponent->GetEffectSystemComponent()->SetupAttachment(GetRootComponent());
