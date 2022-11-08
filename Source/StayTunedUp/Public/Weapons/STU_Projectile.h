@@ -8,6 +8,7 @@
 
 class UProjectileMovementComponent;
 class USphereComponent;
+class USTU_EffectComponent;
 class USTU_WeaponEffectsComponent;
 
 UCLASS()
@@ -29,7 +30,7 @@ protected:
 	UProjectileMovementComponent* ProjectileMovementComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UParticleSystemComponent* ParticleSystemComponent;
+	USTU_EffectComponent* EffectComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USTU_WeaponEffectsComponent* WeaponEffectsComponent;

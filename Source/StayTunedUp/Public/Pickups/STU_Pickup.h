@@ -8,6 +8,7 @@
 
 class ASTU_Character;
 class USphereComponent;
+class USTU_EffectComponent;
 
 UCLASS()
 class STAYTUNEDUP_API ASTU_Pickup : public AActor
@@ -25,7 +26,7 @@ protected:
 	USphereComponent* CollisionSphereComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UParticleSystemComponent* ParticleSystemComponent;
+	USTU_EffectComponent* EffectComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	float RespawnTime = 5.0f;

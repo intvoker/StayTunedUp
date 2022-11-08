@@ -4,7 +4,7 @@
 #include "Pickups/STU_Pickup.h"
 
 #include "Components/SphereComponent.h"
-#include "Particles/ParticleSystemComponent.h"
+#include "Components/STU_EffectComponent.h"
 #include "Player/STU_Character.h"
 
 // Sets default values
@@ -19,8 +19,8 @@ ASTU_Pickup::ASTU_Pickup()
 	CollisionSphereComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	SetRootComponent(CollisionSphereComponent);
 
-	ParticleSystemComponent = CreateDefaultSubobject<UParticleSystemComponent>("ParticleSystemComponent");
-	ParticleSystemComponent->SetupAttachment(GetRootComponent());
+	EffectComponent = CreateDefaultSubobject<USTU_EffectComponent>("EffectComponent");
+	EffectComponent->GetEffectSystemComponent()->SetupAttachment(GetRootComponent());
 }
 
 void ASTU_Pickup::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -71,7 +71,7 @@ void ASTU_Pickup::Respawn()
 {
 	bActive = true;
 
-	ParticleSystemComponent->ActivateSystem();
+	EffectComponent->Spawn();
 
 	GetWorld()->GetTimerManager().SetTimer(CheckOverlappingActorsTimerHandle, this, &ThisClass::CheckOverlappingActors,
 	                                       CheckOverlappingActorsTime, true);
@@ -81,7 +81,7 @@ void ASTU_Pickup::Despawn()
 {
 	bActive = false;
 
-	ParticleSystemComponent->DeactivateSystem();
+	EffectComponent->Despawn();
 
 	GetWorld()->GetTimerManager().ClearTimer(CheckOverlappingActorsTimerHandle);
 }
