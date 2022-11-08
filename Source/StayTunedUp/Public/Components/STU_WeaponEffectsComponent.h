@@ -43,9 +43,18 @@ public:
 	USTU_WeaponEffectsComponent();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SpawnTraceEffect(FVector& TraceStart, FVector& TraceEnd);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SpawnImpactEffect(const FHitResult& HitResult);
 
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UParticleSystem* TraceEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FName TraceEffectTargetParameterName = "ShockBeamEnd";
+
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FSTU_ImpactData DefaultImpactData;
 

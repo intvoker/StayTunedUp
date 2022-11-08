@@ -4,6 +4,7 @@
 #include "Components/STU_WeaponEffectsComponent.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values for this component's properties
 USTU_WeaponEffectsComponent::USTU_WeaponEffectsComponent()
@@ -13,6 +14,15 @@ USTU_WeaponEffectsComponent::USTU_WeaponEffectsComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+}
+
+void USTU_WeaponEffectsComponent::SpawnTraceEffect(FVector& TraceStart, FVector& TraceEnd)
+{
+	if (const auto TraceEffectComponent =
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TraceEffect, TraceStart))
+	{
+		TraceEffectComponent->SetVectorParameter(TraceEffectTargetParameterName, TraceEnd);
+	}
 }
 
 void USTU_WeaponEffectsComponent::SpawnImpactEffect(const FHitResult& HitResult)

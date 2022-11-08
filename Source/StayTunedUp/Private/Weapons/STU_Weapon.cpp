@@ -132,6 +132,9 @@ void ASTU_Weapon::MakeShot()
 	{
 		TraceEnd = HitResult.ImpactPoint;
 	}
+
+	WeaponEffectsComponent->SpawnTraceEffect(WeaponViewLocation, TraceEnd);
+
 	ProcessShot(WeaponViewLocation, TraceEnd, HitResult);
 }
 
