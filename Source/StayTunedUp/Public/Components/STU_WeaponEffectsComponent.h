@@ -42,23 +42,23 @@ public:
 	// Sets default values for this component's properties
 	USTU_WeaponEffectsComponent();
 
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UFUNCTION(BlueprintCallable, Category = "Effects")
 	void SpawnTraceEffect(FVector& TraceStart, FVector& TraceEnd);
 
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UFUNCTION(BlueprintCallable, Category = "Effects")
 	void SpawnImpactEffect(const FHitResult& HitResult);
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* TraceEffect;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	FName TraceEffectTargetParameterName = "ShockBeamEnd";
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	FSTU_ImpactData DefaultImpactData;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	TMap<UPhysicalMaterial*, FSTU_ImpactData> ImpactDataMap;
 
 	// Called when the game starts

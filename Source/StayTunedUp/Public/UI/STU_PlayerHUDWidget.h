@@ -17,19 +17,19 @@ class STAYTUNEDUP_API USTU_PlayerHUDWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "Health")
+	UFUNCTION(BlueprintCallable, Category = "UI")
 	float GetHealthPercent();
 
-	UFUNCTION(BlueprintCallable, Category = "Health")
+	UFUNCTION(BlueprintCallable, Category = "UI")
 	bool IsAlive();
 
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UFUNCTION(BlueprintCallable, Category = "UI")
 	FSlateBrush GeCurrentWeaponCrosshairIcon();
 
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UFUNCTION(BlueprintCallable, Category = "UI")
 	FSlateBrush GeCurrentWeaponMainIcon();
 
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UFUNCTION(BlueprintCallable, Category = "UI")
 	FText GeCurrentWeaponAmmoInfo();
 
 private:

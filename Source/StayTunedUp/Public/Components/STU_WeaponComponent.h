@@ -16,7 +16,7 @@ struct FSTU_WeaponData
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	UAnimMontage* ReloadAnimMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	TSubclassOf<ASTU_Weapon> WeaponClass;
 };
 
@@ -53,13 +53,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	UAnimMontage* EquipAnimMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	TArray<FSTU_WeaponData> WeaponDataArray;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	FName WeaponAttachPointSocketName = "WeaponPoint";
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	FName SecondaryWeaponAttachPointSocketName = "SecondaryWeaponPoint";
 
 	// Called when the game starts

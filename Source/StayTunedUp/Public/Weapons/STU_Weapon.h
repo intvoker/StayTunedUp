@@ -89,7 +89,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	FSTU_AmmoData DefaultAmmo{15, 10, false};
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	FSTU_WeaponUIData WeaponUIData;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Life")
