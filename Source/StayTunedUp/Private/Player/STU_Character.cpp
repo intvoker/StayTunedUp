@@ -21,6 +21,8 @@ ASTU_Character::ASTU_Character(const FObjectInitializer& ObjectInitializer):
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	GetMesh()->SetCollisionProfileName(FName(TEXT("IgnoreOnlyPawn")));
+
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
 	SpringArmComponent->SetupAttachment(GetRootComponent());
 	SpringArmComponent->bUsePawnControlRotation = true;
