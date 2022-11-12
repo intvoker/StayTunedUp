@@ -25,12 +25,13 @@ public:
 	void Despawn();
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UParticleSystemComponent* ParticleSystemComponent;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* ParticleSystem;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+private:
+	UPROPERTY()
+	UParticleSystemComponent* ParticleSystemComponent;
 };
