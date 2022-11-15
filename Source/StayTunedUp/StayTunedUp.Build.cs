@@ -9,7 +9,10 @@ public class StayTunedUp : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[]
-			{ "Core", "CoreUObject", "Engine", "InputCore", "PhysicsCore", "SlateCore" });
+		{
+			"AIModule", "Core", "CoreUObject", "Engine", "GameplayTasks", "InputCore", "NavigationSystem",
+			"PhysicsCore", "SlateCore", "UMG"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
