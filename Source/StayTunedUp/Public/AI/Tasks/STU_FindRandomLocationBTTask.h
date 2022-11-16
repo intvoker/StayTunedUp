@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "UBTTask_STU_FindRandomLocation.generated.h"
+#include "STU_FindRandomLocationBTTask.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API UUBTTask_STU_FindRandomLocation : public UBTTaskNode
+class STAYTUNEDUP_API USTU_FindRandomLocationBTTask : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:
-	UUBTTask_STU_FindRandomLocation();
+	USTU_FindRandomLocationBTTask();
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 

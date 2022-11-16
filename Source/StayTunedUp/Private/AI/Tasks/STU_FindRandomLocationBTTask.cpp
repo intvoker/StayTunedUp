@@ -1,18 +1,18 @@
 // Stay Tuned Up Game
 
 
-#include "AI/UBTTask_STU_FindRandomLocation.h"
+#include "AI/Tasks/STU_FindRandomLocationBTTask.h"
 
 #include "AIController.h"
-#include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "NavigationSystem.h"
 
-UUBTTask_STU_FindRandomLocation::UUBTTask_STU_FindRandomLocation()
+USTU_FindRandomLocationBTTask::USTU_FindRandomLocationBTTask()
 {
 	NodeName = "Find Random Location";
 }
 
-EBTNodeResult::Type UUBTTask_STU_FindRandomLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type USTU_FindRandomLocationBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	const auto BlackboardComponent = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComponent)
