@@ -6,6 +6,8 @@
 #include "Player/STU_Character.h"
 #include "STU_AICharacter.generated.h"
 
+class UBehaviorTree;
+
 /**
  * 
  */
@@ -16,4 +18,7 @@ class STAYTUNEDUP_API ASTU_AICharacter : public ASTU_Character
 
 public:
 	ASTU_AICharacter(const FObjectInitializer& ObjectInitializer);
+
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UBehaviorTree* BehaviorTree;
 };
