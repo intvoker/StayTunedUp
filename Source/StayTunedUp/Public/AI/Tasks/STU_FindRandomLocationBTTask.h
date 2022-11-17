@@ -21,6 +21,9 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	FBlackboardKeySelector CenterActorKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	float Radius = 1000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")

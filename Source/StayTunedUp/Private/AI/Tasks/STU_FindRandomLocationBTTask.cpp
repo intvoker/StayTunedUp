@@ -18,12 +18,8 @@ EBTNodeResult::Type USTU_FindRandomLocationBTTask::ExecuteTask(UBehaviorTreeComp
 	if (!BlackboardComponent)
 		return EBTNodeResult::Failed;
 
-	const auto AIController = OwnerComp.GetAIOwner();
-	if (!AIController)
-		return EBTNodeResult::Failed;
-
-	const auto Pawn = AIController->GetPawn();
-	if (!Pawn)
+	const auto CenterActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(CenterActorKey.SelectedKeyName));
+	if (!CenterActor)
 		return EBTNodeResult::Failed;
 
 	const auto NavigationSystem = UNavigationSystemV1::GetCurrent(GetWorld());
@@ -32,7 +28,7 @@ EBTNodeResult::Type USTU_FindRandomLocationBTTask::ExecuteTask(UBehaviorTreeComp
 
 	FNavLocation NavLocation;
 	const auto bSuccess = NavigationSystem->
-		GetRandomReachablePointInRadius(Pawn->GetActorLocation(), Radius, NavLocation);
+		GetRandomReachablePointInRadius(CenterActor->GetActorLocation(), Radius, NavLocation);
 	if (!bSuccess)
 		return EBTNodeResult::Failed;
 
