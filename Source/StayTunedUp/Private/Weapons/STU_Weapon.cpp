@@ -152,6 +152,12 @@ void ASTU_Weapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewD
 	if (!Character)
 		return;
 
+	if (!Character->IsPlayerControlled())
+	{
+		GetWeaponViewPoint(OutViewLocation, OutViewDirection);
+		return;
+	}
+
 	const auto PlayerController = Character->GetController<APlayerController>();
 	if (!PlayerController)
 		return;

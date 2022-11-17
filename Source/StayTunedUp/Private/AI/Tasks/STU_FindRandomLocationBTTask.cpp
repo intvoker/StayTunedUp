@@ -3,7 +3,6 @@
 
 #include "AI/Tasks/STU_FindRandomLocationBTTask.h"
 
-#include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "NavigationSystem.h"
 
