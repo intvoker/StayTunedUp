@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "STU_AIController.generated.h"
 
+class USTU_AIPerceptionComponent;
 /**
  * 
  */
@@ -14,6 +15,14 @@ class STAYTUNEDUP_API ASTU_AIController : public AAIController
 {
 	GENERATED_BODY()
 
+public:
+	ASTU_AIController();
+
+	virtual void Tick(float DeltaSeconds) override;
+
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USTU_AIPerceptionComponent* STU_AIPerceptionComponent;
+
 	virtual void OnPossess(APawn* InPawn) override;
 };

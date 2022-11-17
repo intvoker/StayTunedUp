@@ -57,6 +57,5 @@ T* USTU_PlayerHUDWidget::GetComponent()
 	if (!PlayerPawn)
 		return nullptr;
 
-	const auto ActorComponent = PlayerPawn->FindComponentByClass(T::StaticClass());
-	return Cast<T>(ActorComponent);
+	return PlayerPawn->FindComponentByClass<T>();
 }
