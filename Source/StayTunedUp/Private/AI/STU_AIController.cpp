@@ -4,6 +4,7 @@
 #include "AI/STU_AIController.h"
 
 #include "AI/STU_AICharacter.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/STU_AIPerceptionComponent.h"
 
 ASTU_AIController::ASTU_AIController()
@@ -17,7 +18,11 @@ void ASTU_AIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	const auto NearestActor = STU_AIPerceptionComponent->FindNearestAliveActor();
+	const auto BlackboardComponent = GetBlackboardComponent();
+	if (!BlackboardComponent)
+		return;
+
+	const auto NearestActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(EnemyActorKeyName));
 	SetFocus(NearestActor);
 }
 

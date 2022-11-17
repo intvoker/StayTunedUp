@@ -24,5 +24,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USTU_AIPerceptionComponent* STU_AIPerceptionComponent;
 
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	FName EnemyActorKeyName = "EnemyActor";
+
 	virtual void OnPossess(APawn* InPawn) override;
 };
