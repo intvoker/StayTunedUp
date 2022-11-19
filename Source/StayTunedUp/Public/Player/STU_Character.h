@@ -53,6 +53,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	virtual void OnDeath();
+
+	UFUNCTION()
+	virtual void OnHealthChanged(float Health, float HealthDelta);
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -77,10 +83,4 @@ private:
 
 	void Run();
 	void StopRunning();
-
-	UFUNCTION()
-	void OnDeath();
-
-	UFUNCTION()
-	void OnHealthChanged(float Health, float HealthDelta);
 };

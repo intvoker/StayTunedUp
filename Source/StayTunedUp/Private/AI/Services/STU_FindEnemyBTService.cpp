@@ -16,6 +16,8 @@ void USTU_FindEnemyBTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
+	//UE_LOG(LogTemp, Warning, TEXT("FindEnemy TickNode %f"), UGameplayStatics::GetRealTimeSeconds(GetWorld()));
+
 	const auto BlackboardComponent = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComponent)
 		return;

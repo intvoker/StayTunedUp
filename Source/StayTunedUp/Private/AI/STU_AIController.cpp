@@ -35,3 +35,10 @@ void ASTU_AIController::OnPossess(APawn* InPawn)
 		RunBehaviorTree(STU_AICharacter->BehaviorTree);
 	}
 }
+
+void ASTU_AIController::OnUnPossess()
+{
+	Super::OnUnPossess();
+
+	//UE_LOG(LogTemp, Warning, TEXT("AIController OnUnPossess"));
+}
