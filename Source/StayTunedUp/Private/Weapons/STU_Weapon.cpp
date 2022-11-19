@@ -54,6 +54,11 @@ void ASTU_Weapon::UseClip()
 	}
 }
 
+bool ASTU_Weapon::IsAmmoEmpty() const
+{
+	return !CanUseClip() && !CanUseRound();
+}
+
 FText ASTU_Weapon::GetAmmoInfo()
 {
 	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Rounds) + " / ";

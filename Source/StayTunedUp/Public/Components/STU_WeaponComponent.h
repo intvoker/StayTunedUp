@@ -38,6 +38,12 @@ public:
 	void SwitchWeapon();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SwitchWeaponWithAmmo();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SwitchToWeapon(ASTU_Weapon* Weapon);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Reload();
 
 	UFUNCTION()
@@ -61,6 +67,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	FName SecondaryWeaponAttachPointSocketName = "SecondaryWeaponPoint";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	bool bAutoSwitchWeapon = false;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -100,6 +109,7 @@ private:
 
 	ASTU_Weapon* FindWeapon(ASTU_Weapon* Weapon);
 	ASTU_Weapon* FindNextWeapon(ASTU_Weapon* Weapon);
+	ASTU_Weapon* FindNextWeaponWithAmmo(ASTU_Weapon* Weapon);
 	ASTU_Weapon* FindWeaponByClass(TSubclassOf<ASTU_Weapon> WeaponClass);
 
 	UAnimMontage* FindReloadAnimMontage(ASTU_Weapon* Weapon);

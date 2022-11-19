@@ -27,7 +27,14 @@ void USTU_WeaponComponent::Fire()
 	if (!CurrentWeapon)
 		return;
 
-	CurrentWeapon->Fire();
+	if (CurrentWeapon->IsAmmoEmpty() && bAutoSwitchWeapon)
+	{
+		SwitchWeaponWithAmmo();
+	}
+	else
+	{
+		CurrentWeapon->Fire();
+	}
 }
 
 void USTU_WeaponComponent::StopFiring()
@@ -40,11 +47,29 @@ void USTU_WeaponComponent::StopFiring()
 
 void USTU_WeaponComponent::SwitchWeapon()
 {
+	const auto NextWeapon = FindNextWeapon(CurrentWeapon);
+	if (!NextWeapon)
+		return;
+
+	SwitchToWeapon(NextWeapon);
+}
+
+void USTU_WeaponComponent::SwitchWeaponWithAmmo()
+{
+	const auto NextWeapon = FindNextWeaponWithAmmo(CurrentWeapon);
+	if (!NextWeapon)
+		return;
+
+	SwitchToWeapon(NextWeapon);
+}
+
+void USTU_WeaponComponent::SwitchToWeapon(ASTU_Weapon* Weapon)
+{
 	if (EquipInProgress || ReloadInProgress)
 		return;
 
 	StopFiring();
-	EquipWeapon(FindNextWeapon(CurrentWeapon));
+	EquipWeapon(Weapon);
 
 	EquipInProgress = true;
 	PlayAnimMontage(EquipAnimMontage);
@@ -220,20 +245,38 @@ void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_We
 
 ASTU_Weapon* USTU_WeaponComponent::FindWeapon(ASTU_Weapon* Weapon)
 {
-	return *Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem) { return WeaponElem == Weapon; });
+	const auto FoundWeapon = Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem)
+	{
+		return WeaponElem == Weapon;
+	});
+	return FoundWeapon ? *FoundWeapon : nullptr;
 }
 
 ASTU_Weapon* USTU_WeaponComponent::FindNextWeapon(ASTU_Weapon* Weapon)
 {
-	return *Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem) { return WeaponElem != Weapon; });
+	const auto FoundWeapon = Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem)
+	{
+		return WeaponElem != Weapon;
+	});
+	return FoundWeapon ? *FoundWeapon : nullptr;
+}
+
+ASTU_Weapon* USTU_WeaponComponent::FindNextWeaponWithAmmo(ASTU_Weapon* Weapon)
+{
+	const auto FoundWeapon = Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem)
+	{
+		return WeaponElem != Weapon && !WeaponElem->IsAmmoEmpty();
+	});
+	return FoundWeapon ? *FoundWeapon : nullptr;
 }
 
 ASTU_Weapon* USTU_WeaponComponent::FindWeaponByClass(TSubclassOf<ASTU_Weapon> WeaponClass)
 {
-	return *Weapons.FindByPredicate([WeaponClass](const ASTU_Weapon* WeaponElem)
+	const auto FoundWeapon = Weapons.FindByPredicate([WeaponClass](const ASTU_Weapon* WeaponElem)
 	{
 		return WeaponElem->IsA(WeaponClass);
 	});
+	return FoundWeapon ? *FoundWeapon : nullptr;
 }
 
 UAnimMontage* USTU_WeaponComponent::FindReloadAnimMontage(ASTU_Weapon* Weapon)

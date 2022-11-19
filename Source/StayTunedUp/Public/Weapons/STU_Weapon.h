@@ -56,6 +56,7 @@ public:
 	bool CanUseClip() const;
 	void UseClip();
 
+	bool IsAmmoEmpty() const;
 	FText GetAmmoInfo();
 
 	void OnOwnerDeath();
