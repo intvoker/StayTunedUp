@@ -26,5 +26,5 @@ bool USTU_HealthPercentBTDecorator::CalculateRawConditionValue(UBehaviorTreeComp
 	if (!HealthComponent || HealthComponent->IsDead())
 		return false;
 
-	return HealthComponent->GetHealthPercent() <= HealthPercent;
+	return HealthComponent->GetHealthPercent() < HealthPercent;
 }

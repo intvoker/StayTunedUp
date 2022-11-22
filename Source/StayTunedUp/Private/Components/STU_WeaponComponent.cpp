@@ -103,6 +103,14 @@ void USTU_WeaponComponent::OnOwnerDeath()
 	}
 }
 
+float USTU_WeaponComponent::GetCurrentWeaponAmmoPercent() const
+{
+	if (!CurrentWeapon)
+		return 0.0f;
+
+	return CurrentWeapon->GetAmmoPercent();
+}
+
 bool USTU_WeaponComponent::TryAddClip(TSubclassOf<ASTU_Weapon> WeaponClass, float ClipAmount)
 {
 	if (!WeaponClass)

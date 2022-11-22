@@ -59,6 +59,22 @@ bool ASTU_Weapon::IsAmmoEmpty() const
 	return !CanUseClip() && !CanUseRound();
 }
 
+bool ASTU_Weapon::IsAmmoFull() const
+{
+	return (CurrentAmmo.Clips == DefaultAmmo.Clips && CurrentAmmo.Rounds == DefaultAmmo.Rounds);
+}
+
+float ASTU_Weapon::GetAmmoPercent() const
+{
+	const float TotalDefaultRounds = DefaultAmmo.Clips * DefaultAmmo.Rounds + DefaultAmmo.Rounds;
+	const float TotalCurrentRounds = CurrentAmmo.Clips * DefaultAmmo.Rounds + CurrentAmmo.Rounds;
+
+	if (TotalDefaultRounds == 0.0f)
+		return 0.0f;
+
+	return TotalCurrentRounds / TotalDefaultRounds;
+}
+
 FText ASTU_Weapon::GetAmmoInfo()
 {
 	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Rounds) + " / ";
@@ -80,7 +96,7 @@ bool ASTU_Weapon::TryAddClip(float ClipAmount)
 	if (CurrentAmmo.bInfinite)
 		return false;
 
-	if (CurrentAmmo.Clips == DefaultAmmo.Clips && CurrentAmmo.Rounds == DefaultAmmo.Rounds)
+	if (IsAmmoFull())
 		return false;
 
 	SetClips(CurrentAmmo.Clips + ClipAmount);

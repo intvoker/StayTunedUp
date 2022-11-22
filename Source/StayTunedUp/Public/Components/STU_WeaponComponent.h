@@ -53,6 +53,9 @@ public:
 	ASTU_Weapon* GetCurrentWeapon() const { return CurrentWeapon; }
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	float GetCurrentWeaponAmmoPercent() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	bool TryAddClip(TSubclassOf<ASTU_Weapon> WeaponClass, float ClipAmount);
 
 protected:
