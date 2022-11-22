@@ -25,7 +25,5 @@ bool USTU_AmmoPercentBTDecorator::CalculateRawConditionValue(UBehaviorTreeCompon
 	if (!WeaponComponent)
 		return false;
 
-	UE_LOG(LogTemp, Warning, TEXT("Character: %s. AmmoPercent: %f."), *Pawn->GetName(), WeaponComponent->GetCurrentWeaponAmmoPercent());
-
 	return WeaponComponent->GetCurrentWeaponAmmoPercent() < AmmoPercent;
 }

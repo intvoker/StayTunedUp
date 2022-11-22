@@ -21,6 +21,8 @@ public:
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
+	bool IsActive() const { return bActive; }
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USphereComponent* CollisionSphereComponent;
