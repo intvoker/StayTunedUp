@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class STAYTUNEDUP_API USTU_EnemyActorEnvQueryContext : public UEnvQueryContext
 {
 	GENERATED_BODY()
