@@ -22,8 +22,8 @@ void ASTU_AIController::Tick(float DeltaSeconds)
 	if (!BlackboardComponent)
 		return;
 
-	const auto NearestActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(EnemyActorKeyName));
-	SetFocus(NearestActor);
+	const auto EnemyActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(EnemyActorKeyName));
+	SetFocus(EnemyActor);
 }
 
 void ASTU_AIController::OnPossess(APawn* InPawn)

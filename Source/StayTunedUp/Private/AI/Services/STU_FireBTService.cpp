@@ -38,5 +38,21 @@ void USTU_FireBTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		return;
 
 	const auto EnemyActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(EnemyActorKey.SelectedKeyName));
-	EnemyActor ? WeaponComponent->Fire() : WeaponComponent->StopFiring();
+	if (!EnemyActor)
+	{
+		WeaponComponent->StopFiring();
+		return;
+	}
+
+	const auto EnemyActorHealthComponent = EnemyActor->FindComponentByClass<USTU_HealthComponent>();
+	if (!EnemyActorHealthComponent || EnemyActorHealthComponent->IsDead())
+	{
+		WeaponComponent->StopFiring();
+		return;
+	}
+
+	if (AIController->LineOfSightTo(EnemyActor, FVector::ZeroVector))
+	{
+		WeaponComponent->Fire();
+	}
 }

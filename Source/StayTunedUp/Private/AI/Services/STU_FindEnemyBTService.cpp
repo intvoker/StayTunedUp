@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/STU_AIPerceptionComponent.h"
+#include "Components/STU_HealthComponent.h"
 
 USTU_FindEnemyBTService::USTU_FindEnemyBTService()
 {
@@ -30,6 +31,20 @@ void USTU_FindEnemyBTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 	if (!STU_AIPerceptionComponent)
 		return;
 
-	BlackboardComponent->SetValueAsObject(EnemyActorKey.SelectedKeyName,
-	                                      STU_AIPerceptionComponent->FindNearestAliveActor());
+	const auto EnemyActor = STU_AIPerceptionComponent->FindNearestAliveEnemyActor();
+	if (EnemyActor)
+	{
+		BlackboardComponent->SetValueAsObject(EnemyActorKey.SelectedKeyName, EnemyActor);
+		return;
+	}
+
+	const auto CurrentEnemyActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(EnemyActorKey.SelectedKeyName));
+	if (!CurrentEnemyActor)
+		return;
+
+	const auto CurrentEnemyActorHealthComponent = CurrentEnemyActor->FindComponentByClass<USTU_HealthComponent>();
+	if (!CurrentEnemyActorHealthComponent || CurrentEnemyActorHealthComponent->IsDead())
+	{
+		BlackboardComponent->SetValueAsObject(EnemyActorKey.SelectedKeyName, nullptr);
+	}
 }

@@ -6,8 +6,9 @@
 #include "AIController.h"
 #include "Components/STU_HealthComponent.h"
 #include "Perception/AISense_Sight.h"
+#include "Player/STU_Character.h"
 
-AActor* USTU_AIPerceptionComponent::FindNearestAliveActor()
+AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor()
 {
 	const auto AIController = Cast<AAIController>(GetOwner());
 	if (!AIController)
@@ -21,9 +22,14 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveActor()
 	GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(), PerceivedActors);
 
 	float MinDistance = MAX_FLT;
-	AActor* NearestActor = nullptr;
+	AActor* EnemyActor = nullptr;
 	for (const auto PerceivedActor : PerceivedActors)
 	{
+		if (!PerceivedActor->IsA(ASTU_Character::StaticClass()))
+		{
+			continue;
+		}
+
 		const auto HealthComponent = PerceivedActor->FindComponentByClass<USTU_HealthComponent>();
 		if (!HealthComponent || HealthComponent->IsDead())
 		{
@@ -34,9 +40,9 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveActor()
 		if (Distance < MinDistance)
 		{
 			MinDistance = Distance;
-			NearestActor = PerceivedActor;
+			EnemyActor = PerceivedActor;
 		}
 	}
 
-	return NearestActor;
+	return EnemyActor;
 }
