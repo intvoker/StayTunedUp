@@ -19,5 +19,8 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	bool bUseQuerier = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (EditCondition = "!bUseQuerier"))
 	FName EnemyActorKeyName = "EnemyActor";
 };

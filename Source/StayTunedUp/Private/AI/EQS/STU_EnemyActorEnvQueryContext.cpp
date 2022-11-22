@@ -11,7 +11,13 @@
 void USTU_EnemyActorEnvQueryContext::ProvideContext(FEnvQueryInstance& QueryInstance,
                                                     FEnvQueryContextData& ContextData) const
 {
-	Super::ProvideContext(QueryInstance, ContextData);
+	if (bUseQuerier)
+	{
+		//cannot reuse UEnvQueryContext_Querier cause of UCLASS(MinimalAPI)
+		const auto QueryOwner = Cast<AActor>(QueryInstance.Owner.Get());
+		UEnvQueryItemType_Actor::SetContextHelper(ContextData, QueryOwner);
+		return;
+	}
 
 	const auto QueryOwner = Cast<APawn>(QueryInstance.Owner.Get());
 	if (!QueryOwner)
@@ -24,10 +30,10 @@ void USTU_EnemyActorEnvQueryContext::ProvideContext(FEnvQueryInstance& QueryInst
 	const auto BlackboardComponent = AIController->GetBlackboardComponent();
 	if (!BlackboardComponent)
 		return;
-	
+
 	const auto EnemyActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(EnemyActorKeyName));
 	if (!EnemyActor)
 		return;
-	
+
 	UEnvQueryItemType_Actor::SetContextHelper(ContextData, EnemyActor);
 }
