@@ -5,6 +5,7 @@
 
 #include "AIController.h"
 #include "Components/STU_WeaponComponent.h"
+#include "Weapons/STU_Weapon.h"
 
 USTU_AmmoPercentBTDecorator::USTU_AmmoPercentBTDecorator()
 {
@@ -25,5 +26,7 @@ bool USTU_AmmoPercentBTDecorator::CalculateRawConditionValue(UBehaviorTreeCompon
 	if (!WeaponComponent)
 		return false;
 
-	return WeaponComponent->GetCurrentWeaponAmmoPercent() < AmmoPercent;
+	//UE_LOG(LogTemp, Warning, TEXT("Character: %s. AmmoPercent: %f."), *Pawn->GetName(), WeaponComponent->GetWeaponAmmoPercent(WeaponClass));
+
+	return WeaponComponent->GetWeaponAmmoPercent(WeaponClass) < AmmoPercent;
 }

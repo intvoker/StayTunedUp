@@ -6,6 +6,8 @@
 #include "BehaviorTree/BTDecorator.h"
 #include "STU_AmmoPercentBTDecorator.generated.h"
 
+class ASTU_Weapon;
+
 /**
  * 
  */
@@ -20,6 +22,9 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	float AmmoPercent = 0.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	TSubclassOf<ASTU_Weapon> WeaponClass;
 
 	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
 };

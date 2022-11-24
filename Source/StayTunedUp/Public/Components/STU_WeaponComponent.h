@@ -53,7 +53,7 @@ public:
 	ASTU_Weapon* GetCurrentWeapon() const { return CurrentWeapon; }
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	float GetCurrentWeaponAmmoPercent() const;
+	float GetWeaponAmmoPercent(TSubclassOf<ASTU_Weapon> WeaponClass) const;
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	bool TryAddClip(TSubclassOf<ASTU_Weapon> WeaponClass, float ClipAmount);
@@ -110,10 +110,10 @@ private:
 
 	void AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName);
 
-	ASTU_Weapon* FindWeapon(ASTU_Weapon* Weapon);
-	ASTU_Weapon* FindNextWeapon(ASTU_Weapon* Weapon);
-	ASTU_Weapon* FindNextWeaponWithAmmo(ASTU_Weapon* Weapon);
-	ASTU_Weapon* FindWeaponByClass(TSubclassOf<ASTU_Weapon> WeaponClass);
+	ASTU_Weapon* FindWeapon(ASTU_Weapon* Weapon) const;
+	ASTU_Weapon* FindNextWeapon(ASTU_Weapon* Weapon) const;
+	ASTU_Weapon* FindNextWeaponWithAmmo(ASTU_Weapon* Weapon) const;
+	ASTU_Weapon* FindWeaponByClass(TSubclassOf<ASTU_Weapon> WeaponClass) const;
 
 	UAnimMontage* FindReloadAnimMontage(ASTU_Weapon* Weapon);
 

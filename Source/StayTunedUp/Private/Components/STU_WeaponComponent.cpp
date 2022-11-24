@@ -103,12 +103,16 @@ void USTU_WeaponComponent::OnOwnerDeath()
 	}
 }
 
-float USTU_WeaponComponent::GetCurrentWeaponAmmoPercent() const
+float USTU_WeaponComponent::GetWeaponAmmoPercent(TSubclassOf<ASTU_Weapon> WeaponClass) const
 {
-	if (!CurrentWeapon)
+	if (!WeaponClass)
 		return 0.0f;
 
-	return CurrentWeapon->GetAmmoPercent();
+	const auto Weapon = FindWeaponByClass(WeaponClass);
+	if (!Weapon)
+		return 0.0f;
+
+	return Weapon->GetAmmoPercent();
 }
 
 bool USTU_WeaponComponent::TryAddClip(TSubclassOf<ASTU_Weapon> WeaponClass, float ClipAmount)
@@ -194,7 +198,9 @@ void USTU_WeaponComponent::SpawnWeapons()
 	{
 		auto Weapon = GetWorld()->SpawnActor<ASTU_Weapon>(WeaponData.WeaponClass);
 		if (!Weapon)
+		{
 			continue;
+		}
 
 		Weapon->SetOwner(Character);
 		Weapon->OnClipEmpty.AddDynamic(this, &ThisClass::OnClipEmpty);
@@ -251,7 +257,7 @@ void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_We
 	Weapon->AttachToComponent(Parent, FAttachmentTransformRules::KeepRelativeTransform, WeaponSocketName);
 }
 
-ASTU_Weapon* USTU_WeaponComponent::FindWeapon(ASTU_Weapon* Weapon)
+ASTU_Weapon* USTU_WeaponComponent::FindWeapon(ASTU_Weapon* Weapon) const
 {
 	const auto FoundWeapon = Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem)
 	{
@@ -260,7 +266,7 @@ ASTU_Weapon* USTU_WeaponComponent::FindWeapon(ASTU_Weapon* Weapon)
 	return FoundWeapon ? *FoundWeapon : nullptr;
 }
 
-ASTU_Weapon* USTU_WeaponComponent::FindNextWeapon(ASTU_Weapon* Weapon)
+ASTU_Weapon* USTU_WeaponComponent::FindNextWeapon(ASTU_Weapon* Weapon) const
 {
 	const auto FoundWeapon = Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem)
 	{
@@ -269,7 +275,7 @@ ASTU_Weapon* USTU_WeaponComponent::FindNextWeapon(ASTU_Weapon* Weapon)
 	return FoundWeapon ? *FoundWeapon : nullptr;
 }
 
-ASTU_Weapon* USTU_WeaponComponent::FindNextWeaponWithAmmo(ASTU_Weapon* Weapon)
+ASTU_Weapon* USTU_WeaponComponent::FindNextWeaponWithAmmo(ASTU_Weapon* Weapon) const
 {
 	const auto FoundWeapon = Weapons.FindByPredicate([Weapon](const ASTU_Weapon* WeaponElem)
 	{
@@ -278,7 +284,7 @@ ASTU_Weapon* USTU_WeaponComponent::FindNextWeaponWithAmmo(ASTU_Weapon* Weapon)
 	return FoundWeapon ? *FoundWeapon : nullptr;
 }
 
-ASTU_Weapon* USTU_WeaponComponent::FindWeaponByClass(TSubclassOf<ASTU_Weapon> WeaponClass)
+ASTU_Weapon* USTU_WeaponComponent::FindWeaponByClass(TSubclassOf<ASTU_Weapon> WeaponClass) const
 {
 	const auto FoundWeapon = Weapons.FindByPredicate([WeaponClass](const ASTU_Weapon* WeaponElem)
 	{
@@ -291,7 +297,7 @@ UAnimMontage* USTU_WeaponComponent::FindReloadAnimMontage(ASTU_Weapon* Weapon)
 {
 	const auto FoundWeaponData = WeaponDataArray.FindByPredicate([Weapon](const FSTU_WeaponData& WeaponDataElem)
 	{
-		return WeaponDataElem.WeaponClass == Weapon->GetClass();
+		return Weapon->IsA(WeaponDataElem.WeaponClass);
 	});
 	return FoundWeaponData ? FoundWeaponData->ReloadAnimMontage : nullptr;
 }

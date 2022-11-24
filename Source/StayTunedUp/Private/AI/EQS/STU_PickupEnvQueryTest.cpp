@@ -25,12 +25,15 @@ void USTU_PickupEnvQueryTest::RunTest(FEnvQueryInstance& QueryInstance) const
 	{
 		AActor* ItemActor = GetItemActor(QueryInstance, It.GetIndex());
 
-		const auto STU_Pickup = Cast<ASTU_Pickup>(ItemActor);
-		if (!STU_Pickup)
-		{
-			continue;
-		}
-
-		It.SetScore(TestPurpose, FilterType, STU_Pickup->IsActive(), bWantsPickup);
+		It.SetScore(TestPurpose, FilterType, CanPickup(ItemActor), bWantsPickup);
 	}
+}
+
+bool USTU_PickupEnvQueryTest::CanPickup(AActor* ItemActor) const
+{
+	const auto STU_Pickup = Cast<ASTU_Pickup>(ItemActor);
+	if (!STU_Pickup)
+		return false;
+
+	return STU_Pickup->IsActive();
 }

@@ -16,6 +16,9 @@ class STAYTUNEDUP_API ASTU_AmmoPickup : public ASTU_Pickup
 {
 	GENERATED_BODY()
 
+public:
+	TSubclassOf<ASTU_Weapon> GetWeaponClass() const { return WeaponClass; }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ASTU_Weapon> WeaponClass;

@@ -6,6 +6,8 @@
 #include "EnvironmentQuery/EnvQueryTest.h"
 #include "STU_PickupEnvQueryTest.generated.h"
 
+class ASTU_Pickup;
+
 /**
  * 
  */
@@ -18,4 +20,7 @@ public:
 	USTU_PickupEnvQueryTest(const FObjectInitializer& ObjectInitializer);
 
 	virtual void RunTest(FEnvQueryInstance& QueryInstance) const override;
+
+protected:
+	virtual bool CanPickup(AActor* ItemActor) const;
 };
