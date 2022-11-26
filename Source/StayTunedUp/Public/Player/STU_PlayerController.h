@@ -13,4 +13,8 @@ UCLASS()
 class STAYTUNEDUP_API ASTU_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	FName PlayerStartTag;
 };
