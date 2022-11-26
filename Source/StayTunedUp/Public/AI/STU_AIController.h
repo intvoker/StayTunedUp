@@ -7,6 +7,7 @@
 #include "STU_AIController.generated.h"
 
 class USTU_AIPerceptionComponent;
+
 /**
  * 
  */

@@ -7,6 +7,7 @@
 #include "STU_LauncherWeapon.generated.h"
 
 class ASTU_Projectile;
+
 /**
  * 
  */
