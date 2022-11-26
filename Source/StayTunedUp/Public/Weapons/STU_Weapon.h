@@ -90,7 +90,7 @@ protected:
 	float DamageAmount = 10.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	FSTU_AmmoData DefaultAmmo{15, 10, false};
+	FSTU_AmmoData DefaultAmmo{5, 2, false};
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	FSTU_WeaponUIData WeaponUIData;
