@@ -93,6 +93,15 @@ bool ASTU_Character::IsRunning() const
 	return bPressedRun && IsMovingForward();
 }
 
+void ASTU_Character::SetPlayerColor(const FLinearColor& Color)
+{
+	const auto MaterialInstanceDynamic = GetMesh()->CreateAndSetMaterialInstanceDynamic(0);
+	if (!MaterialInstanceDynamic)
+		return;
+
+	MaterialInstanceDynamic->SetVectorParameterValue(MaterialColorName, Color);
+}
+
 void ASTU_Character::MoveForward(float Value)
 {
 	AddMovementInput(GetActorForwardVector(), Value);

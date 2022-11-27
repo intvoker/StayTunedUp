@@ -8,13 +8,15 @@
 #include "GameFramework/PlayerStart.h"
 #include "Player/STU_Character.h"
 #include "Player/STU_PlayerController.h"
+#include "Player/STU_PlayerState.h"
 #include "UI/STU_HUD.h"
 
 ASTU_GameModeBase::ASTU_GameModeBase()
 {
-	DefaultPawnClass = ASTU_Character::StaticClass();
 	PlayerControllerClass = ASTU_PlayerController::StaticClass();
+	PlayerStateClass = ASTU_PlayerState::StaticClass();
 	HUDClass = ASTU_HUD::StaticClass();
+	DefaultPawnClass = ASTU_Character::StaticClass();
 }
 
 void ASTU_GameModeBase::StartPlay()
@@ -22,6 +24,7 @@ void ASTU_GameModeBase::StartPlay()
 	Super::StartPlay();
 
 	SpawnAIControllers();
+	SetTeams();
 
 	StartRound();
 }
@@ -117,5 +120,56 @@ void ASTU_GameModeBase::RestartPlayers()
 			Controller->GetPawn()->Reset();
 		}
 		RestartPlayer(Controller);
+		SetPlayerColor(Controller);
 	}
+}
+
+void ASTU_GameModeBase::SetTeams()
+{
+	int32 CurrentTeamID = 1;
+	int32 NumberOfTeams = GameData.TeamsMap.Num();
+
+	if (!NumberOfTeams)
+		return;
+
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		const auto Controller = It->Get();
+		if (!Controller)
+		{
+			continue;
+		}
+
+		const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
+		if (!STU_PlayerState)
+		{
+			continue;
+		}
+
+		STU_PlayerState->SetTeamID(CurrentTeamID);
+		STU_PlayerState->SetTeamColor(GameData.TeamsMap[CurrentTeamID]);
+		SetPlayerColor(Controller);
+
+		CurrentTeamID++;
+		if (CurrentTeamID > NumberOfTeams)
+		{
+			CurrentTeamID = 1;
+		}
+	}
+}
+
+void ASTU_GameModeBase::SetPlayerColor(AController* Controller)
+{
+	if (!Controller)
+		return;
+
+	const auto STU_Character = Cast<ASTU_Character>(Controller->GetPawn());
+	if (!STU_Character)
+		return;
+
+	const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
+	if (!STU_PlayerState)
+		return;
+
+	STU_Character->SetPlayerColor(STU_PlayerState->GetTeamColor());
 }

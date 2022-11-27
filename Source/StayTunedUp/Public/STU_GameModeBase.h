@@ -22,6 +22,12 @@ struct FSTU_GameData
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "600"))
 	int32 SecondsInRound = 30;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	FLinearColor DefaultTeamColor = FLinearColor::Red;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	TMap<int32, FLinearColor> TeamsMap;
 };
 
 /**
@@ -67,4 +73,7 @@ private:
 	void UpdateRound();
 
 	void RestartPlayers();
+
+	void SetTeams();
+	void SetPlayerColor(AController* Controller);
 };

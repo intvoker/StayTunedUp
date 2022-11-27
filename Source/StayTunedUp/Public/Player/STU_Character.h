@@ -50,6 +50,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Life")
 	float LifeSpan = 10.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	FName MaterialColorName = "Paint Color";
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -71,6 +74,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	bool IsRunning() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Game")
+	void SetPlayerColor(const FLinearColor& Color);
 
 private:
 	bool bPressedRun = false;
