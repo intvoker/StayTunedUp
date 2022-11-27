@@ -16,6 +16,12 @@ struct FSTU_GameData
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "64"))
 	int32 NumberOfPlayers = 4;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "10"))
+	int32 NumberOfRounds = 2;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "10", ClampMax = "600"))
+	int32 SecondsInRound = 10;
 };
 
 /**
@@ -45,8 +51,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	FSTU_GameData GameData;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game")
+	float UpdateRoundTime = 1.0f;
+
 private:
+	int32 CurrentRoundIndex = 1;
+	int32 CurrentRoundRemainingSeconds = 0;
+	FTimerHandle UpdateRoundTimerHandle;
+
 	void SpawnAIControllers();
 
 	APlayerStart* FindPlayerStartByTag(FName PlayerStartTagParam) const;
+
+	void StartRound();
+	void UpdateRound();
 };

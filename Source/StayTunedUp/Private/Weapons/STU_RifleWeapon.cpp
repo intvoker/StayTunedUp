@@ -9,14 +9,14 @@ void ASTU_RifleWeapon::Fire()
 {
 	Super::Fire();
 
-	GetWorld()->GetTimerManager().SetTimer(ShotTimerHandle, this, &ThisClass::MakeShot, TimeBetweenShots, true);
+	GetWorld()->GetTimerManager().SetTimer(MakeShotTimerHandle, this, &ThisClass::MakeShot, TimeBetweenShots, true);
 }
 
 void ASTU_RifleWeapon::StopFiring()
 {
 	Super::StopFiring();
 
-	GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(MakeShotTimerHandle);
 }
 
 void ASTU_RifleWeapon::BeginPlay()
@@ -28,7 +28,7 @@ void ASTU_RifleWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
-	GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(MakeShotTimerHandle);
 }
 
 void ASTU_RifleWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult)

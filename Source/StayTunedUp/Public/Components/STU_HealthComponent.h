@@ -69,5 +69,5 @@ private:
 	void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy,
 	                     AActor* DamageCauser);
 
-	void OnHealTimer();
+	void Heal();
 };

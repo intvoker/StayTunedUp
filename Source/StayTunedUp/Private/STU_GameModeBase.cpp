@@ -22,6 +22,8 @@ void ASTU_GameModeBase::StartPlay()
 	Super::StartPlay();
 
 	SpawnAIControllers();
+
+	StartRound();
 }
 
 UClass* ASTU_GameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -72,4 +74,34 @@ APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(FName PlayerStartTagParam)
 	}
 
 	return nullptr;
+}
+
+void ASTU_GameModeBase::StartRound()
+{
+	CurrentRoundRemainingSeconds = GameData.SecondsInRound;
+	GetWorldTimerManager().SetTimer(UpdateRoundTimerHandle, this, &ThisClass::UpdateRound, UpdateRoundTime, true);
+}
+
+void ASTU_GameModeBase::UpdateRound()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Remaining Seconds: %d. Round: %d/%d."), CurrentRoundRemainingSeconds,
+	       CurrentRoundIndex, GameData.NumberOfRounds);
+
+	CurrentRoundRemainingSeconds -= UpdateRoundTime;
+
+	if (CurrentRoundRemainingSeconds <= 0)
+	{
+		GetWorldTimerManager().ClearTimer(UpdateRoundTimerHandle);
+
+		CurrentRoundIndex++;
+
+		if (CurrentRoundIndex <= GameData.NumberOfRounds)
+		{
+			StartRound();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Game over."));
+		}
+	}
 }

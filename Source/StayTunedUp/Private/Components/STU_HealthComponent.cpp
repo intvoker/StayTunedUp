@@ -67,12 +67,12 @@ void USTU_HealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, c
 	}
 	else if (bAutoHeal)
 	{
-		GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &ThisClass::OnHealTimer, HealUpdateTime, true,
+		GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &ThisClass::Heal, HealUpdateTime, true,
 		                                       HealDelay);
 	}
 }
 
-void USTU_HealthComponent::OnHealTimer()
+void USTU_HealthComponent::Heal()
 {
 	SetHealth(Health + HealModifier);
 

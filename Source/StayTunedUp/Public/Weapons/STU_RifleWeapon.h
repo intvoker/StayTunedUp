@@ -35,5 +35,5 @@ protected:
 	                          FVector& OutTraceEnd) override;
 
 private:
-	FTimerHandle ShotTimerHandle;
+	FTimerHandle MakeShotTimerHandle;
 };
