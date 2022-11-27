@@ -7,6 +7,7 @@
 #include "Components/STU_HealthComponent.h"
 #include "Perception/AISense_Sight.h"
 #include "Player/STU_Character.h"
+#include "Player/STU_PlayerState.h"
 
 AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor()
 {
@@ -36,6 +37,12 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor()
 			continue;
 		}
 
+		const auto PerceivedPawn = Cast<APawn>(PerceivedActor);
+		if (PerceivedPawn && !AreEnemies(Pawn->Controller, PerceivedPawn->Controller))
+		{
+			continue;
+		}
+
 		const auto Distance = (PerceivedActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
 		if (Distance < MinDistance)
 		{
@@ -45,4 +52,18 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor()
 	}
 
 	return EnemyActor;
+}
+
+bool USTU_AIPerceptionComponent::AreEnemies(const AController* Left, const AController* Right) const
+{
+	if (!Left || !Right || Left == Right)
+		return false;
+
+	const auto STU_PlayerStateLeft = Cast<ASTU_PlayerState>(Left->PlayerState);
+	const auto STU_PlayerStateRight = Cast<ASTU_PlayerState>(Right->PlayerState);
+
+	if (!STU_PlayerStateLeft || !STU_PlayerStateRight)
+		return false;
+
+	return STU_PlayerStateLeft->GetTeamID() != STU_PlayerStateRight->GetTeamID();
 }
