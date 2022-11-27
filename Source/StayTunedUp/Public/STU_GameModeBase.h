@@ -20,8 +20,8 @@ struct FSTU_GameData
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "10"))
 	int32 NumberOfRounds = 2;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "10", ClampMax = "600"))
-	int32 SecondsInRound = 10;
+	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "600"))
+	int32 SecondsInRound = 30;
 };
 
 /**
@@ -65,4 +65,6 @@ private:
 
 	void StartRound();
 	void UpdateRound();
+
+	void RestartPlayers();
 };

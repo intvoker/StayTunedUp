@@ -142,8 +142,14 @@ void USTU_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
-	Weapons.Empty();
 	CurrentWeapon = nullptr;
+
+	for (auto Weapon : Weapons)
+	{
+		Weapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		Weapon->Destroy();
+	}
+	Weapons.Empty();
 }
 
 void USTU_WeaponComponent::InitAnimNotifies()

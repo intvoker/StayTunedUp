@@ -12,6 +12,8 @@ ASTU_AIController::ASTU_AIController()
 	STU_AIPerceptionComponent = CreateDefaultSubobject<USTU_AIPerceptionComponent>("STU_AIPerceptionComponent");
 
 	SetPerceptionComponent(*STU_AIPerceptionComponent);
+
+	bWantsPlayerState = true;
 }
 
 void ASTU_AIController::Tick(float DeltaSeconds)

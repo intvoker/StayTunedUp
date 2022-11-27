@@ -97,11 +97,25 @@ void ASTU_GameModeBase::UpdateRound()
 
 		if (CurrentRoundIndex <= GameData.NumberOfRounds)
 		{
+			RestartPlayers();
 			StartRound();
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Game over."));
 		}
+	}
+}
+
+void ASTU_GameModeBase::RestartPlayers()
+{
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		const auto Controller = It->Get();
+		if (Controller && Controller->GetPawn())
+		{
+			Controller->GetPawn()->Reset();
+		}
+		RestartPlayer(Controller);
 	}
 }
