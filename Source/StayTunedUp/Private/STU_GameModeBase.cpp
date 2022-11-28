@@ -55,7 +55,7 @@ AActor* ASTU_GameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 
 void ASTU_GameModeBase::SpawnAIControllers()
 {
-	for (auto _ = GameData.NumberOfPlayers; _--;)
+	for (auto _ = GameData.NumberOfAIPlayers; _--;)
 	{
 		FActorSpawnParameters SpawnInfo;
 		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

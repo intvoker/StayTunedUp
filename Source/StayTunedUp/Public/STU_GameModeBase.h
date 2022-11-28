@@ -15,7 +15,7 @@ struct FSTU_GameData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "64"))
-	int32 NumberOfPlayers = 4;
+	int32 NumberOfAIPlayers = 4;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "10"))
 	int32 NumberOfRounds = 2;
