@@ -53,6 +53,48 @@ AActor* ASTU_GameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 	return Super::ChoosePlayerStart_Implementation(Player);
 }
 
+bool ASTU_GameModeBase::AreEnemies(const AController* Left, const AController* Right) const
+{
+	if (!Left || !Right || Left == Right)
+		return false;
+
+	const auto STU_PlayerStateLeft = Cast<ASTU_PlayerState>(Left->PlayerState);
+	const auto STU_PlayerStateRight = Cast<ASTU_PlayerState>(Right->PlayerState);
+
+	if (!STU_PlayerStateLeft || !STU_PlayerStateRight)
+		return false;
+
+	return STU_PlayerStateLeft->GetTeamID() != STU_PlayerStateRight->GetTeamID();
+}
+
+void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Victim) const
+{
+	if (!Killer || !Victim)
+		return;
+
+	const auto STU_PlayerStateKiller = Cast<ASTU_PlayerState>(Killer->PlayerState);
+	const auto STU_PlayerStateVictim = Cast<ASTU_PlayerState>(Victim->PlayerState);
+
+	if (STU_PlayerStateKiller)
+	{
+		if (AreEnemies(Killer, Victim))
+		{
+			STU_PlayerStateKiller->AddKill();
+		}
+		else
+		{
+			STU_PlayerStateKiller->AddFriendlyKill();
+		}
+	}
+
+	if (STU_PlayerStateVictim)
+	{
+		STU_PlayerStateVictim->AddDeath();
+	}
+
+	UE_LOG(LogTemp, Display, TEXT("%s kills %s."), *Killer->GetName(), *Victim->GetName());
+}
+
 void ASTU_GameModeBase::SpawnAIControllers()
 {
 	for (auto _ = GameData.NumberOfAIPlayers; _--;)
@@ -106,6 +148,7 @@ void ASTU_GameModeBase::UpdateRound()
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Game over."));
+			LogPlayers();
 		}
 	}
 }
@@ -172,4 +215,25 @@ void ASTU_GameModeBase::SetPlayerColor(AController* Controller)
 		return;
 
 	STU_Character->SetPlayerColor(STU_PlayerState->GetTeamColor());
+}
+
+void ASTU_GameModeBase::LogPlayers() const
+{
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		const auto Controller = It->Get();
+		if (!Controller)
+		{
+			continue;
+		}
+
+		const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
+		if (!STU_PlayerState)
+		{
+			continue;
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("Player: %s. Info: %s."), *Controller->GetName(),
+		       *STU_PlayerState->GetPlayerStateInfo());
+	}
 }

@@ -21,7 +21,22 @@ public:
 	FLinearColor GetTeamColor() const { return TeamColor; }
 	void SetTeamColor(FLinearColor TeamColorParam) { TeamColor = TeamColorParam; }
 
+	int32 GetKills() const { return Kills; }
+	void AddKill() { Kills++; }
+
+	int32 GetFriendlyKills() const { return FriendlyKills; }
+	void AddFriendlyKill() { FriendlyKills++; }
+
+	int32 GetDeaths() const { return Deaths; }
+	void AddDeath() { Deaths++; }
+
+	FString GetPlayerStateInfo() const;
+
 private:
 	int32 TeamID;
 	FLinearColor TeamColor;
+
+	int32 Kills = 0;
+	int32 FriendlyKills = 0;
+	int32 Deaths = 0;
 };

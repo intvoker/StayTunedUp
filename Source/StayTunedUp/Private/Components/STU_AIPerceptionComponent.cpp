@@ -4,10 +4,10 @@
 #include "Components/STU_AIPerceptionComponent.h"
 
 #include "AIController.h"
+#include "STU_GameModeBase.h"
 #include "Components/STU_HealthComponent.h"
 #include "Perception/AISense_Sight.h"
 #include "Player/STU_Character.h"
-#include "Player/STU_PlayerState.h"
 
 AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor()
 {
@@ -38,7 +38,18 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor()
 		}
 
 		const auto PerceivedPawn = Cast<APawn>(PerceivedActor);
-		if (PerceivedPawn && !AreEnemies(Pawn->Controller, PerceivedPawn->Controller))
+		if (!PerceivedPawn)
+		{
+			continue;
+		}
+
+		const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
+		if (!STU_GameModeBase)
+		{
+			continue;
+		}
+
+		if (!STU_GameModeBase->AreEnemies(Pawn->Controller, PerceivedPawn->Controller))
 		{
 			continue;
 		}
@@ -52,18 +63,4 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor()
 	}
 
 	return EnemyActor;
-}
-
-bool USTU_AIPerceptionComponent::AreEnemies(const AController* Left, const AController* Right) const
-{
-	if (!Left || !Right || Left == Right)
-		return false;
-
-	const auto STU_PlayerStateLeft = Cast<ASTU_PlayerState>(Left->PlayerState);
-	const auto STU_PlayerStateRight = Cast<ASTU_PlayerState>(Right->PlayerState);
-
-	if (!STU_PlayerStateLeft || !STU_PlayerStateRight)
-		return false;
-
-	return STU_PlayerStateLeft->GetTeamID() != STU_PlayerStateRight->GetTeamID();
 }

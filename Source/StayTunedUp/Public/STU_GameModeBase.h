@@ -47,6 +47,10 @@ public:
 
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
+	bool AreEnemies(const AController* Left, const AController* Right) const;
+
+	void Killed(const AController* Killer, const AController* Victim) const;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	TSubclassOf<AAIController> AIControllerClass;
@@ -76,4 +80,6 @@ private:
 
 	void SetTeams();
 	void SetPlayerColor(AController* Controller);
+
+	void LogPlayers() const;
 };

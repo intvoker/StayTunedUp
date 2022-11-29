@@ -70,4 +70,6 @@ private:
 	                     AActor* DamageCauser);
 
 	void Heal();
+
+	void Killed(AController* Killer);
 };

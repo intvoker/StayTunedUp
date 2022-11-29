@@ -16,7 +16,4 @@ class STAYTUNEDUP_API USTU_AIPerceptionComponent : public UAIPerceptionComponent
 
 public:
 	AActor* FindNearestAliveEnemyActor();
-
-private:
-	bool AreEnemies(const AController* Left, const AController* Right) const;
 };

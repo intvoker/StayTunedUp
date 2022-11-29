@@ -3,6 +3,8 @@
 
 #include "Components/STU_HealthComponent.h"
 
+#include "STU_GameModeBase.h"
+
 // Sets default values for this component's properties
 USTU_HealthComponent::USTU_HealthComponent()
 {
@@ -63,6 +65,7 @@ void USTU_HealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, c
 
 	if (IsDead())
 	{
+		Killed(InstigatedBy);
 		OnDeath.Broadcast();
 	}
 	else if (bAutoHeal)
@@ -80,4 +83,17 @@ void USTU_HealthComponent::Heal()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
 	}
+}
+
+void USTU_HealthComponent::Killed(AController* Killer)
+{
+	const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
+	if (!STU_GameModeBase)
+		return;
+
+	const auto Pawn = Cast<APawn>(GetOwner());
+	if (!Pawn)
+		return;
+
+	STU_GameModeBase->Killed(Killer, Pawn->Controller);
 }

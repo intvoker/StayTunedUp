@@ -59,7 +59,7 @@ FText USTU_PlayerHUDWidget::GeCurrentWeaponAmmoInfo()
 	if (!Weapon)
 		return FText::GetEmpty();
 
-	return Weapon->GetAmmoInfo();
+	return FText::FromString(Weapon->GetAmmoInfo());
 }
 
 ASTU_Weapon* USTU_PlayerHUDWidget::GetCurrentWeapon()
