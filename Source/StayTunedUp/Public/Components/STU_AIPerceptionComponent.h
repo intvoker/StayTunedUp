@@ -15,5 +15,5 @@ class STAYTUNEDUP_API USTU_AIPerceptionComponent : public UAIPerceptionComponent
 	GENERATED_BODY()
 
 public:
-	AActor* FindNearestAliveEnemyActor();
+	AActor* FindNearestAliveEnemyActor() const;
 };

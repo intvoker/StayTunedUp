@@ -9,7 +9,7 @@
 #include "Perception/AISense_Sight.h"
 #include "Player/STU_Character.h"
 
-AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor()
+AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor() const
 {
 	const auto AIController = Cast<AAIController>(GetOwner());
 	if (!AIController)

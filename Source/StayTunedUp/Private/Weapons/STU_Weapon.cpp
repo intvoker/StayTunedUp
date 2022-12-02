@@ -188,7 +188,7 @@ void ASTU_Weapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewD
 	OutViewDirection = ViewRotation.Vector();
 }
 
-void ASTU_Weapon::GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
+void ASTU_Weapon::GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const
 {
 	const FTransform MuzzleFlashSocketTransform = WeaponMesh->GetSocketTransform(MuzzleFlashSocketName);
 	OutViewLocation = MuzzleFlashSocketTransform.GetLocation();

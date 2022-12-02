@@ -117,5 +117,5 @@ private:
 
 	UAnimMontage* FindReloadAnimMontage(ASTU_Weapon* Weapon);
 
-	void PlayAnimMontage(UAnimMontage* AnimMontage);
+	void PlayAnimMontage(UAnimMontage* AnimMontage) const;
 };

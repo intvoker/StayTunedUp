@@ -308,7 +308,7 @@ UAnimMontage* USTU_WeaponComponent::FindReloadAnimMontage(ASTU_Weapon* Weapon)
 	return FoundWeaponData ? FoundWeaponData->ReloadAnimMontage : nullptr;
 }
 
-void USTU_WeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage)
+void USTU_WeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage) const
 {
 	const auto Character = Cast<ACharacter>(GetOwner());
 	if (!Character)

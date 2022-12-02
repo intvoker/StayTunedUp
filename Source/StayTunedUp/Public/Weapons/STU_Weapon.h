@@ -106,7 +106,7 @@ protected:
 	virtual void ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult);
 
 	void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
-	void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
+	void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const;
 	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd);
 
 	bool CanUseRound() const;

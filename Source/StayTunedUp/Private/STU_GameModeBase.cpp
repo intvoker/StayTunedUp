@@ -201,7 +201,7 @@ void ASTU_GameModeBase::SetTeams()
 	}
 }
 
-void ASTU_GameModeBase::SetPlayerColor(const AController* Controller)
+void ASTU_GameModeBase::SetPlayerColor(const AController* Controller) const
 {
 	if (!Controller)
 		return;

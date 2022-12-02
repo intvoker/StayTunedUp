@@ -79,7 +79,7 @@ private:
 	void RestartPlayers();
 
 	void SetTeams();
-	void SetPlayerColor(const AController* Controller);
+	void SetPlayerColor(const AController* Controller) const;
 
 	void LogPlayers() const;
 };

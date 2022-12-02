@@ -85,7 +85,7 @@ void USTU_HealthComponent::Heal()
 	}
 }
 
-void USTU_HealthComponent::Killed(const AController* Killer)
+void USTU_HealthComponent::Killed(const AController* Killer) const
 {
 	const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
 	if (!STU_GameModeBase)
