@@ -61,7 +61,7 @@ bool ASTU_Weapon::IsAmmoEmpty() const
 
 bool ASTU_Weapon::IsAmmoFull() const
 {
-	return (CurrentAmmo.Clips == DefaultAmmo.Clips && CurrentAmmo.Rounds == DefaultAmmo.Rounds);
+	return CurrentAmmo.Clips == DefaultAmmo.Clips && CurrentAmmo.Rounds == DefaultAmmo.Rounds;
 }
 
 float ASTU_Weapon::GetAmmoPercent() const
