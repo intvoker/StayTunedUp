@@ -16,10 +16,10 @@ USTU_PickupEnvQueryTest::USTU_PickupEnvQueryTest(const FObjectInitializer& Objec
 
 void USTU_PickupEnvQueryTest::RunTest(FEnvQueryInstance& QueryInstance) const
 {
-	UObject* DataOwner = QueryInstance.Owner.Get();
+	const UObject* DataOwner = QueryInstance.Owner.Get();
 	BoolValue.BindData(DataOwner, QueryInstance.QueryID);
 
-	bool bWantsPickup = BoolValue.GetValue();
+	const bool bWantsPickup = BoolValue.GetValue();
 
 	for (FEnvQueryInstance::ItemIterator It(this, QueryInstance); It; ++It)
 	{

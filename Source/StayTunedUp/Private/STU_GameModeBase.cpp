@@ -170,7 +170,7 @@ void ASTU_GameModeBase::RestartPlayers()
 void ASTU_GameModeBase::SetTeams()
 {
 	int32 CurrentTeamID = 1;
-	int32 NumberOfTeams = GameData.TeamsMap.Num();
+	const int32 NumberOfTeams = GameData.TeamsMap.Num();
 
 	if (!NumberOfTeams)
 		return;

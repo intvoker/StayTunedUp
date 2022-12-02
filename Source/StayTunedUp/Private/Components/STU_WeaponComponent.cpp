@@ -97,7 +97,7 @@ void USTU_WeaponComponent::OnOwnerDeath()
 {
 	StopFiring();
 
-	for (auto Weapon : Weapons)
+	for (const auto Weapon : Weapons)
 	{
 		Weapon->OnOwnerDeath();
 	}
@@ -144,7 +144,7 @@ void USTU_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 	CurrentWeapon = nullptr;
 
-	for (auto Weapon : Weapons)
+	for (const auto Weapon : Weapons)
 	{
 		Weapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		Weapon->Destroy();
