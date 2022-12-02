@@ -167,7 +167,7 @@ void ASTU_Weapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& 
 	*/
 }
 
-void ASTU_Weapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection)
+void ASTU_Weapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const
 {
 	const auto Character = Cast<ACharacter>(GetOwner());
 	if (!Character)

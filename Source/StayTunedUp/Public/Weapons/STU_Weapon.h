@@ -105,7 +105,7 @@ protected:
 	void MakeShot();
 	virtual void ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& HitResult);
 
-	void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection);
+	void GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const;
 	void GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const;
 	virtual void GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd);
 
