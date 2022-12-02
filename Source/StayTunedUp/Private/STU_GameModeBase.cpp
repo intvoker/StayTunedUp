@@ -107,7 +107,7 @@ void ASTU_GameModeBase::SpawnAIControllers()
 	}
 }
 
-APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(FName PlayerStartTagParam) const
+APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(const FName& PlayerStartTagParam) const
 {
 	for (TActorIterator<APlayerStart> It(GetWorld()); It; ++It)
 	{
@@ -201,7 +201,7 @@ void ASTU_GameModeBase::SetTeams()
 	}
 }
 
-void ASTU_GameModeBase::SetPlayerColor(AController* Controller)
+void ASTU_GameModeBase::SetPlayerColor(const AController* Controller)
 {
 	if (!Controller)
 		return;

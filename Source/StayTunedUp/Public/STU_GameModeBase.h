@@ -71,7 +71,7 @@ private:
 
 	void SpawnAIControllers();
 
-	APlayerStart* FindPlayerStartByTag(FName PlayerStartTagParam) const;
+	APlayerStart* FindPlayerStartByTag(const FName& PlayerStartTagParam) const;
 
 	void StartRound();
 	void UpdateRound();
@@ -79,7 +79,7 @@ private:
 	void RestartPlayers();
 
 	void SetTeams();
-	void SetPlayerColor(AController* Controller);
+	void SetPlayerColor(const AController* Controller);
 
 	void LogPlayers() const;
 };

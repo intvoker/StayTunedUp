@@ -11,7 +11,7 @@ STU_AnimUtility::~STU_AnimUtility()
 {
 }
 
-float STU_AnimUtility::GetMovementOffsetYaw(APawn* Pawn)
+float STU_AnimUtility::GetMovementOffsetYaw(const APawn* Pawn)
 {
 	const auto ForwardNormal = Pawn->GetActorForwardVector();
 	const auto VelocityNormal = Pawn->GetVelocity().GetSafeNormal();

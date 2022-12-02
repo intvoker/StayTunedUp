@@ -255,7 +255,7 @@ void USTU_WeaponComponent::EquipWeapon(ASTU_Weapon* Weapon)
 	CurrentReloadAnimMontage = FindReloadAnimMontage(CurrentWeapon);
 }
 
-void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName)
+void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, const FName& WeaponSocketName)
 {
 	if (WeaponSocketName.IsNone())
 		return;

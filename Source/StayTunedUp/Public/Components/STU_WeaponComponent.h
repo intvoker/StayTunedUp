@@ -108,7 +108,7 @@ private:
 
 	void EquipWeapon(ASTU_Weapon* Weapon);
 
-	void AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, FName& WeaponSocketName);
+	void AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, const FName& WeaponSocketName);
 
 	ASTU_Weapon* FindWeapon(ASTU_Weapon* Weapon) const;
 	ASTU_Weapon* FindNextWeapon(ASTU_Weapon* Weapon) const;

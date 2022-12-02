@@ -71,5 +71,5 @@ private:
 
 	void Heal();
 
-	void Killed(AController* Killer);
+	void Killed(const AController* Killer);
 };
