@@ -3,14 +3,6 @@
 
 #include "Animations/STU_AnimUtility.h"
 
-STU_AnimUtility::STU_AnimUtility()
-{
-}
-
-STU_AnimUtility::~STU_AnimUtility()
-{
-}
-
 float STU_AnimUtility::GetMovementOffsetYaw(const APawn* Pawn)
 {
 	const auto ForwardNormal = Pawn->GetActorForwardVector();
