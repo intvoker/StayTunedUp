@@ -56,6 +56,8 @@ void ASTU_Character::BeginPlay()
 void ASTU_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	SetComponentFacePlayer(HealthTextComponent);
 }
 
 // Called to bind functionality to input
@@ -130,6 +132,19 @@ void ASTU_Character::Run()
 void ASTU_Character::StopRunning()
 {
 	bPressedRun = false;
+}
+
+void ASTU_Character::SetComponentFacePlayer(USceneComponent* SceneComponent) const
+{
+	const auto PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld());
+	if (!PlayerController)
+		return;
+
+	const auto Pawn = PlayerController->GetPawnOrSpectator();
+	if (!Pawn)
+		return;
+
+	SceneComponent->SetWorldRotation((-Pawn->GetActorRotation().Vector()).Rotation());
 }
 
 void ASTU_Character::OnDeath()

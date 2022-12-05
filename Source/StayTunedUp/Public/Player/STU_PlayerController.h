@@ -17,4 +17,7 @@ class STAYTUNEDUP_API ASTU_PlayerController : public APlayerController
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	FName PlayerStartTag;
+
+protected:
+	virtual void SetSpectatorPawn(ASpectatorPawn* NewSpectatorPawn) override;
 };

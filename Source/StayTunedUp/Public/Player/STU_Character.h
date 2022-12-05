@@ -89,4 +89,6 @@ private:
 
 	void Run();
 	void StopRunning();
+
+	void SetComponentFacePlayer(USceneComponent* SceneComponent) const;
 };
