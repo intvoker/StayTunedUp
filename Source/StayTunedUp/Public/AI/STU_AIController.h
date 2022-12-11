@@ -7,6 +7,7 @@
 #include "STU_AIController.generated.h"
 
 class USTU_AIPerceptionComponent;
+class USTU_RespawnComponent;
 
 /**
  * 
@@ -24,6 +25,9 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USTU_AIPerceptionComponent* STU_AIPerceptionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USTU_RespawnComponent* RespawnComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	FName EnemyActorKeyName = "EnemyActor";

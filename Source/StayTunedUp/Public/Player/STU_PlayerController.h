@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "STU_PlayerController.generated.h"
 
+class USTU_RespawnComponent;
+
 /**
  * 
  */
@@ -15,6 +17,11 @@ class STAYTUNEDUP_API ASTU_PlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	ASTU_PlayerController();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USTU_RespawnComponent* RespawnComponent;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	FName PlayerStartTag;
 

@@ -5,6 +5,7 @@
 
 #include "AIController.h"
 #include "EngineUtils.h"
+#include "Components/STU_RespawnComponent.h"
 #include "GameFramework/PlayerStart.h"
 #include "Player/STU_Character.h"
 #include "Player/STU_PlayerController.h"
@@ -93,6 +94,13 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 	}
 
 	UE_LOG(LogTemp, Display, TEXT("%s kills %s."), *Killer->GetName(), *Victim->GetName());
+
+	InitiateRespawn(Victim);
+}
+
+void ASTU_GameModeBase::DoRespawn(AController* Controller)
+{
+	RestartOnePlayer(Controller);
 }
 
 void ASTU_GameModeBase::SpawnAIControllers()
@@ -123,8 +131,9 @@ APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(const FName& PlayerStartTa
 
 void ASTU_GameModeBase::StartRound()
 {
-	CurrentRoundRemainingSeconds = GameData.SecondsInRound;
-	GetWorldTimerManager().SetTimer(UpdateRoundTimerHandle, this, &ThisClass::UpdateRound, UpdateRoundTime, true);
+	CurrentRoundRemainingSeconds = GameData.RoundTime;
+	GetWorld()->GetTimerManager().SetTimer(UpdateRoundTimerHandle, this, &ThisClass::UpdateRound, UpdateRoundTime,
+	                                       true);
 }
 
 void ASTU_GameModeBase::UpdateRound()
@@ -136,7 +145,7 @@ void ASTU_GameModeBase::UpdateRound()
 
 	if (CurrentRoundRemainingSeconds <= 0)
 	{
-		GetWorldTimerManager().ClearTimer(UpdateRoundTimerHandle);
+		GetWorld()->GetTimerManager().ClearTimer(UpdateRoundTimerHandle);
 
 		CurrentRoundIndex++;
 
@@ -153,18 +162,35 @@ void ASTU_GameModeBase::UpdateRound()
 	}
 }
 
+void ASTU_GameModeBase::InitiateRespawn(const AController* Controller) const
+{
+	if (!Controller)
+		return;
+
+	const auto RespawnComponent = Controller->FindComponentByClass<USTU_RespawnComponent>();
+	if (!RespawnComponent)
+		return;
+
+	RespawnComponent->StartRespawn(GameData.RespawnTime);
+}
+
 void ASTU_GameModeBase::RestartPlayers()
 {
 	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
 	{
 		const auto Controller = It->Get();
-		if (Controller && Controller->GetPawn())
-		{
-			Controller->GetPawn()->Reset();
-		}
-		RestartPlayer(Controller);
-		SetPlayerColor(Controller);
+		RestartOnePlayer(Controller);
 	}
+}
+
+void ASTU_GameModeBase::RestartOnePlayer(AController* Controller)
+{
+	if (Controller && Controller->GetPawn())
+	{
+		Controller->GetPawn()->Reset();
+	}
+	RestartPlayer(Controller);
+	SetPlayerColor(Controller);
 }
 
 void ASTU_GameModeBase::SetTeams()

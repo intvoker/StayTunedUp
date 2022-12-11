@@ -21,7 +21,10 @@ struct FSTU_GameData
 	int32 NumberOfRounds = 2;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "600"))
-	int32 SecondsInRound = 30;
+	int32 RoundTime = 30;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "10"))
+	int32 RespawnTime = 5;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	FLinearColor DefaultTeamColor = FLinearColor::Red;
@@ -51,6 +54,8 @@ public:
 
 	void Killed(const AController* Killer, const AController* Victim) const;
 
+	void DoRespawn(AController* Controller);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	TSubclassOf<AAIController> AIControllerClass;
@@ -76,7 +81,10 @@ private:
 	void StartRound();
 	void UpdateRound();
 
+	void InitiateRespawn(const AController* Controller) const;
+
 	void RestartPlayers();
+	void RestartOnePlayer(AController* Controller);
 
 	void SetTeams();
 	void SetPlayerColor(const AController* Controller) const;
