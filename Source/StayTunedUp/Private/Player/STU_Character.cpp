@@ -60,6 +60,20 @@ void ASTU_Character::Tick(float DeltaTime)
 	SetComponentFacePlayer(HealthTextComponent);
 }
 
+void ASTU_Character::Reset()
+{
+	WeaponComponent->StopFiring();
+
+	Super::Reset();
+}
+
+void ASTU_Character::TurnOff()
+{
+	WeaponComponent->StopFiring();
+
+	Super::TurnOff();
+}
+
 // Called to bind functionality to input
 void ASTU_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

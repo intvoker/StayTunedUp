@@ -156,8 +156,7 @@ void ASTU_GameModeBase::UpdateRound()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Game over."));
-			LogPlayers();
+			GameOver();
 		}
 	}
 }
@@ -244,6 +243,18 @@ void ASTU_GameModeBase::SetPlayerColor(const AController* Controller) const
 		return;
 
 	STU_Character->SetPlayerColor(STU_PlayerState->GetTeamColor());
+}
+
+void ASTU_GameModeBase::GameOver() const
+{
+	UE_LOG(LogTemp, Warning, TEXT("Game over."));
+	LogPlayers();
+
+	for (const auto Pawn : TActorRange<APawn>(GetWorld()))
+	{
+		Pawn->TurnOff();
+		Pawn->DisableInput(nullptr);
+	}
 }
 
 void ASTU_GameModeBase::LogPlayers() const

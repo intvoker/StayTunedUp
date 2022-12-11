@@ -89,5 +89,7 @@ private:
 	void SetTeams();
 	void SetPlayerColor(const AController* Controller) const;
 
+	void GameOver() const;
+	
 	void LogPlayers() const;
 };
