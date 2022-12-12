@@ -163,7 +163,7 @@ void ASTU_GameModeBase::UpdateRound()
 
 void ASTU_GameModeBase::InitiateRespawn(const AController* Controller) const
 {
-	if (CurrentRoundRemainingSeconds < GameData.RespawnTime)
+	if (CurrentRoundRemainingSeconds <= GameData.RespawnTime + UpdateRoundTime)
 		return;
 
 	if (!Controller)
