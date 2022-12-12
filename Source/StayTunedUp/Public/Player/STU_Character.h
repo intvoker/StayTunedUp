@@ -6,8 +6,6 @@
 #include "GameFramework/Character.h"
 #include "STU_Character.generated.h"
 
-class UCameraComponent;
-class USpringArmComponent;
 class USTU_FallDamageComponent;
 class USTU_HealthComponent;
 class USTU_WeaponComponent;
@@ -23,12 +21,6 @@ public:
 	ASTU_Character(const FObjectInitializer& ObjectInitializer);
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UCameraComponent* CameraComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USpringArmComponent* SpringArmComponent;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USTU_HealthComponent* HealthComponent;
 
@@ -69,29 +61,15 @@ public:
 	virtual void Reset() override;
 	virtual void TurnOff() override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	bool IsMovingForward() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
-	bool IsRunning() const;
+	virtual bool IsRunning() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Game")
 	void SetPlayerColor(const FLinearColor& Color);
 
 private:
-	bool bPressedRun = false;
-
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-
-	void LookUp(float Value);
-	void Turn(float Value);
-
-	void Run();
-	void StopRunning();
-
 	void SetComponentFacePlayer(USceneComponent* SceneComponent) const;
 };

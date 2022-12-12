@@ -8,6 +8,7 @@
 #include "Components/STU_RespawnComponent.h"
 #include "GameFramework/PlayerStart.h"
 #include "Player/STU_Character.h"
+#include "Player/STU_PlayerCharacter.h"
 #include "Player/STU_PlayerController.h"
 #include "Player/STU_PlayerState.h"
 #include "UI/STU_HUD.h"
@@ -17,7 +18,7 @@ ASTU_GameModeBase::ASTU_GameModeBase()
 	PlayerControllerClass = ASTU_PlayerController::StaticClass();
 	PlayerStateClass = ASTU_PlayerState::StaticClass();
 	HUDClass = ASTU_HUD::StaticClass();
-	DefaultPawnClass = ASTU_Character::StaticClass();
+	DefaultPawnClass = ASTU_PlayerCharacter::StaticClass();
 }
 
 void ASTU_GameModeBase::StartPlay()
