@@ -15,12 +15,6 @@ ASTU_DamageActor::ASTU_DamageActor()
 	SetRootComponent(SceneComponent);
 }
 
-// Called when the game starts or when spawned
-void ASTU_DamageActor::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 // Called every frame
 void ASTU_DamageActor::Tick(float DeltaTime)
 {
@@ -29,4 +23,10 @@ void ASTU_DamageActor::Tick(float DeltaTime)
 	DrawDebugSphere(GetWorld(), GetActorLocation(), Radius, Segments, Color);
 	UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, GetActorLocation(), Radius, nullptr, {}, this, nullptr,
 	                                    bDoFullDamage);
+}
+
+// Called when the game starts or when spawned
+void ASTU_DamageActor::BeginPlay()
+{
+	Super::BeginPlay();
 }

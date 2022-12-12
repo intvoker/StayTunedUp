@@ -31,18 +31,6 @@ ASTU_Character::ASTU_Character(const FObjectInitializer& ObjectInitializer):
 	HealthTextComponent->SetupAttachment(GetRootComponent());
 }
 
-// Called when the game starts or when spawned
-void ASTU_Character::BeginPlay()
-{
-	Super::BeginPlay();
-
-	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
-	HealthComponent->OnDeath.AddDynamic(WeaponComponent, &USTU_WeaponComponent::OnOwnerDeath);
-
-	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
-	OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
-}
-
 // Called every frame
 void ASTU_Character::Tick(float DeltaTime)
 {
@@ -84,17 +72,16 @@ void ASTU_Character::SetPlayerColor(const FLinearColor& Color)
 	MaterialInstanceDynamic->SetVectorParameterValue(MaterialColorName, Color);
 }
 
-void ASTU_Character::SetComponentFacePlayer(USceneComponent* SceneComponent) const
+// Called when the game starts or when spawned
+void ASTU_Character::BeginPlay()
 {
-	const auto PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld());
-	if (!PlayerController)
-		return;
+	Super::BeginPlay();
 
-	const auto Pawn = PlayerController->GetPawnOrSpectator();
-	if (!Pawn)
-		return;
+	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
+	HealthComponent->OnDeath.AddDynamic(WeaponComponent, &USTU_WeaponComponent::OnOwnerDeath);
 
-	SceneComponent->SetWorldRotation((-Pawn->GetActorRotation().Vector()).Rotation());
+	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
+	OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
 }
 
 void ASTU_Character::OnDeath()
@@ -116,4 +103,17 @@ void ASTU_Character::OnDeath()
 void ASTU_Character::OnHealthChanged(float Health, float HealthDelta)
 {
 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.0f"), Health)));
+}
+
+void ASTU_Character::SetComponentFacePlayer(USceneComponent* SceneComponent) const
+{
+	const auto PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld());
+	if (!PlayerController)
+		return;
+
+	const auto Pawn = PlayerController->GetPawnOrSpectator();
+	if (!Pawn)
+		return;
+
+	SceneComponent->SetWorldRotation((-Pawn->GetActorRotation().Vector()).Rotation());
 }
