@@ -48,6 +48,8 @@ private:
 
 	UFUNCTION()
 	void OnHealthChanged(float Health, float HealthDelta);
+
+	void OnNewPawn(APawn* NewPawn);
 };
 
 template <typename T>

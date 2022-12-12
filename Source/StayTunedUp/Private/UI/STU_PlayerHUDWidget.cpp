@@ -9,9 +9,10 @@
 
 bool USTU_PlayerHUDWidget::Initialize()
 {
-	if (const auto HealthComponent = GetComponent<USTU_HealthComponent>())
+	if (const auto PlayerController = GetOwningPlayer())
 	{
-		HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
+		PlayerController->GetOnNewPawnNotifier().AddUObject(this, &ThisClass::OnNewPawn);
+		OnNewPawn(GetOwningPlayerPawn());
 	}
 
 	return Super::Initialize();
@@ -91,4 +92,15 @@ void USTU_PlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
 		return;
 
 	PlayAnimation(DamageAnimation);
+}
+
+void USTU_PlayerHUDWidget::OnNewPawn(APawn* NewPawn)
+{
+	if (const auto HealthComponent = GetComponent<USTU_HealthComponent>())
+	{
+		if (!HealthComponent->OnHealthChanged.IsAlreadyBound(this, &ThisClass::OnHealthChanged))
+		{
+			HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
+		}
+	}
 }
