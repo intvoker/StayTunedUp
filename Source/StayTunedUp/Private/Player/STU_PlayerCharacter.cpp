@@ -4,6 +4,8 @@
 #include "Player/STU_PlayerCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "Components/STU_WeaponComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -16,6 +18,11 @@ ASTU_PlayerCharacter::ASTU_PlayerCharacter(const FObjectInitializer& ObjectIniti
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
+
+	CameraCollisionSphereComponent = CreateDefaultSubobject<USphereComponent>("CameraCollisionSphereComponent");
+	CameraCollisionSphereComponent->InitSphereRadius(10.0f);
+	CameraCollisionSphereComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	CameraCollisionSphereComponent->SetupAttachment(CameraComponent);
 }
 
 // Called to bind functionality to input
@@ -46,6 +53,14 @@ void ASTU_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 bool ASTU_PlayerCharacter::IsRunning() const
 {
 	return bPressedRun && IsMovingForward();
+}
+
+void ASTU_PlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	CameraCollisionSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnCameraCollisionBeginOverlap);
+	CameraCollisionSphereComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnCameraCollisionEndOverlap);
 }
 
 void ASTU_PlayerCharacter::OnDeath()
@@ -100,4 +115,34 @@ void ASTU_PlayerCharacter::Run()
 void ASTU_PlayerCharacter::StopRunning()
 {
 	bPressedRun = false;
+}
+
+void ASTU_PlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+                                                         bool bFromSweep, const FHitResult& SweepResult)
+{
+	CheckCameraOverlap();
+}
+
+void ASTU_PlayerCharacter::OnCameraCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	CheckCameraOverlap();
+}
+
+void ASTU_PlayerCharacter::CheckCameraOverlap() const
+{
+	const auto bHide = CameraCollisionSphereComponent->IsOverlappingComponent(GetCapsuleComponent());
+	GetMesh()->SetOwnerNoSee(bHide);
+
+	TArray<USceneComponent*> SceneComponentChildren;
+	GetMesh()->GetChildrenComponents(true, SceneComponentChildren);
+
+	for (const auto SceneComponentChild : SceneComponentChildren)
+	{
+		if (const auto PrimitiveComponentChild = Cast<UPrimitiveComponent>(SceneComponentChild))
+		{
+			PrimitiveComponentChild->SetOwnerNoSee(bHide);
+		}
+	}
 }

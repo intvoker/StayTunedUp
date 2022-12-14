@@ -7,6 +7,7 @@
 #include "STU_PlayerCharacter.generated.h"
 
 class UCameraComponent;
+class USphereComponent;
 class USpringArmComponent;
 
 /**
@@ -32,6 +33,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USphereComponent* CameraCollisionSphereComponent;
+
+	virtual void BeginPlay() override;
+
 	virtual void OnDeath() override;
 
 	virtual void OnHealthChanged(float Health, float HealthDelta) override;
@@ -47,4 +53,15 @@ private:
 
 	void Run();
 	void StopRunning();
+
+	UFUNCTION()
+	void OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                                   const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnCameraCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	void CheckCameraOverlap() const;
 };
