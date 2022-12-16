@@ -29,6 +29,8 @@ void ASTU_GameModeBase::StartPlay()
 	SetTeams();
 
 	StartRound();
+
+	SetGameMatchState(ESTU_GameMatchState::Started);
 }
 
 UClass* ASTU_GameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -102,6 +104,16 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 void ASTU_GameModeBase::DoRespawn(AController* Controller)
 {
 	RestartOnePlayer(Controller);
+}
+
+void ASTU_GameModeBase::SetGameMatchState(ESTU_GameMatchState GameMatchStateParam)
+{
+	if (GameMatchState == GameMatchStateParam)
+		return;
+
+	GameMatchState = GameMatchStateParam;
+
+	OnGameMatchStateChanged.Broadcast(GameMatchState);
 }
 
 void ASTU_GameModeBase::SpawnAIControllers()
@@ -246,7 +258,7 @@ void ASTU_GameModeBase::SetPlayerColor(const AController* Controller) const
 	STU_Character->SetPlayerColor(STU_PlayerState->GetTeamColor());
 }
 
-void ASTU_GameModeBase::GameOver() const
+void ASTU_GameModeBase::GameOver()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Game over."));
 	LogPlayers();
@@ -256,6 +268,8 @@ void ASTU_GameModeBase::GameOver() const
 		Pawn->TurnOff();
 		Pawn->DisableInput(nullptr);
 	}
+
+	SetGameMatchState(ESTU_GameMatchState::Finished);
 }
 
 void ASTU_GameModeBase::LogPlayers() const

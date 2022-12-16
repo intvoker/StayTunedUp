@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "STU_Types.h"
 #include "STU_HUD.generated.h"
 
 /**
@@ -24,5 +25,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	UFUNCTION()
+	void OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState);
+
 	void DrawCrosshair();
 };

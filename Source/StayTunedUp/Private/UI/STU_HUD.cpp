@@ -5,6 +5,7 @@
 
 #include "Blueprint/UserWidget.h"
 #include "Engine/Canvas.h"
+#include "STU_GameModeBase.h"
 
 void ASTU_HUD::DrawHUD()
 {
@@ -21,6 +22,16 @@ void ASTU_HUD::BeginPlay()
 	{
 		PlayerHUDWidget->AddToViewport();
 	}
+
+	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
+	{
+		STU_GameModeBase->OnGameMatchStateChanged.AddDynamic(this, &ThisClass::OnGameMatchStateChanged);
+	}
+}
+
+void ASTU_HUD::OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState)
+{
+	UE_LOG(LogTemp, Warning, TEXT("GameMatchState: %s."), *UEnum::GetValueAsString(GameMatchState));
 }
 
 void ASTU_HUD::DrawCrosshair()

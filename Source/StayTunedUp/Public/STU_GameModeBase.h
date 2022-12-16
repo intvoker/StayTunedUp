@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "STU_Types.h"
 #include "STU_GameModeBase.generated.h"
 
 class AAIController;
 class APlayerStart;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameMatchStateChangedSignature, ESTU_GameMatchState, GameMatchState);
 
 USTRUCT(BlueprintType)
 struct FSTU_GameData
@@ -44,6 +47,8 @@ class STAYTUNEDUP_API ASTU_GameModeBase : public AGameModeBase
 public:
 	ASTU_GameModeBase();
 
+	FGameMatchStateChangedSignature OnGameMatchStateChanged;
+
 	virtual void StartPlay() override;
 
 	virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
@@ -70,9 +75,13 @@ protected:
 	float UpdateRoundTime = 1.0f;
 
 private:
+	ESTU_GameMatchState GameMatchState = ESTU_GameMatchState::None;
+
 	int32 CurrentRoundIndex = 1;
 	int32 CurrentRoundRemainingSeconds = 0;
 	FTimerHandle UpdateRoundTimerHandle;
+
+	void SetGameMatchState(ESTU_GameMatchState GameMatchStateParam);
 
 	void SpawnAIControllers();
 
@@ -89,7 +98,7 @@ private:
 	void SetTeams();
 	void SetPlayerColor(const AController* Controller) const;
 
-	void GameOver() const;
-	
+	void GameOver();
+
 	void LogPlayers() const;
 };
