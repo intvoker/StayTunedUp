@@ -57,6 +57,30 @@ AActor* ASTU_GameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 	return Super::ChoosePlayerStart_Implementation(Player);
 }
 
+bool ASTU_GameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
+{
+	const auto bPauseSet = Super::SetPause(PC, CanUnpauseDelegate);
+
+	if (bPauseSet)
+	{
+		SetGameMatchState(ESTU_GameMatchState::Paused);
+	}
+
+	return bPauseSet;
+}
+
+bool ASTU_GameModeBase::ClearPause()
+{
+	const auto bPauseCleared = Super::ClearPause();
+
+	if (bPauseCleared)
+	{
+		SetGameMatchState(ESTU_GameMatchState::Started);
+	}
+
+	return bPauseCleared;
+}
+
 bool ASTU_GameModeBase::AreEnemies(const AController* Left, const AController* Right) const
 {
 	if (!Left || !Right || Left == Right)

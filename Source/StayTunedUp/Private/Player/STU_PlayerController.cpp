@@ -5,10 +5,28 @@
 
 #include "Components/STU_RespawnComponent.h"
 #include "GameFramework/SpectatorPawn.h"
+#include "STU_GameModeBase.h"
 
 ASTU_PlayerController::ASTU_PlayerController()
 {
 	RespawnComponent = CreateDefaultSubobject<USTU_RespawnComponent>("RespawnComponent");
+}
+
+void ASTU_PlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
+	{
+		STU_GameModeBase->OnGameMatchStateChanged.AddDynamic(this, &ThisClass::OnGameMatchStateChanged);
+	}
+}
+
+void ASTU_PlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+
+	InputComponent->BindAction("Pause", IE_Pressed, this, &ThisClass::PausePressed).bExecuteWhenPaused = true;
 }
 
 void ASTU_PlayerController::SetSpectatorPawn(ASpectatorPawn* NewSpectatorPawn)
@@ -19,5 +37,38 @@ void ASTU_PlayerController::SetSpectatorPawn(ASpectatorPawn* NewSpectatorPawn)
 	{
 		NewSpectatorPawn->bUseControllerRotationPitch = true;
 		NewSpectatorPawn->bUseControllerRotationYaw = true;
+	}
+}
+
+void ASTU_PlayerController::PausePressed()
+{
+	bPaused = !bPaused;
+
+	//UE_LOG(LogTemp, Display, TEXT("Paused %d"), bPaused);
+
+	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
+	{
+		if (bPaused)
+		{
+			STU_GameModeBase->SetPause(this);
+		}
+		else
+		{
+			STU_GameModeBase->ClearPause();
+		}
+	}
+}
+
+void ASTU_PlayerController::OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState)
+{
+	if (GameMatchState == ESTU_GameMatchState::Started)
+	{
+		SetInputMode(FInputModeGameOnly());
+		bShowMouseCursor = false;
+	}
+	else
+	{
+		SetInputMode(FInputModeGameAndUI());
+		bShowMouseCursor = true;
 	}
 }

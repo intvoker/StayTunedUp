@@ -26,5 +26,17 @@ public:
 	FName PlayerStartTag;
 
 protected:
+	virtual void BeginPlay() override;
+
+	virtual void SetupInputComponent() override;
+
 	virtual void SetSpectatorPawn(ASpectatorPawn* NewSpectatorPawn) override;
+
+private:
+	bool bPaused = false;
+
+	void PausePressed();
+
+	UFUNCTION()
+	void OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState);
 };

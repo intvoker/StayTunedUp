@@ -55,6 +55,9 @@ public:
 
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
+	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
+	virtual bool ClearPause() override;
+
 	bool AreEnemies(const AController* Left, const AController* Right) const;
 
 	void Killed(const AController* Killer, const AController* Victim) const;
