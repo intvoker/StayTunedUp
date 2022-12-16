@@ -33,8 +33,6 @@ protected:
 	virtual void SetSpectatorPawn(ASpectatorPawn* NewSpectatorPawn) override;
 
 private:
-	bool bPaused = false;
-
 	void PausePressed();
 
 	UFUNCTION()

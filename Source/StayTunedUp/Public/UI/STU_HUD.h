@@ -22,9 +22,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> PlayerHUDWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> GamePausedWidgetClass;
+
 	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY()
+	UUserWidget* CurrentGameWidget = nullptr;
+
+	UPROPERTY()
+	TMap<ESTU_GameMatchState, UUserWidget*> GameWidgets;
+
 	UFUNCTION()
 	void OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState);
 

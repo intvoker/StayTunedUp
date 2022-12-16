@@ -18,9 +18,19 @@ void ASTU_HUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (const auto PlayerHUDWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass))
+	GameWidgets.Add(ESTU_GameMatchState::Started, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
+	GameWidgets.Add(ESTU_GameMatchState::Paused, CreateWidget<UUserWidget>(GetWorld(), GamePausedWidgetClass));
+
+	for (const auto GameWidgetTuple : GameWidgets)
 	{
-		PlayerHUDWidget->AddToViewport();
+		const auto GameWidget = GameWidgetTuple.Value;
+		if (!GameWidget)
+		{
+			continue;
+		}
+
+		GameWidget->AddToViewport();
+		GameWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
@@ -31,6 +41,19 @@ void ASTU_HUD::BeginPlay()
 
 void ASTU_HUD::OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState)
 {
+	if (CurrentGameWidget)
+	{
+		CurrentGameWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+	if (GameWidgets.Contains(GameMatchState))
+	{
+		CurrentGameWidget = GameWidgets[GameMatchState];
+	}
+	if (CurrentGameWidget)
+	{
+		CurrentGameWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+
 	UE_LOG(LogTemp, Warning, TEXT("GameMatchState: %s."), *UEnum::GetValueAsString(GameMatchState));
 }
 
