@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "STU_RespawnComponent.generated.h"
 
-
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class STAYTUNEDUP_API USTU_RespawnComponent : public UActorComponent
 {

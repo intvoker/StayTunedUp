@@ -244,15 +244,11 @@ void ASTU_GameModeBase::SetTeams()
 	{
 		const auto Controller = It->Get();
 		if (!Controller)
-		{
 			continue;
-		}
 
 		const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
 		if (!STU_PlayerState)
-		{
 			continue;
-		}
 
 		STU_PlayerState->SetTeamID(CurrentTeamID);
 		STU_PlayerState->SetTeamColor(GameData.TeamsMap[CurrentTeamID]);
@@ -302,15 +298,11 @@ void ASTU_GameModeBase::LogPlayers() const
 	{
 		const auto Controller = It->Get();
 		if (!Controller)
-		{
 			continue;
-		}
 
 		const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
 		if (!STU_PlayerState)
-		{
 			continue;
-		}
 
 		UE_LOG(LogTemp, Warning, TEXT("Player: %s. Info: %s."), *Controller->GetName(),
 		       *STU_PlayerState->GetPlayerStateInfo());

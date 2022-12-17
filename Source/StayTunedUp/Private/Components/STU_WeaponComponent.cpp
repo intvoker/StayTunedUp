@@ -204,9 +204,7 @@ void USTU_WeaponComponent::SpawnWeapons()
 	{
 		auto Weapon = GetWorld()->SpawnActor<ASTU_Weapon>(WeaponData.WeaponClass);
 		if (!Weapon)
-		{
 			continue;
-		}
 
 		Weapon->SetOwner(Character);
 		Weapon->OnClipEmpty.AddDynamic(this, &ThisClass::OnClipEmpty);

@@ -25,9 +25,7 @@ void ASTU_HUD::BeginPlay()
 	{
 		const auto GameWidget = GameWidgetTuple.Value;
 		if (!GameWidget)
-		{
 			continue;
-		}
 
 		GameWidget->AddToViewport();
 		GameWidget->SetVisibility(ESlateVisibility::Hidden);
