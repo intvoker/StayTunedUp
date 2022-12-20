@@ -22,6 +22,11 @@ void USTU_RespawnComponent::StartRespawn(int32 RespawnTime)
 	                                       true);
 }
 
+bool USTU_RespawnComponent::IsRespawning() const
+{
+	return GetWorld()->GetTimerManager().IsTimerActive(UpdateRespawnTimerHandle);
+}
+
 // Called when the game starts
 void USTU_RespawnComponent::BeginPlay()
 {
@@ -40,7 +45,7 @@ void USTU_RespawnComponent::UpdateRespawn()
 	if (!STU_GameModeBase)
 		return;
 
-	UE_LOG(LogTemp, Display, TEXT("Respawning %s in %d seconds."), *Controller->GetName(), RespawnRemainingSeconds);
+	//UE_LOG(LogTemp, Display, TEXT("Respawning %s in %d seconds."), *Controller->GetName(), RespawnRemainingSeconds);
 
 	RespawnRemainingSeconds -= UpdateRespawnTime;
 

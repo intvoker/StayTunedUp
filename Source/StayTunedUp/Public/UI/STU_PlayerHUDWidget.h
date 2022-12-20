@@ -20,19 +20,31 @@ public:
 	virtual bool Initialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
-	float GetHealthPercent();
-
-	UFUNCTION(BlueprintCallable, Category = "UI")
 	bool IsAlive();
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
-	FSlateBrush GeCurrentWeaponCrosshairIcon();
+	ESlateVisibility IsAliveVisible();
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
-	FSlateBrush GeCurrentWeaponMainIcon();
+	float GetHealthPercent();
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
-	FText GeCurrentWeaponAmmoInfo();
+	FSlateBrush GetCurrentWeaponCrosshairIcon();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	FSlateBrush GetCurrentWeaponMainIcon();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	FText GetCurrentWeaponAmmoInfo();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	bool IsSpectating();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	ESlateVisibility IsSpectatingVisible();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	FText GetSpectatingInfo();
 
 protected:
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
@@ -40,20 +52,33 @@ protected:
 
 private:
 	template <typename T>
-	T* GetComponent();
+	T* GetControllerComponent();
+
+	template <typename T>
+	T* GetPawnComponent();
 
 	ASTU_Weapon* GetCurrentWeapon();
 
 	FSlateBrush CreateBrush(UTexture2D* Icon);
 
+	void OnNewPawn(APawn* NewPawn);
+
 	UFUNCTION()
 	void OnHealthChanged(float Health, float HealthDelta);
-
-	void OnNewPawn(APawn* NewPawn);
 };
 
 template <typename T>
-T* USTU_PlayerHUDWidget::GetComponent()
+T* USTU_PlayerHUDWidget::GetControllerComponent()
+{
+	const auto PlayerController = GetOwningPlayer();
+	if (!PlayerController)
+		return nullptr;
+
+	return PlayerController->FindComponentByClass<T>();
+}
+
+template <typename T>
+T* USTU_PlayerHUDWidget::GetPawnComponent()
 {
 	const auto PlayerPawn = GetOwningPlayerPawn();
 	if (!PlayerPawn)

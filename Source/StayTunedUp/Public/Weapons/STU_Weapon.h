@@ -59,7 +59,7 @@ public:
 	bool IsAmmoEmpty() const;
 	bool IsAmmoFull() const;
 	float GetAmmoPercent() const;
-	FString GetAmmoInfo() const;
+	FSTU_AmmoData GetAmmoData() const { return CurrentAmmo; }
 
 	void OnOwnerDeath();
 

@@ -17,6 +17,10 @@ public:
 
 	void StartRespawn(int32 RespawnTime);
 
+	bool IsRespawning() const;
+
+	int32 GetRespawnRemainingSeconds() const { return RespawnRemainingSeconds; }
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game")
 	float UpdateRespawnTime = 1.0f;

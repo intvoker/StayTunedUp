@@ -75,13 +75,6 @@ float ASTU_Weapon::GetAmmoPercent() const
 	return TotalCurrentRounds / TotalDefaultRounds;
 }
 
-FString ASTU_Weapon::GetAmmoInfo() const
-{
-	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Rounds) + " / ";
-	AmmoInfo += CurrentAmmo.bInfinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
-	return AmmoInfo;
-}
-
 void ASTU_Weapon::OnOwnerDeath()
 {
 	STU_AnimUtility::SetRagdoll(this, WeaponMesh);
