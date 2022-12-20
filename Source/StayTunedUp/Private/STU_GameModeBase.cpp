@@ -120,8 +120,6 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 		STU_PlayerStateVictim->AddDeath();
 	}
 
-	UE_LOG(LogTemp, Display, TEXT("%s kills %s."), *Killer->GetName(), *Victim->GetName());
-
 	InitiateRespawn(Victim);
 }
 
@@ -175,19 +173,16 @@ void ASTU_GameModeBase::StartRound()
 
 void ASTU_GameModeBase::UpdateRound()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Remaining Seconds: %d. Round: %d/%d."), CurrentRoundRemainingSeconds,
-	       CurrentRoundIndex, GameData.NumberOfRounds);
-
 	CurrentRoundRemainingSeconds -= UpdateRoundTime;
 
 	if (CurrentRoundRemainingSeconds <= 0)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(UpdateRoundTimerHandle);
 
-		CurrentRoundIndex++;
-
-		if (CurrentRoundIndex <= GameData.NumberOfRounds)
+		if (CurrentRoundIndex < GameData.NumberOfRounds)
 		{
+			CurrentRoundIndex++;
+
 			RestartPlayers();
 			StartRound();
 		}
@@ -280,7 +275,6 @@ void ASTU_GameModeBase::SetPlayerColor(const AController* Controller) const
 
 void ASTU_GameModeBase::GameOver()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Game over."));
 	LogPlayers();
 
 	for (const auto Pawn : TActorRange<APawn>(GetWorld()))

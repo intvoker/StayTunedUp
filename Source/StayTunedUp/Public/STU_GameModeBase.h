@@ -64,6 +64,10 @@ public:
 
 	void DoRespawn(AController* Controller);
 
+	int32 GetCurrentRoundIndex() const { return CurrentRoundIndex; }
+	int32 GetNumberOfRounds() const { return GameData.NumberOfRounds; }
+	int32 GetCurrentRoundRemainingSeconds() const { return CurrentRoundRemainingSeconds; }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	TSubclassOf<AAIController> AIControllerClass;

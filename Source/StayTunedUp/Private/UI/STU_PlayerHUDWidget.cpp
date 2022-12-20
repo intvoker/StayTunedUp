@@ -6,6 +6,7 @@
 #include "Components/STU_HealthComponent.h"
 #include "Components/STU_RespawnComponent.h"
 #include "Components/STU_WeaponComponent.h"
+#include "STU_GameModeBase.h"
 #include "Weapons/STU_Weapon.h"
 
 bool USTU_PlayerHUDWidget::Initialize()
@@ -96,6 +97,19 @@ FText USTU_PlayerHUDWidget::GetSpectatingInfo()
 		TEXT("Respawning in %d seconds."), RespawnComponent->GetRespawnRemainingSeconds());
 
 	return FText::FromString(SpectatingInfo);
+}
+
+FText USTU_PlayerHUDWidget::GetRoundInfo()
+{
+	const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
+	if (!STU_GameModeBase)
+		return FText::GetEmpty();
+
+	const auto RoundInfo = FString::Printf(
+		TEXT("Round: %d/%d. Remaining %d seconds."), STU_GameModeBase->GetCurrentRoundIndex(),
+		STU_GameModeBase->GetNumberOfRounds(), STU_GameModeBase->GetCurrentRoundRemainingSeconds());
+
+	return FText::FromString(RoundInfo);
 }
 
 ASTU_Weapon* USTU_PlayerHUDWidget::GetCurrentWeapon()

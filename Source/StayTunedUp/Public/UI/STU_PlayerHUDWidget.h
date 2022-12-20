@@ -46,6 +46,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	FText GetSpectatingInfo();
 
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	FText GetRoundInfo();
+
 protected:
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	UWidgetAnimation* DamageAnimation;
