@@ -20,6 +20,7 @@ void ASTU_HUD::BeginPlay()
 
 	GameWidgets.Add(ESTU_GameMatchState::Started, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
 	GameWidgets.Add(ESTU_GameMatchState::Paused, CreateWidget<UUserWidget>(GetWorld(), GamePausedWidgetClass));
+	GameWidgets.Add(ESTU_GameMatchState::Finished, CreateWidget<UUserWidget>(GetWorld(), GameFinishedWidgetClass));
 
 	for (const auto GameWidgetTuple : GameWidgets)
 	{
@@ -52,7 +53,7 @@ void ASTU_HUD::OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState)
 		CurrentGameWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("GameMatchState: %s."), *UEnum::GetValueAsString(GameMatchState));
+	//UE_LOG(LogTemp, Warning, TEXT("GameMatchState: %s."), *UEnum::GetValueAsString(GameMatchState));
 }
 
 void ASTU_HUD::DrawCrosshair()

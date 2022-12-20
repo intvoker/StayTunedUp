@@ -25,6 +25,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> GamePausedWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> GameFinishedWidgetClass;
+
 	virtual void BeginPlay() override;
 
 private:

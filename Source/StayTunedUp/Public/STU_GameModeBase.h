@@ -64,6 +64,8 @@ public:
 
 	void DoRespawn(AController* Controller);
 
+	void RestartCurrentLevel() const;
+
 	int32 GetCurrentRoundIndex() const { return CurrentRoundIndex; }
 	int32 GetNumberOfRounds() const { return GameData.NumberOfRounds; }
 	int32 GetCurrentRoundRemainingSeconds() const { return CurrentRoundRemainingSeconds; }
