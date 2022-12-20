@@ -16,12 +16,11 @@ class STAYTUNEDUP_API USTU_GamePausedWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
-	virtual bool Initialize() override;
-
 protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* ClearPauseButton;
+
+	virtual void NativeConstruct() override;
 
 private:
 	UFUNCTION()

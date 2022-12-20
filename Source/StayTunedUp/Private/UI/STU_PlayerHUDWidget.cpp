@@ -9,17 +9,6 @@
 #include "STU_GameModeBase.h"
 #include "Weapons/STU_Weapon.h"
 
-bool USTU_PlayerHUDWidget::Initialize()
-{
-	if (const auto PlayerController = GetOwningPlayer())
-	{
-		PlayerController->GetOnNewPawnNotifier().AddUObject(this, &ThisClass::OnNewPawn);
-		OnNewPawn(GetOwningPlayerPawn());
-	}
-
-	return Super::Initialize();
-}
-
 bool USTU_PlayerHUDWidget::IsAlive()
 {
 	const auto HealthComponent = GetPawnComponent<USTU_HealthComponent>();
@@ -110,6 +99,17 @@ FText USTU_PlayerHUDWidget::GetRoundInfo()
 		STU_GameModeBase->GetNumberOfRounds(), STU_GameModeBase->GetCurrentRoundRemainingSeconds());
 
 	return FText::FromString(RoundInfo);
+}
+
+void USTU_PlayerHUDWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	if (const auto PlayerController = GetOwningPlayer())
+	{
+		PlayerController->GetOnNewPawnNotifier().AddUObject(this, &ThisClass::OnNewPawn);
+		OnNewPawn(GetOwningPlayerPawn());
+	}
 }
 
 ASTU_Weapon* USTU_PlayerHUDWidget::GetCurrentWeapon()

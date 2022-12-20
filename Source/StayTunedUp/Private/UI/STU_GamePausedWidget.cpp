@@ -6,16 +6,14 @@
 #include "Components/Button.h"
 #include "STU_GameModeBase.h"
 
-bool USTU_GamePausedWidget::Initialize()
+void USTU_GamePausedWidget::NativeConstruct()
 {
-	const auto bInitializedSet = Super::Initialize();
+	Super::NativeConstruct();
 
 	if (ClearPauseButton)
 	{
 		ClearPauseButton->OnClicked.AddDynamic(this, &ThisClass::OnClearPauseButton);
 	}
-
-	return bInitializedSet;
 }
 
 void USTU_GamePausedWidget::OnClearPauseButton()

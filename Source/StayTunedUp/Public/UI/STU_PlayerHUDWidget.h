@@ -17,8 +17,6 @@ class STAYTUNEDUP_API USTU_PlayerHUDWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	virtual bool Initialize() override;
-
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	bool IsAlive();
 
@@ -52,6 +50,8 @@ public:
 protected:
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	UWidgetAnimation* DamageAnimation;
+
+	virtual void NativeConstruct() override;
 
 private:
 	template <typename T>
