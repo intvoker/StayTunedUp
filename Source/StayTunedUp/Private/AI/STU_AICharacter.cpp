@@ -3,8 +3,8 @@
 
 #include "AI/STU_AICharacter.h"
 
-#include "BrainComponent.h"
 #include "AI/STU_AIController.h"
+#include "BrainComponent.h"
 #include "Components/STU_AIWeaponComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 

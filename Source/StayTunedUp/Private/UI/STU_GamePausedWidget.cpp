@@ -3,8 +3,8 @@
 
 #include "UI/STU_GamePausedWidget.h"
 
-#include "STU_GameModeBase.h"
 #include "Components/Button.h"
+#include "STU_GameModeBase.h"
 
 bool USTU_GamePausedWidget::Initialize()
 {

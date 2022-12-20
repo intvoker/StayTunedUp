@@ -5,7 +5,6 @@
 
 #include "AIController.h"
 #include "Components/STU_WeaponComponent.h"
-#include "Weapons/STU_Weapon.h"
 
 USTU_AmmoPercentBTDecorator::USTU_AmmoPercentBTDecorator()
 {

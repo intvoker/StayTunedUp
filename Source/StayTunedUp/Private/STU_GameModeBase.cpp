@@ -4,8 +4,8 @@
 #include "STU_GameModeBase.h"
 
 #include "AIController.h"
-#include "EngineUtils.h"
 #include "Components/STU_RespawnComponent.h"
+#include "EngineUtils.h"
 #include "GameFramework/PlayerStart.h"
 #include "Player/STU_Character.h"
 #include "Player/STU_PlayerCharacter.h"

@@ -4,10 +4,10 @@
 #include "Components/STU_AIPerceptionComponent.h"
 
 #include "AIController.h"
-#include "STU_GameModeBase.h"
 #include "Components/STU_HealthComponent.h"
 #include "Perception/AISense_Sight.h"
 #include "Player/STU_Character.h"
+#include "STU_GameModeBase.h"
 
 AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor() const
 {
