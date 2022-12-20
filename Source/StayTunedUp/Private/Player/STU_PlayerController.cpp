@@ -42,8 +42,6 @@ void ASTU_PlayerController::SetSpectatorPawn(ASpectatorPawn* NewSpectatorPawn)
 
 void ASTU_PlayerController::PausePressed()
 {
-	//UE_LOG(LogTemp, Display, TEXT("Paused %d"), bPaused);
-
 	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
 	{
 		if (!IsPaused())

@@ -45,8 +45,6 @@ void USTU_RespawnComponent::UpdateRespawn()
 	if (!STU_GameModeBase)
 		return;
 
-	//UE_LOG(LogTemp, Display, TEXT("Respawning %s in %d seconds."), *Controller->GetName(), RespawnRemainingSeconds);
-
 	RespawnRemainingSeconds -= UpdateRespawnTime;
 
 	if (RespawnRemainingSeconds <= 0)

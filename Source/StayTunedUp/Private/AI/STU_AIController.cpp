@@ -44,6 +44,4 @@ void ASTU_AIController::OnPossess(APawn* InPawn)
 void ASTU_AIController::OnUnPossess()
 {
 	Super::OnUnPossess();
-
-	//UE_LOG(LogTemp, Warning, TEXT("AIController OnUnPossess"));
 }
