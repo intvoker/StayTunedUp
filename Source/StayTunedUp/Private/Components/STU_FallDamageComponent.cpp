@@ -43,7 +43,7 @@ void USTU_FallDamageComponent::OnLandedCallback(const FHitResult& Hit)
 	const auto Damage = FMath::GetMappedRangeValueClamped<float>(FallDamageVelocity.MakeRange(),
 	                                                             FallDamage.MakeRange(), VelocityZ);
 
-	ComponentOwner->TakeDamage(Damage, FDamageEvent(), nullptr, nullptr);
+	ComponentOwner->TakeDamage(Damage, FDamageEvent(), ComponentOwner->GetController(), ComponentOwner);
 
 	//UE_LOG(LogTemp, Warning, TEXT("Damage: %f"), Damage);
 }

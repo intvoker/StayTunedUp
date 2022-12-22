@@ -98,6 +98,10 @@ bool ASTU_GameModeBase::AreEnemies(const AController* Left, const AController* R
 
 void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Victim) const
 {
+	//const auto KillerString = FString::Printf(TEXT("%s"), Killer ? *Killer->GetName() : TEXT("nullptr"));
+	//const auto VictimString = FString::Printf(TEXT("%s"), Victim ? *Victim->GetName() : TEXT("nullptr"));
+	//UE_LOG(LogTemp, Warning, TEXT("Killer: %s. Victim: %s."), *KillerString, *VictimString);
+
 	if (!Killer || !Victim)
 		return;
 
