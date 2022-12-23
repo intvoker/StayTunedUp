@@ -139,6 +139,26 @@ void ASTU_GameModeBase::RestartCurrentLevel() const
 	UGameplayStatics::OpenLevel(this, FName(CurrentLevelName));
 }
 
+TArray<ASTU_PlayerState*> ASTU_GameModeBase::GetPlayerStates() const
+{
+	TArray<ASTU_PlayerState*> PlayerStates;
+
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		const auto Controller = It->Get();
+		if (!Controller)
+			continue;
+
+		const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
+		if (!STU_PlayerState)
+			continue;
+
+		PlayerStates.Add(STU_PlayerState);
+	}
+
+	return PlayerStates;
+}
+
 void ASTU_GameModeBase::SetGameMatchState(ESTU_GameMatchState GameMatchStateParam)
 {
 	if (GameMatchState == GameMatchStateParam)
@@ -256,6 +276,7 @@ void ASTU_GameModeBase::SetTeams()
 		if (!STU_PlayerState)
 			continue;
 
+		STU_PlayerState->SetPlayerName(Controller->GetName());
 		STU_PlayerState->SetTeamID(CurrentTeamID);
 		STU_PlayerState->SetTeamColor(GameData.TeamsMap[CurrentTeamID]);
 		SetPlayerColor(Controller);
@@ -286,8 +307,6 @@ void ASTU_GameModeBase::SetPlayerColor(const AController* Controller) const
 
 void ASTU_GameModeBase::GameOver()
 {
-	LogPlayers();
-
 	for (const auto Pawn : TActorRange<APawn>(GetWorld()))
 	{
 		Pawn->TurnOff();
@@ -295,21 +314,4 @@ void ASTU_GameModeBase::GameOver()
 	}
 
 	SetGameMatchState(ESTU_GameMatchState::Finished);
-}
-
-void ASTU_GameModeBase::LogPlayers() const
-{
-	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
-	{
-		const auto Controller = It->Get();
-		if (!Controller)
-			continue;
-
-		const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
-		if (!STU_PlayerState)
-			continue;
-
-		UE_LOG(LogTemp, Warning, TEXT("Player: %s. Info: %s."), *Controller->GetName(),
-		       *STU_PlayerState->GetPlayerStateInfo());
-	}
 }

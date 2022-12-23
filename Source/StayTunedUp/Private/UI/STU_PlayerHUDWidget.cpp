@@ -6,7 +6,9 @@
 #include "Components/STU_HealthComponent.h"
 #include "Components/STU_RespawnComponent.h"
 #include "Components/STU_WeaponComponent.h"
+#include "Player/STU_PlayerState.h"
 #include "STU_GameModeBase.h"
+#include "UI/STU_PlayerStateWidget.h"
 #include "Weapons/STU_Weapon.h"
 
 bool USTU_PlayerHUDWidget::IsAlive()
@@ -95,7 +97,7 @@ FText USTU_PlayerHUDWidget::GetRoundInfo()
 		return FText::GetEmpty();
 
 	const auto RoundInfo = FString::Printf(
-		TEXT("Round: %d/%d. Remaining %d seconds."), STU_GameModeBase->GetCurrentRoundIndex(),
+		TEXT("Round: %d / %d. Remaining %d seconds."), STU_GameModeBase->GetCurrentRoundIndex(),
 		STU_GameModeBase->GetNumberOfRounds(), STU_GameModeBase->GetCurrentRoundRemainingSeconds());
 
 	return FText::FromString(RoundInfo);
@@ -110,6 +112,25 @@ void USTU_PlayerHUDWidget::NativeConstruct()
 		PlayerController->GetOnNewPawnNotifier().AddUObject(this, &ThisClass::OnNewPawn);
 		OnNewPawn(GetOwningPlayerPawn());
 	}
+}
+
+void USTU_PlayerHUDWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	if (PlayerStateWidget)
+	{
+		PlayerStateWidget->SetPlayerState(GetPlayerState());
+	}
+}
+
+ASTU_PlayerState* USTU_PlayerHUDWidget::GetPlayerState() const
+{
+	const auto PlayerController = GetOwningPlayer();
+	if (!PlayerController)
+		return nullptr;
+
+	return Cast<ASTU_PlayerState>(PlayerController->PlayerState);
 }
 
 ASTU_Weapon* USTU_PlayerHUDWidget::GetCurrentWeapon()

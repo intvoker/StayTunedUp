@@ -6,7 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "STU_PlayerHUDWidget.generated.h"
 
+class ASTU_PlayerState;
 class ASTU_Weapon;
+class USTU_PlayerStateWidget;
 
 /**
  * 
@@ -51,7 +53,12 @@ protected:
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	UWidgetAnimation* DamageAnimation;
 
+	UPROPERTY(meta = (BindWidget))
+	USTU_PlayerStateWidget* PlayerStateWidget;
+
 	virtual void NativeConstruct() override;
+
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 private:
 	template <typename T>
@@ -59,6 +66,8 @@ private:
 
 	template <typename T>
 	T* GetPawnComponent();
+
+	ASTU_PlayerState* GetPlayerState() const;
 
 	ASTU_Weapon* GetCurrentWeapon();
 

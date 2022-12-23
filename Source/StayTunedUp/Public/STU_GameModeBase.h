@@ -9,6 +9,7 @@
 
 class AAIController;
 class APlayerStart;
+class ASTU_PlayerState;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameMatchStateChangedSignature, ESTU_GameMatchState, GameMatchState);
 
@@ -66,6 +67,8 @@ public:
 
 	void RestartCurrentLevel() const;
 
+	TArray<ASTU_PlayerState*> GetPlayerStates() const;
+
 	int32 GetCurrentRoundIndex() const { return CurrentRoundIndex; }
 	int32 GetNumberOfRounds() const { return GameData.NumberOfRounds; }
 	int32 GetCurrentRoundRemainingSeconds() const { return CurrentRoundRemainingSeconds; }
@@ -108,6 +111,4 @@ private:
 	void SetPlayerColor(const AController* Controller) const;
 
 	void GameOver();
-
-	void LogPlayers() const;
 };

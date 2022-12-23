@@ -6,7 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "STU_GameFinishedWidget.generated.h"
 
+class ASTU_PlayerState;
 class UButton;
+class UVerticalBox;
 
 /**
  * 
@@ -20,9 +22,19 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* RestartLevelButton;
 
+	UPROPERTY(meta = (BindWidget))
+	UVerticalBox* PlayerStatesVerticalBox;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> PlayerStateWidgetClass;
+
 	virtual void NativeConstruct() override;
 
 private:
 	UFUNCTION()
 	void OnRestartLevelButton();
+
+	void OnWidgetVisibilityChanged(ESlateVisibility InVisibility);
+
+	void SetPlayerStates(TArray<ASTU_PlayerState*> PlayerStates) const;
 };

@@ -30,8 +30,6 @@ public:
 	int32 GetDeaths() const { return Deaths; }
 	void AddDeath() { Deaths++; }
 
-	FString GetPlayerStateInfo() const;
-
 private:
 	int32 TeamID;
 	FLinearColor TeamColor;
