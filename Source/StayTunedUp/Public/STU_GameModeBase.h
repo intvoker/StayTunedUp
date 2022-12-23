@@ -65,6 +65,7 @@ public:
 
 	void DoRespawn(AController* Controller);
 
+	void StartLevel(FName LevelName) const;
 	void RestartCurrentLevel() const;
 
 	TArray<ASTU_PlayerState*> GetPlayerStates() const;

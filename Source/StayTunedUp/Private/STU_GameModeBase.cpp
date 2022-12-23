@@ -133,10 +133,14 @@ void ASTU_GameModeBase::DoRespawn(AController* Controller)
 	RestartOnePlayer(Controller);
 }
 
+void ASTU_GameModeBase::StartLevel(FName LevelName) const
+{
+	UGameplayStatics::OpenLevel(this, LevelName);
+}
+
 void ASTU_GameModeBase::RestartCurrentLevel() const
 {
-	const auto CurrentLevelName = UGameplayStatics::GetCurrentLevelName(this);
-	UGameplayStatics::OpenLevel(this, FName(CurrentLevelName));
+	StartLevel(FName(UGameplayStatics::GetCurrentLevelName(this)));
 }
 
 TArray<ASTU_PlayerState*> ASTU_GameModeBase::GetPlayerStates() const
