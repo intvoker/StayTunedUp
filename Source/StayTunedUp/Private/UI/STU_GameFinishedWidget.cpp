@@ -5,6 +5,7 @@
 
 #include "Components/Button.h"
 #include "Components/VerticalBox.h"
+#include "STU_GameInstance.h"
 #include "STU_GameModeBase.h"
 #include "UI/STU_PlayerStateWidget.h"
 
@@ -22,9 +23,9 @@ void USTU_GameFinishedWidget::NativeConstruct()
 
 void USTU_GameFinishedWidget::OnRestartLevelButton()
 {
-	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
+	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
 	{
-		STU_GameModeBase->RestartCurrentLevel();
+		STU_GameInstance->RestartCurrentLevel();
 	}
 }
 

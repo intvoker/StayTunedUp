@@ -16,6 +16,4 @@ class STAYTUNEDUP_API ASTU_MenuGameModeBase : public AGameModeBase
 
 public:
 	ASTU_MenuGameModeBase();
-
-	void StartLevel(FName LevelName) const;
 };

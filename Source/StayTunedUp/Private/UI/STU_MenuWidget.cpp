@@ -4,7 +4,7 @@
 #include "UI/STU_MenuWidget.h"
 
 #include "Components/Button.h"
-#include "STU_MenuGameModeBase.h"
+#include "STU_GameInstance.h"
 
 void USTU_MenuWidget::NativeConstruct()
 {
@@ -18,8 +18,8 @@ void USTU_MenuWidget::NativeConstruct()
 
 void USTU_MenuWidget::OnStartGameButton()
 {
-	if (const auto STU_MenuGameModeBase = GetWorld()->GetAuthGameMode<ASTU_MenuGameModeBase>())
+	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
 	{
-		STU_MenuGameModeBase->StartLevel("TestLevel");
+		STU_GameInstance->StartLevel(STU_GameInstance->GetTestLevelName());
 	}
 }

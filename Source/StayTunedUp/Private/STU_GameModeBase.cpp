@@ -7,7 +7,6 @@
 #include "Components/STU_RespawnComponent.h"
 #include "EngineUtils.h"
 #include "GameFramework/PlayerStart.h"
-#include "Kismet/GameplayStatics.h"
 #include "Player/STU_Character.h"
 #include "Player/STU_PlayerCharacter.h"
 #include "Player/STU_PlayerController.h"
@@ -131,16 +130,6 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 void ASTU_GameModeBase::DoRespawn(AController* Controller)
 {
 	RestartOnePlayer(Controller);
-}
-
-void ASTU_GameModeBase::StartLevel(FName LevelName) const
-{
-	UGameplayStatics::OpenLevel(this, LevelName);
-}
-
-void ASTU_GameModeBase::RestartCurrentLevel() const
-{
-	StartLevel(FName(UGameplayStatics::GetCurrentLevelName(this)));
 }
 
 TArray<ASTU_PlayerState*> ASTU_GameModeBase::GetPlayerStates() const
