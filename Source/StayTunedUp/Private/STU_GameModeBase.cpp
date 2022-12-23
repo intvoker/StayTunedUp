@@ -59,6 +59,9 @@ AActor* ASTU_GameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 
 bool ASTU_GameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
 {
+	if (GameMatchState != ESTU_GameMatchState::Started)
+		return false;
+
 	const auto bPauseSet = Super::SetPause(PC, CanUnpauseDelegate);
 
 	if (bPauseSet)
@@ -71,6 +74,9 @@ bool ASTU_GameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDe
 
 bool ASTU_GameModeBase::ClearPause()
 {
+	if (GameMatchState != ESTU_GameMatchState::Paused)
+		return false;
+
 	const auto bPauseCleared = Super::ClearPause();
 
 	if (bPauseCleared)
