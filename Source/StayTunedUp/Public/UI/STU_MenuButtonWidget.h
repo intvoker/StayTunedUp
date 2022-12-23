@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "STU_MenuWidget.generated.h"
+#include "STU_MenuButtonWidget.generated.h"
 
 class UButton;
 
@@ -12,23 +12,17 @@ class UButton;
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API USTU_MenuWidget : public UUserWidget
+class STAYTUNEDUP_API USTU_MenuButtonWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 protected:
 	UPROPERTY(meta = (BindWidget))
-	UButton* StartGameButton;
-
-	UPROPERTY(meta = (BindWidget))
-	UButton* ExitGameButton;
+	UButton* MenuButton;
 
 	virtual void NativeConstruct() override;
 
 private:
 	UFUNCTION()
-	void OnStartGameButton();
-
-	UFUNCTION()
-	void OnExitGameButton();
+	void OnMenuButton();
 };

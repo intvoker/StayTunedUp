@@ -18,6 +18,8 @@ public:
 	void StartLevel(FName LevelName) const;
 	void RestartCurrentLevel() const;
 
+	void ExitGame();
+
 	FName GetMenuLevelName() const { return FName(MenuLevel.GetAssetName()); }
 	FName GetTestLevelName() const { return FName(TestLevel.GetAssetName()); }
 

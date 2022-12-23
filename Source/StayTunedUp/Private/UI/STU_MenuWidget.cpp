@@ -14,6 +14,11 @@ void USTU_MenuWidget::NativeConstruct()
 	{
 		StartGameButton->OnClicked.AddDynamic(this, &ThisClass::OnStartGameButton);
 	}
+
+	if (ExitGameButton)
+	{
+		ExitGameButton->OnClicked.AddDynamic(this, &ThisClass::OnExitGameButton);
+	}
 }
 
 void USTU_MenuWidget::OnStartGameButton()
@@ -21,5 +26,13 @@ void USTU_MenuWidget::OnStartGameButton()
 	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
 	{
 		STU_GameInstance->StartLevel(STU_GameInstance->GetTestLevelName());
+	}
+}
+
+void USTU_MenuWidget::OnExitGameButton()
+{
+	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
+	{
+		STU_GameInstance->ExitGame();
 	}
 }

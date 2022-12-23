@@ -17,3 +17,8 @@ void USTU_GameInstance::RestartCurrentLevel() const
 {
 	StartLevel(FName(UGameplayStatics::GetCurrentLevelName(this)));
 }
+
+void USTU_GameInstance::ExitGame()
+{
+	UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
+}
