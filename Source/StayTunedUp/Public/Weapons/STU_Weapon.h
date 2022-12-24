@@ -18,13 +18,13 @@ struct FSTU_AmmoData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	int32 Rounds;
+	int32 Rounds = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon", meta = (EditCondition = "!bInfinite"))
-	int32 Clips;
+	int32 Clips = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	bool bInfinite;
+	bool bInfinite = false;
 };
 
 USTRUCT(BlueprintType)
@@ -33,10 +33,10 @@ struct FSTU_WeaponUIData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
-	UTexture2D* MainIcon;
+	UTexture2D* MainIcon = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
-	UTexture2D* CrosshairIcon;
+	UTexture2D* CrosshairIcon = nullptr;
 };
 
 UCLASS()

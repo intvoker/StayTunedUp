@@ -14,7 +14,7 @@ struct FSTU_WeaponData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
-	UAnimMontage* ReloadAnimMontage;
+	UAnimMontage* ReloadAnimMontage = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	TSubclassOf<ASTU_Weapon> WeaponClass;

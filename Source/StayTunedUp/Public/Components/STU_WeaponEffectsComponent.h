@@ -12,7 +12,7 @@ struct FSTU_DecalData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
-	UMaterial* Material;
+	UMaterial* Material = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	FVector Size = FVector(10.0f);
@@ -27,7 +27,7 @@ struct FSTU_ImpactData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
-	UParticleSystem* Effect;
+	UParticleSystem* Effect = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	FSTU_DecalData DecalData;
