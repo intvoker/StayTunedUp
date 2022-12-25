@@ -20,7 +20,7 @@ ASTU_Pickup::ASTU_Pickup()
 	SetRootComponent(CollisionSphereComponent);
 
 	EffectComponent = CreateDefaultSubobject<USTU_EffectComponent>("EffectComponent");
-	EffectComponent->GetEffectSystemComponent()->SetupAttachment(GetRootComponent());
+	EffectComponent->SetupEffectAttachment(GetRootComponent());
 }
 
 void ASTU_Pickup::NotifyActorBeginOverlap(AActor* OtherActor)

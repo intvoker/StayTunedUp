@@ -29,7 +29,7 @@ ASTU_Projectile::ASTU_Projectile()
 	ProjectileMovementComponent->ProjectileGravityScale = 0.0f;
 
 	EffectComponent = CreateDefaultSubobject<USTU_EffectComponent>("EffectComponent");
-	EffectComponent->GetEffectSystemComponent()->SetupAttachment(GetRootComponent());
+	EffectComponent->SetupEffectAttachment(GetRootComponent());
 
 	WeaponEffectsComponent = CreateDefaultSubobject<USTU_WeaponEffectsComponent>("WeaponEffectsComponent");
 }

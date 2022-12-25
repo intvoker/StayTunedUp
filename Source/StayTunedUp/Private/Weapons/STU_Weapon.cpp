@@ -21,7 +21,7 @@ ASTU_Weapon::ASTU_Weapon()
 	WeaponMesh->SetupAttachment(GetRootComponent());
 
 	MuzzleEffectComponent = CreateDefaultSubobject<USTU_EffectComponent>("MuzzleEffectComponent");
-	MuzzleEffectComponent->GetEffectSystemComponent()->SetupAttachment(WeaponMesh, MuzzleFlashSocketName);
+	MuzzleEffectComponent->SetupEffectAttachment(WeaponMesh, MuzzleFlashSocketName);
 
 	WeaponEffectsComponent = CreateDefaultSubobject<USTU_WeaponEffectsComponent>("WeaponEffectsComponent");
 }
