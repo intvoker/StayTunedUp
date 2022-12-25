@@ -78,6 +78,9 @@ protected:
 	USTU_EffectComponent* MuzzleEffectComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USTU_EffectComponent* AmmoEmptyEffectComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USTU_WeaponEffectsComponent* WeaponEffectsComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")

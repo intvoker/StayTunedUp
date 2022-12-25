@@ -23,6 +23,9 @@ ASTU_Weapon::ASTU_Weapon()
 	MuzzleEffectComponent = CreateDefaultSubobject<USTU_EffectComponent>("MuzzleEffectComponent");
 	MuzzleEffectComponent->SetupEffectAttachment(WeaponMesh, MuzzleFlashSocketName);
 
+	AmmoEmptyEffectComponent = CreateDefaultSubobject<USTU_EffectComponent>("AmmoEmptyEffectComponent");
+	AmmoEmptyEffectComponent->SetupEffectAttachment(WeaponMesh, MuzzleFlashSocketName);
+
 	WeaponEffectsComponent = CreateDefaultSubobject<USTU_WeaponEffectsComponent>("WeaponEffectsComponent");
 }
 
@@ -115,6 +118,12 @@ void ASTU_Weapon::MakeShot()
 	if (!CanUseRound())
 	{
 		StopFiring();
+
+		if (IsAmmoEmpty())
+		{
+			AmmoEmptyEffectComponent->Spawn();
+		}
+
 		return;
 	}
 
