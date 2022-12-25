@@ -10,15 +10,15 @@ void USTU_GameInstance::StartLevel(FName LevelName) const
 	if (LevelName.IsNone())
 		return;
 
-	UGameplayStatics::OpenLevel(this, LevelName);
+	UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 }
 
 void USTU_GameInstance::RestartCurrentLevel() const
 {
-	StartLevel(FName(UGameplayStatics::GetCurrentLevelName(this)));
+	StartLevel(FName(UGameplayStatics::GetCurrentLevelName(GetWorld())));
 }
 
-void USTU_GameInstance::ExitGame()
+void USTU_GameInstance::ExitGame() const
 {
-	UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
+	UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, true);
 }
