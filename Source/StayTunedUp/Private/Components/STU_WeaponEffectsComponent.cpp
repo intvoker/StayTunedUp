@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values for this component's properties
 USTU_WeaponEffectsComponent::USTU_WeaponEffectsComponent()
@@ -50,6 +51,8 @@ void USTU_WeaponEffectsComponent::SpawnImpactEffect(const FHitResult& HitResult)
 		                                     RandomDecalRotation, EAttachLocation::KeepWorldPosition,
 		                                     ImpactData.DecalData.LifeSpan);
 	}
+
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactData.SoundCue, HitResult.ImpactPoint);
 }
 
 // Called when the game starts

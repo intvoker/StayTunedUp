@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "STU_WeaponEffectsComponent.generated.h"
 
+class USoundCue;
+
 USTRUCT(BlueprintType)
 struct FSTU_DecalData
 {
@@ -28,6 +30,9 @@ struct FSTU_ImpactData
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* Effect = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	USoundCue* SoundCue = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	FSTU_DecalData DecalData;
