@@ -55,4 +55,8 @@ void USTU_FireBTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	{
 		WeaponComponent->Fire();
 	}
+	else
+	{
+		WeaponComponent->StopFiring();
+	}
 }
