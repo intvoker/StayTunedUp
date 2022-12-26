@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "STU_Character.generated.h"
 
+class USoundCue;
 class USTU_FallDamageComponent;
 class USTU_HealthComponent;
 class USTU_WeaponComponent;
@@ -53,6 +54,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	UAnimMontage* DeathAnimMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	USoundCue* DeathSound;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Life")
 	float LifeSpan = 10.0f;

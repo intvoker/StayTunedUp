@@ -10,6 +10,8 @@
 #include "Components/STU_HealthComponent.h"
 #include "Components/STU_WeaponComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 ASTU_Character::ASTU_Character(const FObjectInitializer& ObjectInitializer):
@@ -94,6 +96,7 @@ void ASTU_Character::OnDeath()
 	STU_AnimUtility::SetRagdoll(this, GetMesh());
 
 	//PlayAnimMontage(DeathAnimMontage);
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), DeathSound, GetActorLocation());
 
 	GetCharacterMovement()->DisableMovement();
 
