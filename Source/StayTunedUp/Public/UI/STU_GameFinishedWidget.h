@@ -8,6 +8,7 @@
 
 class ASTU_PlayerState;
 class UButton;
+class USTU_PlayerStateWidget;
 class UVerticalBox;
 
 /**
@@ -37,4 +38,6 @@ private:
 	void OnWidgetVisibilityChanged(ESlateVisibility InVisibility);
 
 	void SetPlayerStates(TArray<ASTU_PlayerState*> PlayerStates) const;
+
+	USTU_PlayerStateWidget* CreatePlayerStateWidget(const ASTU_PlayerState* PlayerState) const;
 };

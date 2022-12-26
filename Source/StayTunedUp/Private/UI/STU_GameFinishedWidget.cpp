@@ -5,6 +5,7 @@
 
 #include "Components/Button.h"
 #include "Components/VerticalBox.h"
+#include "Player/STU_PlayerState.h"
 #include "STU_GameInstance.h"
 #include "STU_GameModeBase.h"
 #include "UI/STU_PlayerStateWidget.h"
@@ -47,13 +48,36 @@ void USTU_GameFinishedWidget::SetPlayerStates(TArray<ASTU_PlayerState*> PlayerSt
 
 	PlayerStatesVerticalBox->ClearChildren();
 
+	ASTU_PlayerState* PlayerStateTotal = NewObject<ASTU_PlayerState>();
+	PlayerStateTotal->SetPlayerName("Total");
+
 	for (const auto PlayerState : PlayerStates)
 	{
-		const auto PlayerStateWidget = CreateWidget<USTU_PlayerStateWidget>(GetWorld(), PlayerStateWidgetClass);
+		const auto PlayerStateWidget = CreatePlayerStateWidget(PlayerState);
 		if (!PlayerStateWidget)
 			continue;
 
-		PlayerStateWidget->SetPlayerState(PlayerState);
 		PlayerStatesVerticalBox->AddChild(PlayerStateWidget);
+
+		PlayerStateTotal->SetKills(PlayerStateTotal->GetKills() + PlayerState->GetKills());
+		PlayerStateTotal->SetFriendlyKills(PlayerStateTotal->GetFriendlyKills() + PlayerState->GetFriendlyKills());
+		PlayerStateTotal->SetDeaths(PlayerStateTotal->GetDeaths() + PlayerState->GetDeaths());
 	}
+
+	const auto PlayerStateTotalWidget = CreatePlayerStateWidget(PlayerStateTotal);
+	if (!PlayerStateTotalWidget)
+		return;
+
+	PlayerStatesVerticalBox->AddChild(PlayerStateTotalWidget);
+}
+
+USTU_PlayerStateWidget* USTU_GameFinishedWidget::CreatePlayerStateWidget(const ASTU_PlayerState* PlayerState) const
+{
+	const auto PlayerStateWidget = CreateWidget<USTU_PlayerStateWidget>(GetWorld(), PlayerStateWidgetClass);
+	if (!PlayerStateWidget)
+		return nullptr;
+
+	PlayerStateWidget->SetPlayerState(PlayerState);
+
+	return PlayerStateWidget;
 }

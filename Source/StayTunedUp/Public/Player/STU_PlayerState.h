@@ -22,12 +22,15 @@ public:
 	void SetTeamColor(FLinearColor TeamColorParam) { TeamColor = TeamColorParam; }
 
 	int32 GetKills() const { return Kills; }
+	void SetKills(int32 KillsParam) { Kills = KillsParam; }
 	void AddKill() { Kills++; }
 
 	int32 GetFriendlyKills() const { return FriendlyKills; }
+	void SetFriendlyKills(int32 FriendlyKillsParam) { FriendlyKills = FriendlyKillsParam; }
 	void AddFriendlyKill() { FriendlyKills++; }
 
 	int32 GetDeaths() const { return Deaths; }
+	void SetDeaths(int32 DeathsParam) { Deaths = DeathsParam; }
 	void AddDeath() { Deaths++; }
 
 private:
