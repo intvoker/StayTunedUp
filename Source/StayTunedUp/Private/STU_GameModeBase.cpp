@@ -107,30 +107,23 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 	//const auto VictimString = FString::Printf(TEXT("%s"), Victim ? *Victim->GetName() : TEXT("nullptr"));
 	//UE_LOG(LogTemp, Warning, TEXT("Killer: %s. Victim: %s."), *KillerString, *VictimString);
 
-	if (!Killer || !Victim)
+	if (!Victim)
 		return;
 
-	const auto STU_PlayerStateKiller = Cast<ASTU_PlayerState>(Killer->PlayerState);
-	const auto STU_PlayerStateVictim = Cast<ASTU_PlayerState>(Victim->PlayerState);
-
-	if (STU_PlayerStateKiller)
-	{
-		if (AreEnemies(Killer, Victim))
-		{
-			STU_PlayerStateKiller->AddKill();
-		}
-		else
-		{
-			STU_PlayerStateKiller->AddFriendlyKill();
-		}
-	}
-
-	if (STU_PlayerStateVictim)
+	if (const auto STU_PlayerStateVictim = Cast<ASTU_PlayerState>(Victim->PlayerState))
 	{
 		STU_PlayerStateVictim->AddDeath();
 	}
 
 	InitiateRespawn(Victim);
+
+	if (!Killer)
+		return;
+
+	if (const auto STU_PlayerStateKiller = Cast<ASTU_PlayerState>(Killer->PlayerState))
+	{
+		AreEnemies(Killer, Victim) ? STU_PlayerStateKiller->AddKill() : STU_PlayerStateKiller->AddFriendlyKill();
+	}
 }
 
 void ASTU_GameModeBase::DoRespawn(AController* Controller)

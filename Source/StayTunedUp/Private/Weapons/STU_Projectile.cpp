@@ -55,8 +55,10 @@ void ASTU_Projectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor*
 
 	WeaponEffectsComponent->SpawnImpactEffect(Hit);
 
+	const auto Controller = GetOwner() ? GetOwner()->GetInstigatorController() : nullptr;
+
 	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius,
-	                                    UDamageType::StaticClass(), {}, this, GetOwner()->GetInstigatorController(),
+	                                    UDamageType::StaticClass(), {}, this, Controller,
 	                                    bDoFullDamage);
 
 	//DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
