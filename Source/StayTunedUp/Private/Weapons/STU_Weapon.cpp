@@ -217,6 +217,7 @@ void ASTU_Weapon::UseRound()
 
 	if (!CanUseRound())
 	{
+		StopFiring();
 		OnClipEmpty.Broadcast(this);
 	}
 }
@@ -232,6 +233,7 @@ void ASTU_Weapon::SetClips(float NewClips)
 
 	if (!CanUseRound())
 	{
+		StopFiring();
 		OnClipEmpty.Broadcast(this);
 	}
 }
