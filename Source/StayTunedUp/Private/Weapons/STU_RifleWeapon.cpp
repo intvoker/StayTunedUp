@@ -7,16 +7,16 @@
 
 void ASTU_RifleWeapon::Fire()
 {
-	Super::Fire();
-
 	GetWorld()->GetTimerManager().SetTimer(MakeShotTimerHandle, this, &ThisClass::MakeShot, TimeBetweenShots, true);
+
+	Super::Fire();
 }
 
 void ASTU_RifleWeapon::StopFiring()
 {
-	Super::StopFiring();
-
 	GetWorld()->GetTimerManager().ClearTimer(MakeShotTimerHandle);
+
+	Super::StopFiring();
 }
 
 void ASTU_RifleWeapon::BeginPlay()
