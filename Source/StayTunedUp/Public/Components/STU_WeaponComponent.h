@@ -79,6 +79,8 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 private:
+	bool bPressedFire = false;
+
 	bool EquipInProgress = false;
 	bool ReloadInProgress = false;
 

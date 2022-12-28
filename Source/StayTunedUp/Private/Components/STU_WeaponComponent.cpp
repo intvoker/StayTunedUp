@@ -21,6 +21,8 @@ USTU_WeaponComponent::USTU_WeaponComponent()
 
 void USTU_WeaponComponent::Fire()
 {
+	bPressedFire = true;
+
 	if (EquipInProgress || ReloadInProgress)
 		return;
 
@@ -39,6 +41,8 @@ void USTU_WeaponComponent::Fire()
 
 void USTU_WeaponComponent::StopFiring()
 {
+	bPressedFire = false;
+
 	if (!CurrentWeapon)
 		return;
 
@@ -86,7 +90,7 @@ void USTU_WeaponComponent::Reload()
 	if (!CurrentWeapon->CanUseClip())
 		return;
 
-	StopFiring();
+	CurrentWeapon->StopFiring();
 	CurrentWeapon->UseClip();
 
 	ReloadInProgress = true;
@@ -183,6 +187,11 @@ void USTU_WeaponComponent::OnReloadFinishedNotify(USkeletalMeshComponent* MeshCo
 		return;
 
 	ReloadInProgress = false;
+
+	if (bPressedFire)
+	{
+		Fire();
+	}
 }
 
 bool USTU_WeaponComponent::IsOwnerMesh(const USkeletalMeshComponent* MeshComp) const
