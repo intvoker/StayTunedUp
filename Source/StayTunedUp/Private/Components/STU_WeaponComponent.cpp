@@ -23,7 +23,7 @@ void USTU_WeaponComponent::Fire()
 {
 	bPressedFire = true;
 
-	if (EquipInProgress || ReloadInProgress)
+	if (bEquipInProgress || bReloadInProgress)
 		return;
 
 	if (!CurrentWeapon)
@@ -69,19 +69,19 @@ void USTU_WeaponComponent::SwitchWeaponWithAmmo()
 
 void USTU_WeaponComponent::SwitchToWeapon(ASTU_Weapon* Weapon)
 {
-	if (EquipInProgress || ReloadInProgress)
+	if (bEquipInProgress || bReloadInProgress)
 		return;
 
 	StopFiring();
 	EquipWeapon(Weapon);
 
-	EquipInProgress = true;
+	bEquipInProgress = true;
 	PlayAnimMontage(EquipAnimMontage);
 }
 
 void USTU_WeaponComponent::Reload()
 {
-	if (EquipInProgress || ReloadInProgress)
+	if (bEquipInProgress || bReloadInProgress)
 		return;
 
 	if (!CurrentWeapon)
@@ -93,7 +93,7 @@ void USTU_WeaponComponent::Reload()
 	CurrentWeapon->StopFiring();
 	CurrentWeapon->UseClip();
 
-	ReloadInProgress = true;
+	bReloadInProgress = true;
 	PlayAnimMontage(CurrentReloadAnimMontage);
 }
 
@@ -178,7 +178,7 @@ void USTU_WeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshCom
 	if (!IsOwnerMesh(MeshComp))
 		return;
 
-	EquipInProgress = false;
+	bEquipInProgress = false;
 }
 
 void USTU_WeaponComponent::OnReloadFinishedNotify(USkeletalMeshComponent* MeshComp)
@@ -186,7 +186,7 @@ void USTU_WeaponComponent::OnReloadFinishedNotify(USkeletalMeshComponent* MeshCo
 	if (!IsOwnerMesh(MeshComp))
 		return;
 
-	ReloadInProgress = false;
+	bReloadInProgress = false;
 
 	if (bPressedFire)
 	{

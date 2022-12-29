@@ -81,8 +81,8 @@ protected:
 private:
 	bool bPressedFire = false;
 
-	bool EquipInProgress = false;
-	bool ReloadInProgress = false;
+	bool bEquipInProgress = false;
+	bool bReloadInProgress = false;
 
 	UPROPERTY()
 	ASTU_Weapon* CurrentWeapon = nullptr;
