@@ -190,6 +190,10 @@ APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(const FName& PlayerStartTa
 void ASTU_GameModeBase::StartRound()
 {
 	CurrentRoundRemainingSeconds = GameData.RoundTime;
+
+	if (GameData.bNoTimeLimit)
+		return;
+
 	GetWorld()->GetTimerManager().SetTimer(UpdateRoundTimerHandle, this, &ThisClass::UpdateRound, UpdateRoundTime,
 	                                       true);
 }

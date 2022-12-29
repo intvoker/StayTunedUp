@@ -18,13 +18,18 @@ struct FSTU_GameData
 {
 	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "64"))
+	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "0", ClampMax = "64"))
 	int32 NumberOfAIPlayers = 4;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "10"))
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	bool bNoTimeLimit = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game",
+		meta = (EditCondition = "!bNoTimeLimit", ClampMin = "1", ClampMax = "10"))
 	int32 NumberOfRounds = 2;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "600"))
+	UPROPERTY(EditDefaultsOnly, Category = "Game",
+		meta = (EditCondition = "!bNoTimeLimit", ClampMin = "1", ClampMax = "600"))
 	int32 RoundTime = 30;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "1", ClampMax = "10"))
@@ -67,6 +72,7 @@ public:
 
 	TArray<ASTU_PlayerState*> GetPlayerStates() const;
 
+	bool IsNoTimeLimit() const { return GameData.bNoTimeLimit; }
 	int32 GetCurrentRoundIndex() const { return CurrentRoundIndex; }
 	int32 GetNumberOfRounds() const { return GameData.NumberOfRounds; }
 	int32 GetCurrentRoundRemainingSeconds() const { return CurrentRoundRemainingSeconds; }

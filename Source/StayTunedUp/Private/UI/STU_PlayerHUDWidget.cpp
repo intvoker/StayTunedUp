@@ -96,6 +96,9 @@ FText USTU_PlayerHUDWidget::GetRoundInfo()
 	if (!STU_GameModeBase)
 		return FText::GetEmpty();
 
+	if (STU_GameModeBase->IsNoTimeLimit())
+		return FText::GetEmpty();
+
 	const auto RoundInfo = FString::Printf(
 		TEXT("Round: %d / %d. Remaining %d seconds."), STU_GameModeBase->GetCurrentRoundIndex(),
 		STU_GameModeBase->GetNumberOfRounds(), STU_GameModeBase->GetCurrentRoundRemainingSeconds());
