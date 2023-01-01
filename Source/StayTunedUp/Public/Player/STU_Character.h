@@ -70,6 +70,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	FName MaterialColorName = "Paint Color";
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement: Running",
+		meta = (ClampMin = "0.0", ClampMax = "30.0"))
+	float MaxRunAngle = 30.0f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

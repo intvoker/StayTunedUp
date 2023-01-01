@@ -57,7 +57,8 @@ void ASTU_Character::TurnOff()
 
 bool ASTU_Character::IsMovingForward() const
 {
-	return FVector::Coincident(GetActorForwardVector(), GetVelocity().GetSafeNormal());
+	return FVector::Coincident(GetActorForwardVector(), GetVelocity().GetSafeNormal(),
+	                           FMath::Cos(FMath::DegreesToRadians(MaxRunAngle)));
 }
 
 void ASTU_Character::Run()
