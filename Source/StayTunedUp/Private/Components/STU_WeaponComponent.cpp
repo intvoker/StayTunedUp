@@ -23,7 +23,7 @@ void USTU_WeaponComponent::Fire()
 {
 	bPressedFire = true;
 
-	if (bEquipInProgress || bReloadInProgress)
+	if (bWeaponLocked || bEquipInProgress || bReloadInProgress)
 		return;
 
 	if (!CurrentWeapon)
@@ -49,6 +49,18 @@ void USTU_WeaponComponent::StopFiring()
 	CurrentWeapon->StopFiring();
 }
 
+void USTU_WeaponComponent::LockWeapon()
+{
+	bWeaponLocked = true;
+
+	StopFiring();
+}
+
+void USTU_WeaponComponent::UnlockWeapon()
+{
+	bWeaponLocked = false;
+}
+
 void USTU_WeaponComponent::SwitchWeapon()
 {
 	const auto NextWeapon = FindNextWeapon(CurrentWeapon);
@@ -69,7 +81,7 @@ void USTU_WeaponComponent::SwitchWeaponWithAmmo()
 
 void USTU_WeaponComponent::SwitchToWeapon(ASTU_Weapon* Weapon)
 {
-	if (bEquipInProgress || bReloadInProgress)
+	if (bWeaponLocked || bEquipInProgress || bReloadInProgress)
 		return;
 
 	StopFiring();
@@ -81,7 +93,7 @@ void USTU_WeaponComponent::SwitchToWeapon(ASTU_Weapon* Weapon)
 
 void USTU_WeaponComponent::Reload()
 {
-	if (bEquipInProgress || bReloadInProgress)
+	if (bWeaponLocked || bEquipInProgress || bReloadInProgress)
 		return;
 
 	if (!CurrentWeapon)
@@ -262,7 +274,8 @@ void USTU_WeaponComponent::EquipWeapon(ASTU_Weapon* Weapon)
 	CurrentReloadAnimMontage = FindReloadAnimMontage(CurrentWeapon);
 }
 
-void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon, const FName& WeaponSocketName)
+void USTU_WeaponComponent::AttachWeaponToSocket(USceneComponent* Parent, ASTU_Weapon* Weapon,
+                                                const FName& WeaponSocketName)
 {
 	if (WeaponSocketName.IsNone())
 		return;

@@ -50,11 +50,6 @@ void ASTU_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Reload);
 }
 
-bool ASTU_PlayerCharacter::IsRunning() const
-{
-	return bPressedRun && IsMovingForward();
-}
-
 void ASTU_PlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -105,16 +100,6 @@ void ASTU_PlayerCharacter::LookUp(float Value)
 void ASTU_PlayerCharacter::Turn(float Value)
 {
 	AddControllerYawInput(Value);
-}
-
-void ASTU_PlayerCharacter::Run()
-{
-	bPressedRun = true;
-}
-
-void ASTU_PlayerCharacter::StopRunning()
-{
-	bPressedRun = false;
 }
 
 void ASTU_PlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

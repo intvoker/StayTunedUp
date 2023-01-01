@@ -60,9 +60,19 @@ bool ASTU_Character::IsMovingForward() const
 	return FVector::Coincident(GetActorForwardVector(), GetVelocity().GetSafeNormal());
 }
 
+void ASTU_Character::Run()
+{
+	bPressedRun = true;
+}
+
+void ASTU_Character::StopRunning()
+{
+	bPressedRun = false;
+}
+
 bool ASTU_Character::IsRunning() const
 {
-	return false;
+	return bPressedRun && IsMovingForward();
 }
 
 void ASTU_Character::SetPlayerColor(const FLinearColor& Color)
@@ -78,6 +88,8 @@ void ASTU_Character::SetPlayerColor(const FLinearColor& Color)
 void ASTU_Character::BeginPlay()
 {
 	Super::BeginPlay();
+
+	OnCharacterMovementUpdated.AddDynamic(this, &ThisClass::HandleOnCharacterMovementUpdated);
 
 	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
 	HealthComponent->OnDeath.AddDynamic(WeaponComponent, &USTU_WeaponComponent::OnOwnerDeath);
@@ -106,6 +118,13 @@ void ASTU_Character::OnDeath()
 void ASTU_Character::OnHealthChanged(float Health, float HealthDelta)
 {
 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.0f"), Health)));
+}
+
+void ASTU_Character::HandleOnCharacterMovementUpdated(float DeltaSeconds, FVector OldLocation, FVector OldVelocity)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("%f IsRunning = %d"), UGameplayStatics::GetRealTimeSeconds(GetWorld()), IsRunning());
+
+	IsRunning() ? WeaponComponent->LockWeapon() : WeaponComponent->UnlockWeapon();
 }
 
 void ASTU_Character::SetComponentFacePlayer(USceneComponent* SceneComponent) const

@@ -31,8 +31,15 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
+
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void StopFiring();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void LockWeapon();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void UnlockWeapon();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SwitchWeapon();
@@ -81,6 +88,7 @@ protected:
 private:
 	bool bPressedFire = false;
 
+	bool bWeaponLocked = false;
 	bool bEquipInProgress = false;
 	bool bReloadInProgress = false;
 

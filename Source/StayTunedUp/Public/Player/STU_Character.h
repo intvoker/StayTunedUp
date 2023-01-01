@@ -31,7 +31,13 @@ public:
 	bool IsMovingForward() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
-	virtual bool IsRunning() const;
+	void Run();
+
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	void StopRunning();
+
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	bool IsRunning() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Game")
 	void SetPlayerColor(const FLinearColor& Color);
@@ -74,5 +80,10 @@ protected:
 	virtual void OnHealthChanged(float Health, float HealthDelta);
 
 private:
+	bool bPressedRun = false;
+
+	UFUNCTION()
+	void HandleOnCharacterMovementUpdated(float DeltaSeconds, FVector OldLocation, FVector OldVelocity);
+
 	void SetComponentFacePlayer(USceneComponent* SceneComponent) const;
 };

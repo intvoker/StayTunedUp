@@ -24,8 +24,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual bool IsRunning() const override;
-
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComponent;
@@ -43,16 +41,11 @@ protected:
 	virtual void OnHealthChanged(float Health, float HealthDelta) override;
 
 private:
-	bool bPressedRun = false;
-
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
 	void LookUp(float Value);
 	void Turn(float Value);
-
-	void Run();
-	void StopRunning();
 
 	UFUNCTION()
 	void OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
