@@ -39,12 +39,19 @@ void ASTU_RifleWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitRes
 	{
 		WeaponEffectsComponent->SpawnImpactEffect(HitResult);
 	}
+	else
+	{
+		const FVector ShotDirection = (ShotEnd - ShotStart).GetSafeNormal();
+		WeaponEffectsComponent->SpawnNoImpactEffect(ShotEnd, ShotDirection.Rotation().GetInverse());
+	}
 
 	const auto DamagedActor = HitResult.GetActor();
 	if (!DamagedActor)
 		return;
 
-	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetOwner()->GetInstigatorController(), GetOwner());
+	const auto Controller = GetOwner() ? GetOwner()->GetInstigatorController() : nullptr;
+
+	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), Controller, GetOwner());
 }
 
 void ASTU_RifleWeapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)

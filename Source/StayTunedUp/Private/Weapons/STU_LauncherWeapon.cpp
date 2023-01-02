@@ -9,12 +9,12 @@ void ASTU_LauncherWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHit
 {
 	Super::ProcessShot(ShotStart, ShotEnd, HitResult);
 
-	const FVector ProjectileDirection = (ShotEnd - ShotStart).GetSafeNormal();
-	const FTransform ProjectileTransform = FTransform(ProjectileDirection.Rotation(), ShotStart);
+	const FVector ShotDirection = (ShotEnd - ShotStart).GetSafeNormal();
+	const FTransform ProjectileTransform = FTransform(ShotDirection.Rotation(), ShotStart);
 
 	if (const auto Projectile = GetWorld()->SpawnActorDeferred<ASTU_Projectile>(ProjectileClass, ProjectileTransform))
 	{
-		Projectile->SetProjectileDirection(ProjectileDirection);
+		Projectile->SetProjectileDirection(ShotDirection);
 		Projectile->SetOwner(GetOwner());
 		Projectile->FinishSpawning(ProjectileTransform);
 	}

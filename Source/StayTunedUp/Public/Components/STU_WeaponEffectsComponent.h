@@ -53,6 +53,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Effects")
 	void SpawnImpactEffect(const FHitResult& HitResult);
 
+	UFUNCTION(BlueprintCallable, Category = "Effects")
+	void SpawnNoImpactEffect(const FVector& Location, const FRotator& Rotation);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* TraceEffect;

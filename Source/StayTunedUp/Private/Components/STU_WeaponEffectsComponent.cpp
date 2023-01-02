@@ -55,6 +55,15 @@ void USTU_WeaponEffectsComponent::SpawnImpactEffect(const FHitResult& HitResult)
 	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactData.SoundCue, HitResult.ImpactPoint);
 }
 
+void USTU_WeaponEffectsComponent::SpawnNoImpactEffect(const FVector& Location, const FRotator& Rotation)
+{
+	const auto ImpactData = DefaultImpactData;
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactData.Effect, Location, Rotation);
+
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactData.SoundCue, Location);
+}
+
 // Called when the game starts
 void USTU_WeaponEffectsComponent::BeginPlay()
 {
