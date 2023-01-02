@@ -41,8 +41,8 @@ void ASTU_RifleWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitRes
 	}
 	else
 	{
-		const FVector ShotDirection = (ShotEnd - ShotStart).GetSafeNormal();
-		WeaponEffectsComponent->SpawnNoImpactEffect(ShotEnd, ShotDirection.Rotation().GetInverse());
+		//const FVector ShotDirection = (ShotEnd - ShotStart).GetSafeNormal();
+		//WeaponEffectsComponent->SpawnNoImpactEffect(ShotEnd, ShotDirection.Rotation().GetInverse());
 	}
 
 	const auto DamagedActor = HitResult.GetActor();
