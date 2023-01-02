@@ -49,6 +49,8 @@ void ASTU_RifleWeapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitRes
 
 void ASTU_RifleWeapon::GetTraceData(FVector& Location, FVector& Direction, FVector& OutTraceStart, FVector& OutTraceEnd)
 {
+	//return Super::GetTraceData(Location, Direction, OutTraceStart, OutTraceEnd);
+
 	Direction = FMath::VRandCone(Direction, FMath::DegreesToRadians(ShotSpread));
 
 	OutTraceStart = Location;

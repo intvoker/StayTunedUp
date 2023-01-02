@@ -129,17 +129,13 @@ void ASTU_Weapon::MakeShot()
 
 	MuzzleEffectComponent->Spawn();
 
-	FVector ControllerViewLocation;
-	FVector ControllerViewDirection;
-	GetControllerViewPoint(ControllerViewLocation, ControllerViewDirection);
-
-	FVector WeaponViewLocation;
-	FVector WeaponViewDirection;
-	GetWeaponViewPoint(WeaponViewLocation, WeaponViewDirection);
+	FVector ShotViewLocation;
+	FVector ShotViewDirection;
+	GetShotViewPoint(ShotViewLocation, ShotViewDirection);
 
 	FVector TraceStart;
 	FVector TraceEnd;
-	GetTraceData(ControllerViewLocation, ControllerViewDirection, TraceStart, TraceEnd);
+	GetTraceData(ShotViewLocation, ShotViewDirection, TraceStart, TraceEnd);
 
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionQueryParams;
@@ -155,6 +151,10 @@ void ASTU_Weapon::MakeShot()
 		TraceEnd = HitResult.ImpactPoint;
 	}
 
+	FVector WeaponViewLocation;
+	FVector WeaponViewDirection;
+	GetWeaponViewPoint(WeaponViewLocation, WeaponViewDirection);
+
 	WeaponEffectsComponent->SpawnTraceEffect(WeaponViewLocation, TraceEnd);
 
 	ProcessShot(WeaponViewLocation, TraceEnd, HitResult);
@@ -167,6 +167,23 @@ void ASTU_Weapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& 
 	DrawDebugLine(GetWorld(), ShotStart, ShotEnd, DebugColor, false, 5.0f, 0, 2.0f);
 	DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, DebugColor, false, 5.0f);
 	*/
+}
+
+void ASTU_Weapon::GetShotViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const
+{
+	FVector ControllerViewLocation;
+	FVector ControllerViewDirection;
+	GetControllerViewPoint(ControllerViewLocation, ControllerViewDirection);
+
+	FVector WeaponViewLocation;
+	FVector WeaponViewDirection;
+	GetWeaponViewPoint(WeaponViewLocation, WeaponViewDirection);
+
+	const FVector ControllerToWeapon = WeaponViewLocation - ControllerViewLocation;
+	const FVector ControllerToWeaponProjected = ControllerToWeapon.ProjectOnToNormal(ControllerViewDirection);
+
+	OutViewLocation = ControllerViewLocation + ControllerToWeaponProjected;
+	OutViewDirection = ControllerViewDirection;
 }
 
 void ASTU_Weapon::GetControllerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const
