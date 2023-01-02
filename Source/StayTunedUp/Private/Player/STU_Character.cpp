@@ -43,6 +43,7 @@ void ASTU_Character::Tick(float DeltaTime)
 
 void ASTU_Character::Reset()
 {
+	WeaponComponent->StopZooming();
 	WeaponComponent->StopFiring();
 
 	Super::Reset();
@@ -50,6 +51,7 @@ void ASTU_Character::Reset()
 
 void ASTU_Character::TurnOff()
 {
+	WeaponComponent->StopZooming();
 	WeaponComponent->StopFiring();
 
 	Super::TurnOff();
@@ -93,7 +95,6 @@ void ASTU_Character::BeginPlay()
 	OnCharacterMovementUpdated.AddDynamic(this, &ThisClass::HandleOnCharacterMovementUpdated);
 
 	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
-	HealthComponent->OnDeath.AddDynamic(WeaponComponent, &USTU_WeaponComponent::OnOwnerDeath);
 
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 	OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
@@ -101,6 +102,8 @@ void ASTU_Character::BeginPlay()
 
 void ASTU_Character::OnDeath()
 {
+	WeaponComponent->OnOwnerDeath();
+
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 

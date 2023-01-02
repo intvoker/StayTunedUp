@@ -23,7 +23,7 @@ void USTU_WeaponComponent::Fire()
 {
 	bPressedFire = true;
 
-	if (bWeaponLocked || bEquipInProgress || bReloadInProgress)
+	if (IsWeaponBlocked())
 		return;
 
 	if (!CurrentWeapon)
@@ -49,10 +49,27 @@ void USTU_WeaponComponent::StopFiring()
 	CurrentWeapon->StopFiring();
 }
 
+void USTU_WeaponComponent::Zoom()
+{
+	if (IsWeaponBlocked())
+		return;
+
+	if (!CurrentWeapon)
+		return;
+
+	OnWeaponZoom.Broadcast(CurrentWeapon->GetZoomFOV());
+}
+
+void USTU_WeaponComponent::StopZooming()
+{
+	OnWeaponStopZooming.Broadcast();
+}
+
 void USTU_WeaponComponent::LockWeapon()
 {
 	bWeaponLocked = true;
 
+	StopZooming();
 	StopFiring();
 }
 
@@ -81,9 +98,10 @@ void USTU_WeaponComponent::SwitchWeaponWithAmmo()
 
 void USTU_WeaponComponent::SwitchToWeapon(ASTU_Weapon* Weapon)
 {
-	if (bWeaponLocked || bEquipInProgress || bReloadInProgress)
+	if (IsWeaponBlocked())
 		return;
 
+	StopZooming();
 	StopFiring();
 	EquipWeapon(Weapon);
 
@@ -93,7 +111,7 @@ void USTU_WeaponComponent::SwitchToWeapon(ASTU_Weapon* Weapon)
 
 void USTU_WeaponComponent::Reload()
 {
-	if (bWeaponLocked || bEquipInProgress || bReloadInProgress)
+	if (IsWeaponBlocked())
 		return;
 
 	if (!CurrentWeapon)
@@ -111,6 +129,7 @@ void USTU_WeaponComponent::Reload()
 
 void USTU_WeaponComponent::OnOwnerDeath()
 {
+	StopZooming();
 	StopFiring();
 
 	for (const auto Weapon : Weapons)
@@ -166,6 +185,11 @@ void USTU_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		Weapon->Destroy();
 	}
 	Weapons.Empty();
+}
+
+bool USTU_WeaponComponent::IsWeaponBlocked() const
+{
+	return bWeaponLocked || bEquipInProgress || bReloadInProgress;
 }
 
 void USTU_WeaponComponent::InitAnimNotifies()

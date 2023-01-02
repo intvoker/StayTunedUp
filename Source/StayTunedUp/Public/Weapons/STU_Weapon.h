@@ -53,6 +53,8 @@ public:
 	virtual void Fire();
 	virtual void StopFiring();
 
+	float GetZoomFOV() const { return ZoomFOV; }
+
 	bool CanUseClip() const;
 	void UseClip();
 
@@ -85,6 +87,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName MuzzleFlashSocketName = "MuzzleFlashSocket";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float ZoomFOV = 50.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float MaxRange = 1500.0f;

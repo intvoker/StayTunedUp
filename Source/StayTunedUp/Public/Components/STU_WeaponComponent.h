@@ -8,6 +8,10 @@
 
 class ASTU_Weapon;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeaponZoomSignature, float, ZoomFOV);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponStopZoomingSignature);
+
 USTRUCT(BlueprintType)
 struct FSTU_WeaponData
 {
@@ -29,11 +33,20 @@ public:
 	// Sets default values for this component's properties
 	USTU_WeaponComponent();
 
+	FWeaponZoomSignature OnWeaponZoom;
+	FWeaponStopZoomingSignature OnWeaponStopZooming;
+
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void StopFiring();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void Zoom();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void StopZooming();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void LockWeapon();
@@ -100,6 +113,8 @@ private:
 
 	UPROPERTY()
 	UAnimMontage* CurrentReloadAnimMontage = nullptr;
+
+	bool IsWeaponBlocked() const;
 
 	void InitAnimNotifies();
 

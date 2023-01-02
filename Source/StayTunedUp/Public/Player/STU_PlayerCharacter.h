@@ -41,11 +41,21 @@ protected:
 	virtual void OnHealthChanged(float Health, float HealthDelta) override;
 
 private:
+	float DefaultFOV = 90.0f;
+
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
 	void LookUp(float Value);
 	void Turn(float Value);
+
+	APlayerCameraManager* GetPlayerCameraManager() const;
+
+	UFUNCTION()
+	void HandleOnWeaponZoom(float ZoomFOV);
+
+	UFUNCTION()
+	void HandleOnWeaponStopZooming();
 
 	UFUNCTION()
 	void OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

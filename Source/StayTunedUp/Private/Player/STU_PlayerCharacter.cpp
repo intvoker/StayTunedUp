@@ -45,6 +45,9 @@ void ASTU_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Fire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTU_WeaponComponent::StopFiring);
 
+	PlayerInputComponent->BindAction("Zoom", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Zoom);
+	PlayerInputComponent->BindAction("Zoom", IE_Released, WeaponComponent, &USTU_WeaponComponent::StopZooming);
+
 	PlayerInputComponent->BindAction("SwitchWeapon", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::SwitchWeapon);
 
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTU_WeaponComponent::Reload);
@@ -53,6 +56,9 @@ void ASTU_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 void ASTU_PlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	WeaponComponent->OnWeaponZoom.AddDynamic(this, &ThisClass::HandleOnWeaponZoom);
+	WeaponComponent->OnWeaponStopZooming.AddDynamic(this, &ThisClass::HandleOnWeaponStopZooming);
 
 	CameraCollisionSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnCameraCollisionBeginOverlap);
 	CameraCollisionSphereComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnCameraCollisionEndOverlap);
@@ -75,11 +81,11 @@ void ASTU_PlayerCharacter::OnHealthChanged(float Health, float HealthDelta)
 	if (HealthDelta >= 0.0f)
 		return;
 
-	const auto PlayerController = GetController<APlayerController>();
-	if (!PlayerController || !PlayerController->PlayerCameraManager)
+	const auto PlayerCameraManager = GetPlayerCameraManager();
+	if (!PlayerCameraManager)
 		return;
 
-	PlayerController->PlayerCameraManager->StartCameraShake(DamageCameraShakeClass);
+	PlayerCameraManager->StartCameraShake(DamageCameraShakeClass);
 }
 
 void ASTU_PlayerCharacter::MoveForward(float Value)
@@ -100,6 +106,35 @@ void ASTU_PlayerCharacter::LookUp(float Value)
 void ASTU_PlayerCharacter::Turn(float Value)
 {
 	AddControllerYawInput(Value);
+}
+
+APlayerCameraManager* ASTU_PlayerCharacter::GetPlayerCameraManager() const
+{
+	const auto PlayerController = GetController<APlayerController>();
+	if (!PlayerController)
+		return nullptr;
+
+	return PlayerController->PlayerCameraManager;
+}
+
+void ASTU_PlayerCharacter::HandleOnWeaponZoom(float ZoomFOV)
+{
+	const auto PlayerCameraManager = GetPlayerCameraManager();
+	if (!PlayerCameraManager)
+		return;
+
+	DefaultFOV = PlayerCameraManager->GetFOVAngle();
+
+	PlayerCameraManager->SetFOV(ZoomFOV);
+}
+
+void ASTU_PlayerCharacter::HandleOnWeaponStopZooming()
+{
+	const auto PlayerCameraManager = GetPlayerCameraManager();
+	if (!PlayerCameraManager)
+		return;
+
+	PlayerCameraManager->SetFOV(DefaultFOV);
 }
 
 void ASTU_PlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
