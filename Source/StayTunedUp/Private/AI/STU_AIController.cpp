@@ -31,6 +31,11 @@ void ASTU_AIController::Tick(float DeltaSeconds)
 	SetFocus(EnemyActor);
 }
 
+void ASTU_AIController::GetControllerViewPoint(FVector& OutLocation, FRotator& OutRotation) const
+{
+	GetActorEyesViewPoint(OutLocation, OutRotation);
+}
+
 void ASTU_AIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);

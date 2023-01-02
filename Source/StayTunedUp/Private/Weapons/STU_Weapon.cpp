@@ -6,7 +6,7 @@
 #include "Animations/STU_AnimUtility.h"
 #include "Components/STU_EffectComponent.h"
 #include "Components/STU_WeaponEffectsComponent.h"
-#include "GameFramework/Character.h"
+#include "STU_ControllerViewPointInterface.h"
 
 // Sets default values
 ASTU_Weapon::ASTU_Weapon()
@@ -129,9 +129,9 @@ void ASTU_Weapon::MakeShot()
 
 	MuzzleEffectComponent->Spawn();
 
-	FVector PlayerViewLocation;
-	FVector PlayerViewDirection;
-	GetPlayerViewPoint(PlayerViewLocation, PlayerViewDirection);
+	FVector ControllerViewLocation;
+	FVector ControllerViewDirection;
+	GetControllerViewPoint(ControllerViewLocation, ControllerViewDirection);
 
 	FVector WeaponViewLocation;
 	FVector WeaponViewDirection;
@@ -139,7 +139,7 @@ void ASTU_Weapon::MakeShot()
 
 	FVector TraceStart;
 	FVector TraceEnd;
-	GetTraceData(PlayerViewLocation, PlayerViewDirection, TraceStart, TraceEnd);
+	GetTraceData(ControllerViewLocation, ControllerViewDirection, TraceStart, TraceEnd);
 
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionQueryParams;
@@ -164,30 +164,27 @@ void ASTU_Weapon::ProcessShot(FVector& ShotStart, FVector& ShotEnd, FHitResult& 
 {
 	/*
 	const auto DebugColor = HitResult.bBlockingHit ? FColor::Red : FColor::Blue;
-	DrawDebugLine(GetWorld(), ShotStart, ShotEnd, DebugColor, false, 5.0f);
+	DrawDebugLine(GetWorld(), ShotStart, ShotEnd, DebugColor, false, 5.0f, 0, 2.0f);
 	DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, DebugColor, false, 5.0f);
 	*/
 }
 
-void ASTU_Weapon::GetPlayerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const
+void ASTU_Weapon::GetControllerViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const
 {
-	const auto Character = Cast<ACharacter>(GetOwner());
-	if (!Character)
+	const auto Pawn = Cast<APawn>(GetOwner());
+	if (!Pawn)
 		return;
 
-	if (!Character->IsPlayerControlled())
+	const auto Controller = Pawn->GetController();
+	if (!Controller)
+		return;
+
+	if (const auto ControllerViewPointInterface = Cast<ISTU_ControllerViewPointInterface>(Controller))
 	{
-		GetWeaponViewPoint(OutViewLocation, OutViewDirection);
-		return;
+		FRotator ViewRotation;
+		ControllerViewPointInterface->GetControllerViewPoint(OutViewLocation, ViewRotation);
+		OutViewDirection = ViewRotation.Vector();
 	}
-
-	const auto PlayerController = Character->GetController<APlayerController>();
-	if (!PlayerController)
-		return;
-
-	FRotator ViewRotation;
-	PlayerController->GetPlayerViewPoint(OutViewLocation, ViewRotation);
-	OutViewDirection = ViewRotation.Vector();
 }
 
 void ASTU_Weapon::GetWeaponViewPoint(FVector& OutViewLocation, FVector& OutViewDirection) const

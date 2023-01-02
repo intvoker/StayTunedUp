@@ -12,6 +12,11 @@ ASTU_PlayerController::ASTU_PlayerController()
 	RespawnComponent = CreateDefaultSubobject<USTU_RespawnComponent>("RespawnComponent");
 }
 
+void ASTU_PlayerController::GetControllerViewPoint(FVector& OutLocation, FRotator& OutRotation) const
+{
+	GetPlayerViewPoint(OutLocation, OutRotation);
+}
+
 void ASTU_PlayerController::BeginPlay()
 {
 	Super::BeginPlay();

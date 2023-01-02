@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "STU_ControllerViewPointInterface.h"
 #include "STU_PlayerController.generated.h"
 
 class USTU_RespawnComponent;
@@ -12,7 +13,7 @@ class USTU_RespawnComponent;
  * 
  */
 UCLASS()
-class STAYTUNEDUP_API ASTU_PlayerController : public APlayerController
+class STAYTUNEDUP_API ASTU_PlayerController : public APlayerController, public ISTU_ControllerViewPointInterface
 {
 	GENERATED_BODY()
 
@@ -24,6 +25,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	FName PlayerStartTag;
+
+	virtual void GetControllerViewPoint(FVector& OutLocation, FRotator& OutRotation) const override;
 
 protected:
 	virtual void BeginPlay() override;
