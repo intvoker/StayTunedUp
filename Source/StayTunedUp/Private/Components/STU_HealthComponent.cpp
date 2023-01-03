@@ -4,6 +4,7 @@
 #include "Components/STU_HealthComponent.h"
 
 #include "STU_GameModeBase.h"
+#include "Perception/AISense_Damage.h"
 
 // Sets default values for this component's properties
 USTU_HealthComponent::USTU_HealthComponent()
@@ -61,6 +62,7 @@ void USTU_HealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, c
 		return;
 
 	SetHealth(Health - Damage);
+	Damaged(InstigatedBy, Damage);
 	GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
 
 	if (IsDead())
@@ -83,6 +85,23 @@ void USTU_HealthComponent::Heal()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
 	}
+}
+
+void USTU_HealthComponent::Damaged(const AController* InstigatedBy, float Damage) const
+{
+	if (!InstigatedBy)
+		return;
+
+	const auto DamageCauser = InstigatedBy->GetPawn();
+	if (!DamageCauser)
+		return;
+
+	const auto ComponentOwner = GetOwner();
+	if (!ComponentOwner)
+		return;
+
+	UAISense_Damage::ReportDamageEvent(GetWorld(), ComponentOwner, DamageCauser, Damage,
+	                                   DamageCauser->GetActorLocation(), ComponentOwner->GetActorLocation());
 }
 
 void USTU_HealthComponent::Killed(const AController* Killer) const

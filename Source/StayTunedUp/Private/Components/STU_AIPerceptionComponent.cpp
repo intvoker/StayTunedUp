@@ -5,6 +5,7 @@
 
 #include "AIController.h"
 #include "Components/STU_HealthComponent.h"
+#include "Perception/AISense_Damage.h"
 #include "Perception/AISense_Sight.h"
 #include "Player/STU_Character.h"
 #include "STU_GameModeBase.h"
@@ -19,16 +20,23 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor() const
 	if (!Pawn)
 		return nullptr;
 
+	TArray<AActor*> AllPerceivedActors;
+	GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(), AllPerceivedActors);
+	GetCurrentlyPerceivedActors(UAISense_Damage::StaticClass(), AllPerceivedActors);
+
 	TArray<AActor*> PerceivedActors;
-	GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(), PerceivedActors);
+	for (const auto PerceivedActor : AllPerceivedActors)
+	{
+		if (!PerceivedActor->IsA(ASTU_Character::StaticClass()))
+			continue;
+
+		PerceivedActors.AddUnique(PerceivedActor);
+	}
 
 	float MinDistance = MAX_FLT;
 	AActor* EnemyActor = nullptr;
 	for (const auto PerceivedActor : PerceivedActors)
 	{
-		if (!PerceivedActor->IsA(ASTU_Character::StaticClass()))
-			continue;
-
 		const auto HealthComponent = PerceivedActor->FindComponentByClass<USTU_HealthComponent>();
 		if (!HealthComponent || HealthComponent->IsDead())
 			continue;
