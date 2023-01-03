@@ -23,7 +23,7 @@ void ASTU_PlayerController::BeginPlay()
 
 	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
 	{
-		STU_GameModeBase->OnGameMatchStateChanged.AddDynamic(this, &ThisClass::OnGameMatchStateChanged);
+		STU_GameModeBase->OnGameMatchStateChanged.AddDynamic(this, &ThisClass::HandleOnGameMatchStateChanged);
 	}
 }
 
@@ -60,7 +60,7 @@ void ASTU_PlayerController::PausePressed()
 	}
 }
 
-void ASTU_PlayerController::OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState)
+void ASTU_PlayerController::HandleOnGameMatchStateChanged(ESTU_GameMatchState GameMatchState)
 {
 	if (GameMatchState == ESTU_GameMatchState::Started)
 	{

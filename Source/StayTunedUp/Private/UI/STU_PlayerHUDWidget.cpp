@@ -112,8 +112,8 @@ void USTU_PlayerHUDWidget::NativeConstruct()
 
 	if (const auto PlayerController = GetOwningPlayer())
 	{
-		PlayerController->GetOnNewPawnNotifier().AddUObject(this, &ThisClass::OnNewPawn);
-		OnNewPawn(GetOwningPlayerPawn());
+		PlayerController->GetOnNewPawnNotifier().AddUObject(this, &ThisClass::HandleOnNewPawn);
+		HandleOnNewPawn(GetOwningPlayerPawn());
 	}
 }
 
@@ -156,18 +156,18 @@ FSlateBrush USTU_PlayerHUDWidget::CreateBrush(UTexture2D* Icon)
 	return Brush;
 }
 
-void USTU_PlayerHUDWidget::OnNewPawn(APawn* NewPawn)
+void USTU_PlayerHUDWidget::HandleOnNewPawn(APawn* NewPawn)
 {
 	if (const auto HealthComponent = GetPawnComponent<USTU_HealthComponent>())
 	{
-		if (!HealthComponent->OnHealthChanged.IsAlreadyBound(this, &ThisClass::OnHealthChanged))
+		if (!HealthComponent->OnHealthChanged.IsAlreadyBound(this, &ThisClass::HandleOnHealthChanged))
 		{
-			HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
+			HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::HandleOnHealthChanged);
 		}
 	}
 }
 
-void USTU_PlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
+void USTU_PlayerHUDWidget::HandleOnHealthChanged(float Health, float HealthDelta)
 {
 	if (HealthDelta >= 0.0f)
 		return;

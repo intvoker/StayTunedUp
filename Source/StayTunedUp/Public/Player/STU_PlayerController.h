@@ -39,5 +39,5 @@ private:
 	void PausePressed();
 
 	UFUNCTION()
-	void OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState);
+	void HandleOnGameMatchStateChanged(ESTU_GameMatchState GameMatchState);
 };

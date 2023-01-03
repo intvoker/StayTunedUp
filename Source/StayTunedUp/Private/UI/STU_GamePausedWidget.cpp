@@ -12,11 +12,11 @@ void USTU_GamePausedWidget::NativeConstruct()
 
 	if (ClearPauseButton)
 	{
-		ClearPauseButton->OnClicked.AddDynamic(this, &ThisClass::OnClearPauseButton);
+		ClearPauseButton->OnClicked.AddDynamic(this, &ThisClass::HandleOnClickedClearPause);
 	}
 }
 
-void USTU_GamePausedWidget::OnClearPauseButton()
+void USTU_GamePausedWidget::HandleOnClickedClearPause()
 {
 	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
 	{

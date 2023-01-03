@@ -60,13 +60,15 @@ void ASTU_PlayerCharacter::BeginPlay()
 	WeaponComponent->OnWeaponZoom.AddDynamic(this, &ThisClass::HandleOnWeaponZoom);
 	WeaponComponent->OnWeaponStopZooming.AddDynamic(this, &ThisClass::HandleOnWeaponStopZooming);
 
-	CameraCollisionSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnCameraCollisionBeginOverlap);
-	CameraCollisionSphereComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnCameraCollisionEndOverlap);
+	CameraCollisionSphereComponent->OnComponentBeginOverlap.AddDynamic(
+		this, &ThisClass::HandleOnComponentBeginOverlapCameraCollision);
+	CameraCollisionSphereComponent->OnComponentEndOverlap.AddDynamic(
+		this, &ThisClass::HandleOnComponentEndOverlapCameraCollision);
 }
 
-void ASTU_PlayerCharacter::OnDeath()
+void ASTU_PlayerCharacter::HandleOnDeath()
 {
-	Super::OnDeath();
+	Super::HandleOnDeath();
 
 	if (Controller)
 	{
@@ -74,9 +76,9 @@ void ASTU_PlayerCharacter::OnDeath()
 	}
 }
 
-void ASTU_PlayerCharacter::OnHealthChanged(float Health, float HealthDelta)
+void ASTU_PlayerCharacter::HandleOnHealthChanged(float Health, float HealthDelta)
 {
-	Super::OnHealthChanged(Health, HealthDelta);
+	Super::HandleOnHealthChanged(Health, HealthDelta);
 
 	if (HealthDelta >= 0.0f)
 		return;
@@ -137,15 +139,19 @@ void ASTU_PlayerCharacter::HandleOnWeaponStopZooming()
 	PlayerCameraManager->SetFOV(DefaultFOV);
 }
 
-void ASTU_PlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-                                                         bool bFromSweep, const FHitResult& SweepResult)
+void ASTU_PlayerCharacter::HandleOnComponentBeginOverlapCameraCollision(UPrimitiveComponent* OverlappedComponent,
+                                                                        AActor* OtherActor,
+                                                                        UPrimitiveComponent* OtherComp,
+                                                                        int32 OtherBodyIndex, bool bFromSweep,
+                                                                        const FHitResult& SweepResult)
 {
 	CheckCameraOverlap();
 }
 
-void ASTU_PlayerCharacter::OnCameraCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ASTU_PlayerCharacter::HandleOnComponentEndOverlapCameraCollision(UPrimitiveComponent* OverlappedComponent,
+                                                                      AActor* OtherActor,
+                                                                      UPrimitiveComponent* OtherComp,
+                                                                      int32 OtherBodyIndex)
 {
 	CheckCameraOverlap();
 }

@@ -54,6 +54,6 @@ private:
 	FVector ProjectileDirection;
 
 	UFUNCTION()
-	void OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                     FVector NormalImpulse, const FHitResult& Hit);
+	void HandleOnComponentHitCollision(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+	                                   UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

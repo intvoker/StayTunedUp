@@ -66,7 +66,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Reload();
 
-	UFUNCTION()
 	void OnOwnerDeath();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
@@ -119,17 +118,17 @@ private:
 	void InitAnimNotifies();
 
 	UFUNCTION()
-	void OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp);
+	void HandleOnNotifyEquipFinished(USkeletalMeshComponent* MeshComp);
 
 	UFUNCTION()
-	void OnReloadFinishedNotify(USkeletalMeshComponent* MeshComp);
+	void HandleOnNotifyReloadFinished(USkeletalMeshComponent* MeshComp);
 
 	bool IsOwnerMesh(const USkeletalMeshComponent* MeshComp) const;
 
 	void SpawnWeapons();
 
 	UFUNCTION()
-	void OnClipEmpty(ASTU_Weapon* Weapon);
+	void HandleOnClipEmpty(ASTU_Weapon* Weapon);
 
 	void EquipWeapon(ASTU_Weapon* Weapon);
 

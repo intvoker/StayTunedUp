@@ -42,14 +42,15 @@ void ASTU_Projectile::BeginPlay()
 	EffectComponent->Spawn();
 
 	ProjectileMovementComponent->Velocity = ProjectileDirection * ProjectileMovementComponent->InitialSpeed;
-	CollisionSphereComponent->OnComponentHit.AddDynamic(this, &ThisClass::OnProjectileHit);
+	CollisionSphereComponent->OnComponentHit.AddDynamic(this, &ThisClass::HandleOnComponentHitCollision);
 	//UE_LOG(LogTemp, Warning, TEXT("ProjectileDirection: %s"), *ProjectileDirection.ToString());
 
 	SetLifeSpan(LifeSpan);
 }
 
-void ASTU_Projectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-                                      UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ASTU_Projectile::HandleOnComponentHitCollision(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+                                                    UPrimitiveComponent* OtherComp, FVector NormalImpulse,
+                                                    const FHitResult& Hit)
 {
 	EffectComponent->Despawn();
 

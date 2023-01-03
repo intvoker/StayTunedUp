@@ -21,9 +21,9 @@ ASTU_AICharacter::ASTU_AICharacter(const FObjectInitializer& ObjectInitializer):
 	}
 }
 
-void ASTU_AICharacter::OnDeath()
+void ASTU_AICharacter::HandleOnDeath()
 {
-	Super::OnDeath();
+	Super::HandleOnDeath();
 
 	const auto AIController = GetController<AAIController>();
 	if (AIController && AIController->BrainComponent)

@@ -36,9 +36,9 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	virtual void OnDeath() override;
+	virtual void HandleOnDeath() override;
 
-	virtual void OnHealthChanged(float Health, float HealthDelta) override;
+	virtual void HandleOnHealthChanged(float Health, float HealthDelta) override;
 
 private:
 	float DefaultFOV = 90.0f;
@@ -58,13 +58,13 @@ private:
 	void HandleOnWeaponStopZooming();
 
 	UFUNCTION()
-	void OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                                   const FHitResult& SweepResult);
+	void HandleOnComponentBeginOverlapCameraCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+	                                                  bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void OnCameraCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void HandleOnComponentEndOverlapCameraCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                                                UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	void CheckCameraOverlap() const;
 };

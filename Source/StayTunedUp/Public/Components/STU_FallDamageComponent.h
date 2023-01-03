@@ -41,5 +41,5 @@ protected:
 
 private:
 	UFUNCTION()
-	void OnLandedCallback(const FHitResult& Hit);
+	void HandleLandedDelegate(const FHitResult& Hit);
 };

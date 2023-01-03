@@ -73,10 +73,10 @@ private:
 
 	FSlateBrush CreateBrush(UTexture2D* Icon);
 
-	void OnNewPawn(APawn* NewPawn);
+	void HandleOnNewPawn(APawn* NewPawn);
 
 	UFUNCTION()
-	void OnHealthChanged(float Health, float HealthDelta);
+	void HandleOnHealthChanged(float Health, float HealthDelta);
 };
 
 template <typename T>

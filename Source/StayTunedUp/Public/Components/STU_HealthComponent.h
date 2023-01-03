@@ -66,8 +66,8 @@ private:
 	void SetHealth(float NewHealth);
 
 	UFUNCTION()
-	void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy,
-	                     AActor* DamageCauser);
+	void HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	                           AController* InstigatedBy, AActor* DamageCauser);
 
 	void Heal();
 

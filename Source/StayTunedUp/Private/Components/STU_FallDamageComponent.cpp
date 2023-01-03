@@ -24,10 +24,10 @@ void USTU_FallDamageComponent::BeginPlay()
 	if (!ComponentOwner)
 		return;
 
-	ComponentOwner->LandedDelegate.AddDynamic(this, &ThisClass::OnLandedCallback);
+	ComponentOwner->LandedDelegate.AddDynamic(this, &ThisClass::HandleLandedDelegate);
 }
 
-void USTU_FallDamageComponent::OnLandedCallback(const FHitResult& Hit)
+void USTU_FallDamageComponent::HandleLandedDelegate(const FHitResult& Hit)
 {
 	const auto ComponentOwner = Cast<ACharacter>(GetOwner());
 	if (!ComponentOwner)

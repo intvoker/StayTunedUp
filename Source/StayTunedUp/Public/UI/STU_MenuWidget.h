@@ -27,8 +27,8 @@ protected:
 
 private:
 	UFUNCTION()
-	void OnStartGameButton();
+	void HandleOnClickedStartGame();
 
 	UFUNCTION()
-	void OnExitGameButton();
+	void HandleOnClickedExitGame();
 };

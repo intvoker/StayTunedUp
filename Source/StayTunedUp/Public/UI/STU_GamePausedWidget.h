@@ -24,5 +24,5 @@ protected:
 
 private:
 	UFUNCTION()
-	void OnClearPauseButton();
+	void HandleOnClickedClearPause();
 };

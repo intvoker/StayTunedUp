@@ -38,7 +38,7 @@ private:
 	TMap<ESTU_GameMatchState, UUserWidget*> GameWidgets;
 
 	UFUNCTION()
-	void OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState);
+	void HandleOnGameMatchStateChanged(ESTU_GameMatchState GameMatchState);
 
 	void DrawCrosshair();
 };

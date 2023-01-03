@@ -196,7 +196,7 @@ void USTU_WeaponComponent::InitAnimNotifies()
 {
 	if (const auto EquipAnimNotify = STU_AnimUtility::FindNotifyByClass<USTU_EquipFinishedAnimNotify>(EquipAnimMontage))
 	{
-		EquipAnimNotify->OnNotify.AddDynamic(this, &ThisClass::OnEquipFinishedNotify);
+		EquipAnimNotify->OnNotify.AddDynamic(this, &ThisClass::HandleOnNotifyEquipFinished);
 	}
 
 	for (const auto [ReloadAnimMontage, WeaponClass] : WeaponDataArray)
@@ -204,12 +204,12 @@ void USTU_WeaponComponent::InitAnimNotifies()
 		if (const auto ReloadAnimNotify = STU_AnimUtility::FindNotifyByClass<USTU_ReloadFinishedAnimNotify>(
 			ReloadAnimMontage))
 		{
-			ReloadAnimNotify->OnNotify.AddDynamic(this, &ThisClass::OnReloadFinishedNotify);
+			ReloadAnimNotify->OnNotify.AddDynamic(this, &ThisClass::HandleOnNotifyReloadFinished);
 		}
 	}
 }
 
-void USTU_WeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshComp)
+void USTU_WeaponComponent::HandleOnNotifyEquipFinished(USkeletalMeshComponent* MeshComp)
 {
 	if (!IsOwnerMesh(MeshComp))
 		return;
@@ -217,7 +217,7 @@ void USTU_WeaponComponent::OnEquipFinishedNotify(USkeletalMeshComponent* MeshCom
 	bEquipInProgress = false;
 }
 
-void USTU_WeaponComponent::OnReloadFinishedNotify(USkeletalMeshComponent* MeshComp)
+void USTU_WeaponComponent::HandleOnNotifyReloadFinished(USkeletalMeshComponent* MeshComp)
 {
 	if (!IsOwnerMesh(MeshComp))
 		return;
@@ -252,14 +252,14 @@ void USTU_WeaponComponent::SpawnWeapons()
 			continue;
 
 		Weapon->SetOwner(Character);
-		Weapon->OnClipEmpty.AddDynamic(this, &ThisClass::OnClipEmpty);
+		Weapon->OnClipEmpty.AddDynamic(this, &ThisClass::HandleOnClipEmpty);
 		Weapons.Add(Weapon);
 
 		AttachWeaponToSocket(Character->GetMesh(), Weapon, SecondaryWeaponAttachPointSocketName);
 	}
 }
 
-void USTU_WeaponComponent::OnClipEmpty(ASTU_Weapon* Weapon)
+void USTU_WeaponComponent::HandleOnClipEmpty(ASTU_Weapon* Weapon)
 {
 	if (!Weapon)
 		return;

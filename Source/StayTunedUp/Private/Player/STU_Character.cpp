@@ -94,13 +94,13 @@ void ASTU_Character::BeginPlay()
 
 	OnCharacterMovementUpdated.AddDynamic(this, &ThisClass::HandleOnCharacterMovementUpdated);
 
-	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::OnDeath);
+	HealthComponent->OnDeath.AddDynamic(this, &ThisClass::HandleOnDeath);
 
-	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
-	OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
+	HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::HandleOnHealthChanged);
+	HandleOnHealthChanged(HealthComponent->GetHealth(), 0.0f);
 }
 
-void ASTU_Character::OnDeath()
+void ASTU_Character::HandleOnDeath()
 {
 	WeaponComponent->OnOwnerDeath();
 
@@ -119,7 +119,7 @@ void ASTU_Character::OnDeath()
 	SetLifeSpan(LifeSpan);
 }
 
-void ASTU_Character::OnHealthChanged(float Health, float HealthDelta)
+void ASTU_Character::HandleOnHealthChanged(float Health, float HealthDelta)
 {
 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.0f"), Health)));
 }

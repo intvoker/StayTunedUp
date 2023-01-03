@@ -16,13 +16,13 @@ void USTU_GameFinishedWidget::NativeConstruct()
 
 	if (RestartLevelButton)
 	{
-		RestartLevelButton->OnClicked.AddDynamic(this, &ThisClass::OnRestartLevelButton);
+		RestartLevelButton->OnClicked.AddDynamic(this, &ThisClass::HandleOnClickedRestartLevel);
 	}
 
-	OnNativeVisibilityChanged.AddUObject(this, &ThisClass::OnWidgetVisibilityChanged);
+	OnNativeVisibilityChanged.AddUObject(this, &ThisClass::HandleOnNativeVisibilityChanged);
 }
 
-void USTU_GameFinishedWidget::OnRestartLevelButton()
+void USTU_GameFinishedWidget::HandleOnClickedRestartLevel()
 {
 	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
 	{
@@ -30,7 +30,7 @@ void USTU_GameFinishedWidget::OnRestartLevelButton()
 	}
 }
 
-void USTU_GameFinishedWidget::OnWidgetVisibilityChanged(ESlateVisibility InVisibility)
+void USTU_GameFinishedWidget::HandleOnNativeVisibilityChanged(ESlateVisibility InVisibility)
 {
 	if (InVisibility != ESlateVisibility::Visible)
 		return;

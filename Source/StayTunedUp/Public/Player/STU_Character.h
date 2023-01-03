@@ -78,10 +78,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	virtual void OnDeath();
+	virtual void HandleOnDeath();
 
 	UFUNCTION()
-	virtual void OnHealthChanged(float Health, float HealthDelta);
+	virtual void HandleOnHealthChanged(float Health, float HealthDelta);
 
 private:
 	bool bPressedRun = false;

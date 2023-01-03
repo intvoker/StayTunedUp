@@ -12,11 +12,11 @@ void USTU_MenuButtonWidget::NativeConstruct()
 
 	if (MenuButton)
 	{
-		MenuButton->OnClicked.AddDynamic(this, &ThisClass::OnMenuButton);
+		MenuButton->OnClicked.AddDynamic(this, &ThisClass::HandleOnClickedMenu);
 	}
 }
 
-void USTU_MenuButtonWidget::OnMenuButton()
+void USTU_MenuButtonWidget::HandleOnClickedMenu()
 {
 	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
 	{

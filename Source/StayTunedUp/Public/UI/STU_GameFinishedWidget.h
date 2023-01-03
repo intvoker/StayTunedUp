@@ -33,9 +33,9 @@ protected:
 
 private:
 	UFUNCTION()
-	void OnRestartLevelButton();
+	void HandleOnClickedRestartLevel();
 
-	void OnWidgetVisibilityChanged(ESlateVisibility InVisibility);
+	void HandleOnNativeVisibilityChanged(ESlateVisibility InVisibility);
 
 	void SetPlayerStates(TArray<ASTU_PlayerState*> PlayerStates) const;
 

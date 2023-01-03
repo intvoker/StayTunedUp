@@ -12,16 +12,16 @@ void USTU_MenuWidget::NativeConstruct()
 
 	if (StartGameButton)
 	{
-		StartGameButton->OnClicked.AddDynamic(this, &ThisClass::OnStartGameButton);
+		StartGameButton->OnClicked.AddDynamic(this, &ThisClass::HandleOnClickedStartGame);
 	}
 
 	if (ExitGameButton)
 	{
-		ExitGameButton->OnClicked.AddDynamic(this, &ThisClass::OnExitGameButton);
+		ExitGameButton->OnClicked.AddDynamic(this, &ThisClass::HandleOnClickedExitGame);
 	}
 }
 
-void USTU_MenuWidget::OnStartGameButton()
+void USTU_MenuWidget::HandleOnClickedStartGame()
 {
 	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
 	{
@@ -29,7 +29,7 @@ void USTU_MenuWidget::OnStartGameButton()
 	}
 }
 
-void USTU_MenuWidget::OnExitGameButton()
+void USTU_MenuWidget::HandleOnClickedExitGame()
 {
 	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
 	{

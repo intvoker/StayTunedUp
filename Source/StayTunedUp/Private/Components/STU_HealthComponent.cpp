@@ -35,7 +35,7 @@ void USTU_HealthComponent::BeginPlay()
 
 	if (const auto ComponentOwner = GetOwner())
 	{
-		ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &ThisClass::OnTakeAnyDamage);
+		ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &ThisClass::HandleOnTakeAnyDamage);
 	}
 }
 
@@ -55,8 +55,8 @@ void USTU_HealthComponent::SetHealth(float NewHealth)
 	OnHealthChanged.Broadcast(Health, HealthDelta);
 }
 
-void USTU_HealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
-                                           AController* InstigatedBy, AActor* DamageCauser)
+void USTU_HealthComponent::HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+                                                 AController* InstigatedBy, AActor* DamageCauser)
 {
 	if (IsDead())
 		return;

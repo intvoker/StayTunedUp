@@ -34,11 +34,11 @@ void ASTU_HUD::BeginPlay()
 
 	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
 	{
-		STU_GameModeBase->OnGameMatchStateChanged.AddDynamic(this, &ThisClass::OnGameMatchStateChanged);
+		STU_GameModeBase->OnGameMatchStateChanged.AddDynamic(this, &ThisClass::HandleOnGameMatchStateChanged);
 	}
 }
 
-void ASTU_HUD::OnGameMatchStateChanged(ESTU_GameMatchState GameMatchState)
+void ASTU_HUD::HandleOnGameMatchStateChanged(ESTU_GameMatchState GameMatchState)
 {
 	if (CurrentGameWidget)
 	{
