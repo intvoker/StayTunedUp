@@ -32,7 +32,7 @@ protected:
 	FColor Color = FColor::Red;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
-	float Damage = 10.0f;
+	float DamageAmount = 10.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	bool bDoFullDamage = false;

@@ -58,9 +58,8 @@ void ASTU_Projectile::HandleOnComponentHitCollision(UPrimitiveComponent* HitComp
 
 	const auto Controller = GetOwner() ? GetOwner()->GetInstigatorController() : nullptr;
 
-	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius,
-	                                    UDamageType::StaticClass(), {}, this, Controller,
-	                                    bDoFullDamage);
+	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius, nullptr, {}, this,
+	                                    Controller, bDoFullDamage);
 
 	//DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
 

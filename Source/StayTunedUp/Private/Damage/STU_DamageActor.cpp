@@ -21,8 +21,8 @@ void ASTU_DamageActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	DrawDebugSphere(GetWorld(), GetActorLocation(), Radius, Segments, Color);
-	UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, GetActorLocation(), Radius, nullptr, {}, this, nullptr,
-	                                    bDoFullDamage);
+	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), Radius, nullptr, {}, this,
+	                                    nullptr, bDoFullDamage);
 }
 
 // Called when the game starts or when spawned
