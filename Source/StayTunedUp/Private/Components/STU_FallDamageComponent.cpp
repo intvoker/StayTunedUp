@@ -20,20 +20,20 @@ void USTU_FallDamageComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	const auto ComponentOwner = Cast<ACharacter>(GetOwner());
-	if (!ComponentOwner)
+	const auto Character = Cast<ACharacter>(GetOwner());
+	if (!Character)
 		return;
 
-	ComponentOwner->LandedDelegate.AddDynamic(this, &ThisClass::HandleLandedDelegate);
+	Character->LandedDelegate.AddDynamic(this, &ThisClass::HandleLandedDelegate);
 }
 
 void USTU_FallDamageComponent::HandleLandedDelegate(const FHitResult& Hit)
 {
-	const auto ComponentOwner = Cast<ACharacter>(GetOwner());
-	if (!ComponentOwner)
+	const auto Character = Cast<ACharacter>(GetOwner());
+	if (!Character)
 		return;
 
-	const auto VelocityZ = FMath::Abs(ComponentOwner->GetVelocity().Z);
+	const auto VelocityZ = FMath::Abs(Character->GetVelocity().Z);
 
 	//UE_LOG(LogTemp, Warning, TEXT("VelocityZ: %f"), VelocityZ);
 
@@ -43,7 +43,7 @@ void USTU_FallDamageComponent::HandleLandedDelegate(const FHitResult& Hit)
 	const auto Damage = FMath::GetMappedRangeValueClamped<float>(FallDamageVelocity.MakeRange(),
 	                                                             FallDamage.MakeRange(), VelocityZ);
 
-	ComponentOwner->TakeDamage(Damage, FDamageEvent(), ComponentOwner->GetController(), ComponentOwner);
+	Character->TakeDamage(Damage, FDamageEvent(), Character->GetController(), Character);
 
 	//UE_LOG(LogTemp, Warning, TEXT("Damage: %f"), Damage);
 }
