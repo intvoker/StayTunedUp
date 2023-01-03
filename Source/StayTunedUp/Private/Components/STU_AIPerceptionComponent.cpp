@@ -5,9 +5,9 @@
 
 #include "AIController.h"
 #include "Components/STU_HealthComponent.h"
+#include "GameFramework/Character.h"
 #include "Perception/AISense_Damage.h"
 #include "Perception/AISense_Sight.h"
-#include "Player/STU_Character.h"
 #include "STU_GameModeBase.h"
 
 AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor() const
@@ -27,7 +27,7 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor() const
 	TArray<AActor*> PerceivedActors;
 	for (const auto PerceivedActor : AllPerceivedActors)
 	{
-		if (!PerceivedActor->IsA(ASTU_Character::StaticClass()))
+		if (!PerceivedActor->IsA(ACharacter::StaticClass()))
 			continue;
 
 		PerceivedActors.AddUnique(PerceivedActor);

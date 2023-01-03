@@ -26,5 +26,5 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	int32 ClipAmount = 2;
 
-	virtual bool TryUsePickup(ASTU_Character* STU_Character) override;
+	virtual bool TryUsePickup(ACharacter* Character) override;
 };

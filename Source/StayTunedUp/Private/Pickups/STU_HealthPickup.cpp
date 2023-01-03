@@ -4,14 +4,14 @@
 #include "Pickups/STU_HealthPickup.h"
 
 #include "Components/STU_HealthComponent.h"
-#include "Player/STU_Character.h"
+#include "GameFramework/Character.h"
 
-bool ASTU_HealthPickup::TryUsePickup(ASTU_Character* STU_Character)
+bool ASTU_HealthPickup::TryUsePickup(ACharacter* Character)
 {
-	if (!STU_Character)
+	if (!Character)
 		return false;
 
-	const auto HealthComponent = STU_Character->FindComponentByClass<USTU_HealthComponent>();
+	const auto HealthComponent = Character->FindComponentByClass<USTU_HealthComponent>();
 	if (!HealthComponent || HealthComponent->IsDead())
 		return false;
 

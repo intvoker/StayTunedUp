@@ -3,8 +3,8 @@
 
 #include "Components/STU_HealthComponent.h"
 
-#include "STU_GameModeBase.h"
 #include "Perception/AISense_Damage.h"
+#include "STU_GameModeBase.h"
 
 // Sets default values for this component's properties
 USTU_HealthComponent::USTU_HealthComponent()

@@ -18,5 +18,5 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	float HealthAmount = 50.0f;
 
-	virtual bool TryUsePickup(ASTU_Character* STU_Character) override;
+	virtual bool TryUsePickup(ACharacter* Character) override;
 };

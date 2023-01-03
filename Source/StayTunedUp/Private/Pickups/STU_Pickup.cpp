@@ -5,7 +5,7 @@
 
 #include "Components/SphereComponent.h"
 #include "Components/STU_EffectComponent.h"
-#include "Player/STU_Character.h"
+#include "GameFramework/Character.h"
 
 // Sets default values
 ASTU_Pickup::ASTU_Pickup()
@@ -27,7 +27,7 @@ void ASTU_Pickup::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	DoPickup(Cast<ASTU_Character>(OtherActor));
+	DoPickup(Cast<ACharacter>(OtherActor));
 }
 
 // Called when the game starts or when spawned
@@ -46,9 +46,9 @@ void ASTU_Pickup::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	GetWorld()->GetTimerManager().ClearTimer(CheckOverlappingActorsTimerHandle);
 }
 
-void ASTU_Pickup::DoPickup(ASTU_Character* STU_Character)
+void ASTU_Pickup::DoPickup(ACharacter* Character)
 {
-	if (!bActive || !STU_Character || !TryUsePickup(STU_Character))
+	if (!bActive || !Character || !TryUsePickup(Character))
 		return;
 
 	Despawn();
@@ -56,7 +56,7 @@ void ASTU_Pickup::DoPickup(ASTU_Character* STU_Character)
 	GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &ThisClass::Respawn, RespawnTime);
 }
 
-bool ASTU_Pickup::TryUsePickup(ASTU_Character* STU_Character)
+bool ASTU_Pickup::TryUsePickup(ACharacter* Character)
 {
 	return false;
 }
@@ -83,10 +83,10 @@ void ASTU_Pickup::Despawn()
 void ASTU_Pickup::CheckOverlappingActors()
 {
 	TSet<AActor*> OverlappingActors;
-	GetOverlappingActors(OverlappingActors, ASTU_Character::StaticClass());
+	GetOverlappingActors(OverlappingActors, ACharacter::StaticClass());
 
 	for (AActor* OverlappingActor : OverlappingActors)
 	{
-		DoPickup(Cast<ASTU_Character>(OverlappingActor));
+		DoPickup(Cast<ACharacter>(OverlappingActor));
 	}
 }

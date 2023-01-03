@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "STU_Pickup.generated.h"
 
-class ASTU_Character;
 class USphereComponent;
 class USTU_EffectComponent;
 
@@ -40,9 +39,9 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	void DoPickup(ASTU_Character* STU_Character);
+	void DoPickup(ACharacter* Character);
 
-	virtual bool TryUsePickup(ASTU_Character* STU_Character);
+	virtual bool TryUsePickup(ACharacter* Character);
 
 private:
 	bool bActive = false;
