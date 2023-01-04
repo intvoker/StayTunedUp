@@ -26,8 +26,12 @@ void ASTU_AICharacter::HandleOnDeath()
 	Super::HandleOnDeath();
 
 	const auto AIController = GetController<AAIController>();
-	if (AIController && AIController->BrainComponent)
+	if (!AIController)
+		return;
+
+	if (const auto BrainComponent = AIController->BrainComponent)
 	{
-		AIController->BrainComponent->Cleanup();
+		// TODO: Is BrainComponent->Cleanup() needed here? See bStopAILogicOnUnposses
+		BrainComponent->Cleanup();
 	}
 }

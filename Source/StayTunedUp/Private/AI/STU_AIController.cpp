@@ -49,4 +49,9 @@ void ASTU_AIController::OnPossess(APawn* InPawn)
 void ASTU_AIController::OnUnPossess()
 {
 	Super::OnUnPossess();
+
+	if (const auto BlackboardComponent = GetBlackboardComponent())
+	{
+		BlackboardComponent->ClearValue(EnemyActorKeyName);
+	}
 }

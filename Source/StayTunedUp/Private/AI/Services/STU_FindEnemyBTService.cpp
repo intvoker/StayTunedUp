@@ -45,6 +45,6 @@ void USTU_FindEnemyBTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 	const auto CurrentEnemyActorHealthComponent = CurrentEnemyActor->FindComponentByClass<USTU_HealthComponent>();
 	if (!CurrentEnemyActorHealthComponent || CurrentEnemyActorHealthComponent->IsDead())
 	{
-		BlackboardComponent->SetValueAsObject(EnemyActorKey.SelectedKeyName, nullptr);
+		BlackboardComponent->ClearValue(EnemyActorKey.SelectedKeyName);
 	}
 }
