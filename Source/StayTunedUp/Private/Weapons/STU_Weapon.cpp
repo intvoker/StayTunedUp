@@ -57,6 +57,11 @@ void ASTU_Weapon::UseClip()
 	}
 }
 
+bool ASTU_Weapon::IsClipEmpty() const
+{
+	return !CanUseRound();
+}
+
 bool ASTU_Weapon::IsAmmoEmpty() const
 {
 	return !CanUseClip() && !CanUseRound();

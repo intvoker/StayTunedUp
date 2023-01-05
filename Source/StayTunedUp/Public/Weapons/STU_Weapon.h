@@ -58,6 +58,7 @@ public:
 	bool CanUseClip() const;
 	void UseClip();
 
+	bool IsClipEmpty() const;
 	bool IsAmmoEmpty() const;
 	bool IsAmmoFull() const;
 	float GetAmmoPercent() const;
