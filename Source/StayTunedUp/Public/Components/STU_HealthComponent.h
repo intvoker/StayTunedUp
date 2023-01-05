@@ -71,6 +71,8 @@ private:
 
 	void Heal();
 
+	bool CanDamage(const AController* Killer) const;
+
 	void Damaged(const AController* InstigatedBy, float Damage) const;
 	void Killed(const AController* Killer) const;
 };

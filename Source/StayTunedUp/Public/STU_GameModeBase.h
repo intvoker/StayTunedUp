@@ -18,6 +18,9 @@ struct FSTU_GameData
 {
 	GENERATED_USTRUCT_BODY()
 
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	ESTU_GameRules GameRules = ESTU_GameRules::TDM;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "0", ClampMax = "64"))
 	int32 NumberOfAIPlayers = 4;
 
@@ -64,13 +67,14 @@ public:
 	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
 	virtual bool ClearPause() override;
 
-	bool AreEnemies(const AController* Left, const AController* Right) const;
-
+	bool CanDamage(const AController* Killer, const AController* Victim) const;
+	bool CanKill(const AController* Killer, const AController* Victim) const;
 	void Killed(const AController* Killer, const AController* Victim) const;
 
 	void DoRespawn(AController* Controller);
 
 	TArray<ASTU_PlayerState*> GetPlayerStates() const;
+	ASTU_PlayerState* GetPlayerState(const AController* Controller) const;
 
 	bool IsNoTimeLimit() const { return GameData.bNoTimeLimit; }
 	int32 GetCurrentRoundIndex() const { return CurrentRoundIndex; }
@@ -111,8 +115,14 @@ private:
 	void RestartPlayers();
 	void RestartOnePlayer(AController* Controller);
 
-	void SetTeams();
+	void SetTeams() const;
+	void SetTeam(ASTU_PlayerState* PlayerState, int32 TeamID) const;
 	void SetPlayerColor(const AController* Controller) const;
+
+	int32 GetNextTeamID(int32 TeamID) const;
+
+	bool CanKillTeam(const ASTU_PlayerState* KillerPlayerState, const ASTU_PlayerState* VictimPlayerState) const;
+	bool CanSetTeam(const ASTU_PlayerState* KillerPlayerState, const ASTU_PlayerState* VictimPlayerState) const;
 
 	void GameOver();
 };

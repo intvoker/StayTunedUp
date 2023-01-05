@@ -3,7 +3,6 @@
 
 #include "Components/STU_AIPerceptionComponent.h"
 
-#include "AIController.h"
 #include "Components/STU_HealthComponent.h"
 #include "GameFramework/Character.h"
 #include "Perception/AISense_Damage.h"
@@ -12,11 +11,11 @@
 
 AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor() const
 {
-	const auto AIController = Cast<AAIController>(GetOwner());
-	if (!AIController)
+	const auto Controller = Cast<AController>(GetOwner());
+	if (!Controller)
 		return nullptr;
 
-	const auto Pawn = AIController->GetPawn();
+	const auto Pawn = Controller->GetPawn();
 	if (!Pawn)
 		return nullptr;
 
@@ -41,15 +40,7 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor() const
 		if (!HealthComponent || HealthComponent->IsDead())
 			continue;
 
-		const auto PerceivedPawn = Cast<APawn>(PerceivedActor);
-		if (!PerceivedPawn)
-			continue;
-
-		const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
-		if (!STU_GameModeBase)
-			continue;
-
-		if (!STU_GameModeBase->AreEnemies(Pawn->Controller, PerceivedPawn->Controller))
+		if (!CanKill(PerceivedActor))
 			continue;
 
 		const auto Distance = (PerceivedActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
@@ -61,4 +52,21 @@ AActor* USTU_AIPerceptionComponent::FindNearestAliveEnemyActor() const
 	}
 
 	return EnemyActor;
+}
+
+bool USTU_AIPerceptionComponent::CanKill(const AActor* VictimActor) const
+{
+	const auto Controller = Cast<AController>(GetOwner());
+	if (!Controller)
+		return false;
+
+	const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
+	if (!STU_GameModeBase)
+		return false;
+
+	const auto VictimPawn = Cast<APawn>(VictimActor);
+	if (!VictimPawn)
+		return false;
+
+	return STU_GameModeBase->CanKill(Controller, VictimPawn->GetController());
 }

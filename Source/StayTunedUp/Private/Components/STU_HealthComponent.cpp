@@ -33,9 +33,9 @@ void USTU_HealthComponent::BeginPlay()
 
 	Health = MaxHealth;
 
-	if (const auto ComponentOwner = GetOwner())
+	if (const auto Actor = GetOwner())
 	{
-		ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &ThisClass::HandleOnTakeAnyDamage);
+		Actor->OnTakeAnyDamage.AddDynamic(this, &ThisClass::HandleOnTakeAnyDamage);
 	}
 }
 
@@ -59,6 +59,9 @@ void USTU_HealthComponent::HandleOnTakeAnyDamage(AActor* DamagedActor, float Dam
                                                  AController* InstigatedBy, AActor* DamageCauser)
 {
 	if (IsDead())
+		return;
+
+	if (!CanDamage(InstigatedBy))
 		return;
 
 	SetHealth(Health - Damage);
@@ -87,6 +90,19 @@ void USTU_HealthComponent::Heal()
 	}
 }
 
+bool USTU_HealthComponent::CanDamage(const AController* Killer) const
+{
+	const auto Pawn = Cast<APawn>(GetOwner());
+	if (!Pawn)
+		return false;
+
+	const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
+	if (!STU_GameModeBase)
+		return false;
+
+	return STU_GameModeBase->CanDamage(Killer, Pawn->GetController());
+}
+
 void USTU_HealthComponent::Damaged(const AController* InstigatedBy, float Damage) const
 {
 	if (!InstigatedBy)
@@ -96,23 +112,23 @@ void USTU_HealthComponent::Damaged(const AController* InstigatedBy, float Damage
 	if (!DamageCauser)
 		return;
 
-	const auto ComponentOwner = GetOwner();
-	if (!ComponentOwner)
+	const auto Actor = GetOwner();
+	if (!Actor)
 		return;
 
-	UAISense_Damage::ReportDamageEvent(GetWorld(), ComponentOwner, DamageCauser, Damage,
-	                                   DamageCauser->GetActorLocation(), ComponentOwner->GetActorLocation());
+	UAISense_Damage::ReportDamageEvent(GetWorld(), Actor, DamageCauser, Damage, DamageCauser->GetActorLocation(),
+	                                   Actor->GetActorLocation());
 }
 
 void USTU_HealthComponent::Killed(const AController* Killer) const
 {
-	const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
-	if (!STU_GameModeBase)
-		return;
-
 	const auto Pawn = Cast<APawn>(GetOwner());
 	if (!Pawn)
 		return;
 
-	STU_GameModeBase->Killed(Killer, Pawn->Controller);
+	const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>();
+	if (!STU_GameModeBase)
+		return;
+
+	STU_GameModeBase->Killed(Killer, Pawn->GetController());
 }

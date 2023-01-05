@@ -87,18 +87,23 @@ bool ASTU_GameModeBase::ClearPause()
 	return bPauseCleared;
 }
 
-bool ASTU_GameModeBase::AreEnemies(const AController* Left, const AController* Right) const
+bool ASTU_GameModeBase::CanDamage(const AController* Killer, const AController* Victim) const
 {
-	if (!Left || !Right || Left == Right)
+	if (!Killer || !Victim || Killer == Victim)
+		return true;
+
+	return CanKill(Killer, Victim);
+}
+
+bool ASTU_GameModeBase::CanKill(const AController* Killer, const AController* Victim) const
+{
+	const auto KillerPlayerState = GetPlayerState(Killer);
+	const auto VictimPlayerState = GetPlayerState(Victim);
+
+	if (!KillerPlayerState || !VictimPlayerState)
 		return false;
 
-	const auto STU_PlayerStateLeft = Cast<ASTU_PlayerState>(Left->PlayerState);
-	const auto STU_PlayerStateRight = Cast<ASTU_PlayerState>(Right->PlayerState);
-
-	if (!STU_PlayerStateLeft || !STU_PlayerStateRight)
-		return false;
-
-	return STU_PlayerStateLeft->GetTeamID() != STU_PlayerStateRight->GetTeamID();
+	return CanKillTeam(KillerPlayerState, VictimPlayerState);
 }
 
 void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Victim) const
@@ -107,23 +112,33 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 	//const auto VictimString = FString::Printf(TEXT("%s"), Victim ? *Victim->GetName() : TEXT("nullptr"));
 	//UE_LOG(LogTemp, Warning, TEXT("Killer: %s. Victim: %s."), *KillerString, *VictimString);
 
-	if (!Victim)
-		return;
+	const auto VictimPlayerState = GetPlayerState(Victim);
 
-	if (const auto STU_PlayerStateVictim = Cast<ASTU_PlayerState>(Victim->PlayerState))
+	if (VictimPlayerState)
 	{
-		STU_PlayerStateVictim->AddDeath();
+		VictimPlayerState->AddDeath();
+	}
+
+	const auto KillerPlayerState = GetPlayerState(Killer);
+
+	if (KillerPlayerState && VictimPlayerState)
+	{
+		if (CanKillTeam(KillerPlayerState, VictimPlayerState))
+		{
+			KillerPlayerState->AddKill();
+		}
+		else
+		{
+			KillerPlayerState->AddFriendlyKill();
+		}
+
+		if (CanSetTeam(KillerPlayerState, VictimPlayerState))
+		{
+			SetTeam(VictimPlayerState, KillerPlayerState->GetTeamID());
+		}
 	}
 
 	InitiateRespawn(Victim);
-
-	if (!Killer)
-		return;
-
-	if (const auto STU_PlayerStateKiller = Cast<ASTU_PlayerState>(Killer->PlayerState))
-	{
-		AreEnemies(Killer, Victim) ? STU_PlayerStateKiller->AddKill() : STU_PlayerStateKiller->AddFriendlyKill();
-	}
 }
 
 void ASTU_GameModeBase::DoRespawn(AController* Controller)
@@ -137,18 +152,22 @@ TArray<ASTU_PlayerState*> ASTU_GameModeBase::GetPlayerStates() const
 
 	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
 	{
-		const auto Controller = It->Get();
-		if (!Controller)
+		const auto PlayerState = GetPlayerState(It->Get());
+		if (!PlayerState)
 			continue;
 
-		const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
-		if (!STU_PlayerState)
-			continue;
-
-		PlayerStates.Add(STU_PlayerState);
+		PlayerStates.Add(PlayerState);
 	}
 
 	return PlayerStates;
+}
+
+ASTU_PlayerState* ASTU_GameModeBase::GetPlayerState(const AController* Controller) const
+{
+	if (!Controller)
+		return nullptr;
+
+	return Cast<ASTU_PlayerState>(Controller->PlayerState);
 }
 
 void ASTU_GameModeBase::SetGameMatchState(ESTU_GameMatchState GameMatchStateParam)
@@ -254,35 +273,30 @@ void ASTU_GameModeBase::RestartOnePlayer(AController* Controller)
 	SetPlayerColor(Controller);
 }
 
-void ASTU_GameModeBase::SetTeams()
+void ASTU_GameModeBase::SetTeams() const
 {
 	int32 CurrentTeamID = 1;
-	const int32 NumberOfTeams = GameData.TeamsMap.Num();
-
-	if (!NumberOfTeams)
-		return;
 
 	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
 	{
 		const auto Controller = It->Get();
-		if (!Controller)
+
+		const auto PlayerState = GetPlayerState(Controller);
+		if (!PlayerState)
 			continue;
 
-		const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
-		if (!STU_PlayerState)
-			continue;
-
-		STU_PlayerState->SetPlayerName(Controller->GetName());
-		STU_PlayerState->SetTeamID(CurrentTeamID);
-		STU_PlayerState->SetTeamColor(GameData.TeamsMap[CurrentTeamID]);
+		PlayerState->SetPlayerName(Controller->GetName());
+		SetTeam(PlayerState, CurrentTeamID);
 		SetPlayerColor(Controller);
 
-		CurrentTeamID++;
-		if (CurrentTeamID > NumberOfTeams)
-		{
-			CurrentTeamID = 1;
-		}
+		CurrentTeamID = GetNextTeamID(CurrentTeamID);
 	}
+}
+
+void ASTU_GameModeBase::SetTeam(ASTU_PlayerState* PlayerState, const int32 TeamID) const
+{
+	PlayerState->SetTeamID(TeamID);
+	PlayerState->SetTeamColor(GameData.TeamsMap[TeamID]);
 }
 
 void ASTU_GameModeBase::SetPlayerColor(const AController* Controller) const
@@ -294,11 +308,48 @@ void ASTU_GameModeBase::SetPlayerColor(const AController* Controller) const
 	if (!STU_Character)
 		return;
 
-	const auto STU_PlayerState = Cast<ASTU_PlayerState>(Controller->PlayerState);
-	if (!STU_PlayerState)
+	const auto PlayerState = GetPlayerState(Controller);
+	if (!PlayerState)
 		return;
 
-	STU_Character->SetPlayerColor(STU_PlayerState->GetTeamColor());
+	STU_Character->SetPlayerColor(PlayerState->GetTeamColor());
+}
+
+int32 ASTU_GameModeBase::GetNextTeamID(const int32 TeamID) const
+{
+	const int32 NumberOfTeams = GameData.TeamsMap.Num();
+
+	const int32 NextTeamID = TeamID >= NumberOfTeams ? 1 : TeamID + 1;
+
+	return NextTeamID;
+}
+
+bool ASTU_GameModeBase::CanKillTeam(const ASTU_PlayerState* KillerPlayerState,
+                                    const ASTU_PlayerState* VictimPlayerState) const
+{
+	switch (GameData.GameRules)
+	{
+	case ESTU_GameRules::TDM:
+		return KillerPlayerState->GetTeamID() != VictimPlayerState->GetTeamID();
+	case ESTU_GameRules::RPS:
+		return GetNextTeamID(KillerPlayerState->GetTeamID()) == VictimPlayerState->GetTeamID();
+	default:
+		return false;
+	}
+}
+
+bool ASTU_GameModeBase::CanSetTeam(const ASTU_PlayerState* KillerPlayerState,
+                                   const ASTU_PlayerState* VictimPlayerState) const
+{
+	switch (GameData.GameRules)
+	{
+	case ESTU_GameRules::TDM:
+		return false;
+	case ESTU_GameRules::RPS:
+		return true;
+	default:
+		return false;
+	}
 }
 
 void ASTU_GameModeBase::GameOver()

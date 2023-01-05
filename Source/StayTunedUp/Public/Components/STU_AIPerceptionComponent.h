@@ -16,4 +16,7 @@ class STAYTUNEDUP_API USTU_AIPerceptionComponent : public UAIPerceptionComponent
 
 public:
 	AActor* FindNearestAliveEnemyActor() const;
+
+private:
+	bool CanKill(const AActor* VictimActor) const;
 };
