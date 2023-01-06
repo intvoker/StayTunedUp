@@ -92,16 +92,16 @@ bool ASTU_GameModeBase::CanDamage(const AController* Killer, const AController* 
 	if (!Killer || !Victim || Killer == Victim)
 		return true;
 
-	return CanKill(Killer, Victim);
+	const auto KillerPlayerState = GetPlayerState(Killer);
+	const auto VictimPlayerState = GetPlayerState(Victim);
+
+	return CanDamageTeam(KillerPlayerState, VictimPlayerState);
 }
 
 bool ASTU_GameModeBase::CanKill(const AController* Killer, const AController* Victim) const
 {
 	const auto KillerPlayerState = GetPlayerState(Killer);
 	const auto VictimPlayerState = GetPlayerState(Victim);
-
-	if (!KillerPlayerState || !VictimPlayerState)
-		return false;
 
 	return CanKillTeam(KillerPlayerState, VictimPlayerState);
 }
@@ -112,14 +112,13 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 	//const auto VictimString = FString::Printf(TEXT("%s"), Victim ? *Victim->GetName() : TEXT("nullptr"));
 	//UE_LOG(LogTemp, Warning, TEXT("Killer: %s. Victim: %s."), *KillerString, *VictimString);
 
+	const auto KillerPlayerState = GetPlayerState(Killer);
 	const auto VictimPlayerState = GetPlayerState(Victim);
 
 	if (VictimPlayerState)
 	{
 		VictimPlayerState->AddDeath();
 	}
-
-	const auto KillerPlayerState = GetPlayerState(Killer);
 
 	if (KillerPlayerState && VictimPlayerState)
 	{
@@ -295,6 +294,9 @@ void ASTU_GameModeBase::SetTeams() const
 
 void ASTU_GameModeBase::SetTeam(ASTU_PlayerState* PlayerState, const int32 TeamID) const
 {
+	if (!GameData.TeamsMap.Contains(TeamID))
+		return;
+
 	PlayerState->SetTeamID(TeamID);
 	PlayerState->SetTeamColor(GameData.TeamsMap[TeamID]);
 }
@@ -324,9 +326,24 @@ int32 ASTU_GameModeBase::GetNextTeamID(const int32 TeamID) const
 	return NextTeamID;
 }
 
+bool ASTU_GameModeBase::CanDamageTeam(const ASTU_PlayerState* KillerPlayerState,
+                                      const ASTU_PlayerState* VictimPlayerState) const
+{
+	if (!KillerPlayerState || !VictimPlayerState)
+		return false;
+
+	if (KillerPlayerState->GetTeamID() == VictimPlayerState->GetTeamID())
+		return GameData.bAllowFriendlyFire;
+
+	return CanKillTeam(KillerPlayerState, VictimPlayerState);
+}
+
 bool ASTU_GameModeBase::CanKillTeam(const ASTU_PlayerState* KillerPlayerState,
                                     const ASTU_PlayerState* VictimPlayerState) const
 {
+	if (!KillerPlayerState || !VictimPlayerState)
+		return false;
+
 	switch (GameData.GameRules)
 	{
 	case ESTU_GameRules::TDM:
@@ -341,6 +358,9 @@ bool ASTU_GameModeBase::CanKillTeam(const ASTU_PlayerState* KillerPlayerState,
 bool ASTU_GameModeBase::CanSetTeam(const ASTU_PlayerState* KillerPlayerState,
                                    const ASTU_PlayerState* VictimPlayerState) const
 {
+	if (!KillerPlayerState || !VictimPlayerState)
+		return false;
+
 	switch (GameData.GameRules)
 	{
 	case ESTU_GameRules::TDM:

@@ -25,6 +25,9 @@ struct FSTU_GameData
 	int32 NumberOfAIPlayers = 4;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	bool bAllowFriendlyFire = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	bool bNoTimeLimit = false;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game",
@@ -121,6 +124,7 @@ private:
 
 	int32 GetNextTeamID(int32 TeamID) const;
 
+	bool CanDamageTeam(const ASTU_PlayerState* KillerPlayerState, const ASTU_PlayerState* VictimPlayerState) const;
 	bool CanKillTeam(const ASTU_PlayerState* KillerPlayerState, const ASTU_PlayerState* VictimPlayerState) const;
 	bool CanSetTeam(const ASTU_PlayerState* KillerPlayerState, const ASTU_PlayerState* VictimPlayerState) const;
 
