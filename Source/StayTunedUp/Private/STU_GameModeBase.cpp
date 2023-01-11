@@ -43,18 +43,39 @@ UClass* ASTU_GameModeBase::GetDefaultPawnClassForController_Implementation(ACont
 	return Super::GetDefaultPawnClassForController_Implementation(InController);
 }
 
-AActor* ASTU_GameModeBase::ChoosePlayerStart_Implementation(AController* Player)
+AActor* ASTU_GameModeBase::FindPlayerStart_Implementation(AController* Player, const FString& IncomingName)
 {
+	//const auto PlayerStateLog = GetPlayerState(Player);
+	//UE_LOG(LogTemp, Warning, TEXT("Name: %s. Team ID: %d."), *PlayerStateLog->GetName(), PlayerStateLog->GetTeamID());
+
+	auto FoundPlayerStart = FindPlayerStartByTag(FName(Player->GetName()));
+	if (FoundPlayerStart)
+	{
+		return FoundPlayerStart;
+	}
+
 	if (const auto STU_PlayerController = Cast<ASTU_PlayerController>(Player))
 	{
 		if (!STU_PlayerController->PlayerStartTag.IsNone())
 		{
-			if (const auto FoundPlayerStart = FindPlayerStartByTag(STU_PlayerController->PlayerStartTag))
-				return FoundPlayerStart;
+			FoundPlayerStart = FindPlayerStartByTag(STU_PlayerController->PlayerStartTag);
+		}
+	}
+	else
+	{
+		if (const auto PlayerState = GetPlayerState(Player))
+		{
+			FoundPlayerStart = FindPlayerStartByTag(FName(FString::FromInt(PlayerState->GetTeamID())));
 		}
 	}
 
-	return Super::ChoosePlayerStart_Implementation(Player);
+	if (FoundPlayerStart)
+	{
+		FoundPlayerStart->PlayerStartTag = FName(Player->GetName());
+		return FoundPlayerStart;
+	}
+
+	return Super::FindPlayerStart_Implementation(Player, IncomingName);
 }
 
 bool ASTU_GameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
@@ -179,15 +200,14 @@ void ASTU_GameModeBase::SetGameMatchState(ESTU_GameMatchState GameMatchStatePara
 	OnGameMatchStateChanged.Broadcast(GameMatchState);
 }
 
-void ASTU_GameModeBase::SpawnAIControllers()
+void ASTU_GameModeBase::SpawnAIControllers() const
 {
 	for (auto _ = GameData.NumberOfAIPlayers; _--;)
 	{
 		FActorSpawnParameters SpawnInfo;
 		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-		const auto AIController = GetWorld()->SpawnActor<AAIController>(AIControllerClass, SpawnInfo);
-		RestartPlayer(AIController);
+		GetWorld()->SpawnActor<AAIController>(AIControllerClass, SpawnInfo);
 	}
 }
 
@@ -198,6 +218,7 @@ APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(const FName& PlayerStartTa
 		APlayerStart* PlayerStart = *It;
 		if (PlayerStart->PlayerStartTag == PlayerStartTagParam)
 		{
+			//UE_LOG(LogTemp, Warning, TEXT("Using Tag: %s Found PlayerStart: %s."), *PlayerStartTagParam.ToString(), *UKismetSystemLibrary::GetDisplayName(PlayerStart));
 			return PlayerStart;
 		}
 	}
@@ -207,6 +228,8 @@ APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(const FName& PlayerStartTa
 
 void ASTU_GameModeBase::StartRound()
 {
+	RestartPlayers();
+
 	CurrentRoundRemainingSeconds = GameData.RoundTime;
 
 	if (GameData.bNoTimeLimit)
@@ -228,7 +251,6 @@ void ASTU_GameModeBase::UpdateRound()
 		{
 			CurrentRoundIndex++;
 
-			RestartPlayers();
 			StartRound();
 		}
 		else
@@ -286,7 +308,6 @@ void ASTU_GameModeBase::SetTeams() const
 
 		PlayerState->SetPlayerName(Controller->GetName());
 		SetTeam(PlayerState, CurrentTeamID);
-		SetPlayerColor(Controller);
 
 		CurrentTeamID = GetNextTeamID(CurrentTeamID);
 	}
