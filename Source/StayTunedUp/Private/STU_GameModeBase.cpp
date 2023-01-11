@@ -136,11 +136,6 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 	const auto KillerPlayerState = GetPlayerState(Killer);
 	const auto VictimPlayerState = GetPlayerState(Victim);
 
-	if (VictimPlayerState)
-	{
-		VictimPlayerState->AddDeath();
-	}
-
 	if (KillerPlayerState && VictimPlayerState)
 	{
 		if (CanKillTeam(KillerPlayerState, VictimPlayerState))
@@ -154,8 +149,13 @@ void ASTU_GameModeBase::Killed(const AController* Killer, const AController* Vic
 
 		if (CanSetTeam(KillerPlayerState, VictimPlayerState))
 		{
-			SetTeam(VictimPlayerState, KillerPlayerState->GetTeamID());
+			SetPlayerTeam(Victim, KillerPlayerState->GetTeamID());
 		}
+	}
+
+	if (VictimPlayerState)
+	{
+		VictimPlayerState->AddDeath();
 	}
 
 	InitiateRespawn(Victim);
@@ -297,29 +297,50 @@ void ASTU_GameModeBase::RestartOnePlayer(AController* Controller)
 void ASTU_GameModeBase::SetTeams() const
 {
 	int32 CurrentTeamID = 1;
+	int32 CurrentPlayerIndex = 1;
 
 	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
 	{
 		const auto Controller = It->Get();
 
-		const auto PlayerState = GetPlayerState(Controller);
-		if (!PlayerState)
-			continue;
-
-		PlayerState->SetPlayerName(Controller->GetName());
-		SetTeam(PlayerState, CurrentTeamID);
+		SetPlayerTeam(Controller, CurrentTeamID);
+		SetPlayerName(Controller, CurrentPlayerIndex);
 
 		CurrentTeamID = GetNextTeamID(CurrentTeamID);
+		CurrentPlayerIndex++;
 	}
 }
 
-void ASTU_GameModeBase::SetTeam(ASTU_PlayerState* PlayerState, const int32 TeamID) const
+void ASTU_GameModeBase::SetPlayerTeam(const AController* Controller, int32 TeamID) const
 {
+	const auto PlayerState = GetPlayerState(Controller);
+	if (!PlayerState)
+		return;
+
 	if (!GameData.TeamsMap.Contains(TeamID))
 		return;
 
 	PlayerState->SetTeamID(TeamID);
 	PlayerState->SetTeamColor(GameData.TeamsMap[TeamID]);
+}
+
+void ASTU_GameModeBase::SetPlayerName(const AController* Controller, int32 PlayerIndex) const
+{
+	const auto PlayerState = GetPlayerState(Controller);
+	if (!PlayerState)
+		return;
+
+	FString PlayerName;
+	if (Cast<APlayerController>(Controller))
+	{
+		PlayerName = FString::Printf(TEXT("Player %d"), PlayerIndex);
+	}
+	else
+	{
+		PlayerName = FString::Printf(TEXT("Bot %d"), PlayerIndex);
+	}
+
+	PlayerState->SetPlayerName(PlayerName);
 }
 
 void ASTU_GameModeBase::SetPlayerColor(const AController* Controller) const

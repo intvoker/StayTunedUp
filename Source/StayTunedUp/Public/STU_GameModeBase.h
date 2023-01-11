@@ -119,7 +119,9 @@ private:
 	void RestartOnePlayer(AController* Controller);
 
 	void SetTeams() const;
-	void SetTeam(ASTU_PlayerState* PlayerState, int32 TeamID) const;
+
+	void SetPlayerTeam(const AController* Controller, int32 TeamID) const;
+	void SetPlayerName(const AController* Controller, int32 PlayerIndex) const;
 	void SetPlayerColor(const AController* Controller) const;
 
 	int32 GetNextTeamID(int32 TeamID) const;
