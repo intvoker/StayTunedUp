@@ -93,7 +93,7 @@ protected:
 	float ZoomFOV = 50.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	float MaxRange = 1500.0f;
+	float MaxRange = 5000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float DamageAmount = 10.0f;
