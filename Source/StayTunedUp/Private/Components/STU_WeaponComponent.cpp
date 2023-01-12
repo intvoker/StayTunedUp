@@ -33,7 +33,7 @@ void USTU_WeaponComponent::Fire()
 	{
 		SwitchWeaponWithAmmo();
 	}
-	else if (CurrentWeapon->IsClipEmpty())
+	else if (CurrentWeapon->IsClipEmpty() && CurrentWeapon->CanUseClip())
 	{
 		Reload();
 	}
