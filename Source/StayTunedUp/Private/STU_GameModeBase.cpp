@@ -52,20 +52,55 @@ AActor* ASTU_GameModeBase::FindPlayerStart_Implementation(AController* Player, c
 	//const auto PlayerStateLog = GetPlayerState(Player);
 	//UE_LOG(LogTemp, Warning, TEXT("Name: %s. Team ID: %d."), *PlayerStateLog->GetName(), PlayerStateLog->GetTeamID());
 
-	auto FoundPlayerStart = FindPlayerStartByTag(FName(Player->GetName()));
-	if (FoundPlayerStart)
+	const auto PlayerStartByControllerTag = FindPlayerStartByTag(StartTagForController(Player));
+	if (PlayerStartByControllerTag)
 	{
-		return FoundPlayerStart;
+		return PlayerStartByControllerTag;
 	}
 
-	FoundPlayerStart = FindPlayerStartForController(Player);
-	if (FoundPlayerStart)
+	const auto PlayerStartByControllerName = FindPlayerStartByTag(FName(Player->GetName()));
+	if (PlayerStartByControllerName)
 	{
-		FoundPlayerStart->PlayerStartTag = FName(Player->GetName());
-		return FoundPlayerStart;
+		return PlayerStartByControllerName;
+	}
+
+	if (const auto PlayerState = GetPlayerState(Player))
+	{
+		const auto PlayerStartByTeamID = FindPlayerStartByTag(FName(FString::FromInt(PlayerState->GetTeamID())));
+		if (PlayerStartByTeamID)
+		{
+			PlayerStartByTeamID->PlayerStartTag = FName(Player->GetName());
+			return PlayerStartByTeamID;
+		}
 	}
 
 	return Super::FindPlayerStart_Implementation(Player, IncomingName);
+}
+
+AActor* ASTU_GameModeBase::ChoosePlayerStart_Implementation(AController* Player)
+{
+	const auto PlayerStartActor = Super::ChoosePlayerStart_Implementation(Player);
+
+	const auto PlayerStart = Cast<APlayerStart>(PlayerStartActor);
+
+	if (!PlayerStart)
+		return PlayerStartActor;
+
+	if (PlayerStart->PlayerStartTag.IsNone())
+		return PlayerStartActor;
+
+	if (const auto STU_PlayerController = Cast<ASTU_PlayerController>(
+		GEngine->GetFirstLocalPlayerController(GetWorld())))
+	{
+		if (PlayerStart->PlayerStartTag.IsEqual(STU_PlayerController->PlayerStartTag) ||
+			PlayerStart->PlayerStartTag.IsEqual(STU_PlayerController->SpectatorStartTag))
+		{
+			UE_LOG(LogTemp, Error, TEXT("Dedicated PlayerStart was chosen. Having more players than PlayerStarts?"));
+			return nullptr;
+		}
+	}
+
+	return PlayerStartActor;
 }
 
 bool ASTU_GameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
@@ -215,21 +250,6 @@ void ASTU_GameModeBase::SpawnAIControllers() const
 	}
 }
 
-APlayerStart* ASTU_GameModeBase::FindPlayerStartForController(const AController* Controller) const
-{
-	auto PlayerStart = FindPlayerStartByTag(StartTagForController(Controller));
-
-	if (!PlayerStart)
-	{
-		if (const auto PlayerState = GetPlayerState(Controller))
-		{
-			PlayerStart = FindPlayerStartByTag(FName(FString::FromInt(PlayerState->GetTeamID())));
-		}
-	}
-
-	return PlayerStart;
-}
-
 FName ASTU_GameModeBase::StartTagForController(const AController* Controller) const
 {
 	FName StartTag = NAME_None;
@@ -257,7 +277,7 @@ APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(const FName& PlayerStartTa
 	for (TActorIterator<APlayerStart> It(GetWorld()); It; ++It)
 	{
 		APlayerStart* PlayerStart = *It;
-		if (PlayerStart->PlayerStartTag == PlayerStartTagParam)
+		if (PlayerStart->PlayerStartTag.IsEqual(PlayerStartTagParam))
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("Using Tag: %s Found PlayerStart: %s."), *PlayerStartTagParam.ToString(), *UKismetSystemLibrary::GetDisplayName(PlayerStart));
 			return PlayerStart;

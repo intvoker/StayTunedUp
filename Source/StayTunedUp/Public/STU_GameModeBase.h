@@ -69,6 +69,7 @@ public:
 	virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
 
 	virtual AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName) override;
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
 	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
 	virtual bool ClearPause() override;
@@ -113,7 +114,6 @@ private:
 
 	void SpawnAIControllers() const;
 
-	APlayerStart* FindPlayerStartForController(const AController* Controller) const;
 	FName StartTagForController(const AController* Controller) const;
 	APlayerStart* FindPlayerStartByTag(const FName& PlayerStartTagParam) const;
 
