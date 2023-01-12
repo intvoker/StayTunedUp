@@ -19,11 +19,15 @@ ASTU_GameModeBase::ASTU_GameModeBase()
 	PlayerStateClass = ASTU_PlayerState::StaticClass();
 	HUDClass = ASTU_HUD::StaticClass();
 	DefaultPawnClass = ASTU_PlayerCharacter::StaticClass();
+
+	bStartPlayersAsSpectators = true;
 }
 
 void ASTU_GameModeBase::StartPlay()
 {
 	Super::StartPlay();
+
+	SetOnlySpectator();
 
 	SpawnAIControllers();
 	SetTeams();
@@ -54,21 +58,7 @@ AActor* ASTU_GameModeBase::FindPlayerStart_Implementation(AController* Player, c
 		return FoundPlayerStart;
 	}
 
-	if (const auto STU_PlayerController = Cast<ASTU_PlayerController>(Player))
-	{
-		if (!STU_PlayerController->PlayerStartTag.IsNone())
-		{
-			FoundPlayerStart = FindPlayerStartByTag(STU_PlayerController->PlayerStartTag);
-		}
-	}
-	else
-	{
-		if (const auto PlayerState = GetPlayerState(Player))
-		{
-			FoundPlayerStart = FindPlayerStartByTag(FName(FString::FromInt(PlayerState->GetTeamID())));
-		}
-	}
-
+	FoundPlayerStart = FindPlayerStartForController(Player);
 	if (FoundPlayerStart)
 	{
 		FoundPlayerStart->PlayerStartTag = FName(Player->GetName());
@@ -190,6 +180,20 @@ ASTU_PlayerState* ASTU_GameModeBase::GetPlayerState(const AController* Controlle
 	return Cast<ASTU_PlayerState>(Controller->PlayerState);
 }
 
+void ASTU_GameModeBase::SetOnlySpectator() const
+{
+	if (!GameData.bPlayerIsOnlySpectator)
+		return;
+
+	if (const auto PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld()))
+	{
+		if (const auto PlayerState = PlayerController->PlayerState)
+		{
+			PlayerState->SetIsOnlyASpectator(true);
+		}
+	}
+}
+
 void ASTU_GameModeBase::SetGameMatchState(ESTU_GameMatchState GameMatchStateParam)
 {
 	if (GameMatchState == GameMatchStateParam)
@@ -211,8 +215,45 @@ void ASTU_GameModeBase::SpawnAIControllers() const
 	}
 }
 
+APlayerStart* ASTU_GameModeBase::FindPlayerStartForController(const AController* Controller) const
+{
+	auto PlayerStart = FindPlayerStartByTag(StartTagForController(Controller));
+
+	if (!PlayerStart)
+	{
+		if (const auto PlayerState = GetPlayerState(Controller))
+		{
+			PlayerStart = FindPlayerStartByTag(FName(FString::FromInt(PlayerState->GetTeamID())));
+		}
+	}
+
+	return PlayerStart;
+}
+
+FName ASTU_GameModeBase::StartTagForController(const AController* Controller) const
+{
+	FName StartTag = NAME_None;
+
+	if (const auto STU_PlayerController = Cast<ASTU_PlayerController>(Controller))
+	{
+		if (!GameData.bPlayerIsOnlySpectator)
+		{
+			StartTag = STU_PlayerController->PlayerStartTag;
+		}
+		else
+		{
+			StartTag = STU_PlayerController->SpectatorStartTag;
+		}
+	}
+
+	return StartTag;
+}
+
 APlayerStart* ASTU_GameModeBase::FindPlayerStartByTag(const FName& PlayerStartTagParam) const
 {
+	if (PlayerStartTagParam.IsNone())
+		return nullptr;
+
 	for (TActorIterator<APlayerStart> It(GetWorld()); It; ++It)
 	{
 		APlayerStart* PlayerStart = *It;

@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	FName PlayerStartTag;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	FName SpectatorStartTag;
+
 	virtual void GetControllerViewPoint(FVector& OutLocation, FRotator& OutRotation) const override;
 
 protected:
