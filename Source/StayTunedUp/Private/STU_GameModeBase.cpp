@@ -49,29 +49,26 @@ UClass* ASTU_GameModeBase::GetDefaultPawnClassForController_Implementation(ACont
 
 AActor* ASTU_GameModeBase::FindPlayerStart_Implementation(AController* Player, const FString& IncomingName)
 {
-	//const auto PlayerStateLog = GetPlayerState(Player);
-	//UE_LOG(LogTemp, Warning, TEXT("Name: %s. Team ID: %d."), *PlayerStateLog->GetName(), PlayerStateLog->GetTeamID());
+	const auto PlayerState = GetPlayerState(Player);
+	if (!PlayerState)
+		return nullptr;
 
-	const auto PlayerStartByControllerTag = FindPlayerStartByTag(StartTagForController(Player));
-	if (PlayerStartByControllerTag)
+	//UE_LOG(LogTemp, Warning, TEXT("Name: %s. Team ID: %d."), *PlayerState->GetName(), PlayerState->GetTeamID());
+
+	if (const auto PlayerStartByControllerTag = FindPlayerStartByTag(StartTagForController(Player)))
 	{
 		return PlayerStartByControllerTag;
 	}
 
-	const auto PlayerStartByControllerName = FindPlayerStartByTag(FName(Player->GetName()));
-	if (PlayerStartByControllerName)
+	if (const auto PlayerStartByControllerName = FindPlayerStartByTag(FName(Player->GetName())))
 	{
 		return PlayerStartByControllerName;
 	}
 
-	if (const auto PlayerState = GetPlayerState(Player))
+	if (const auto PlayerStartByTeamID = FindPlayerStartByTag(FName(FString::FromInt(PlayerState->GetTeamID()))))
 	{
-		const auto PlayerStartByTeamID = FindPlayerStartByTag(FName(FString::FromInt(PlayerState->GetTeamID())));
-		if (PlayerStartByTeamID)
-		{
-			PlayerStartByTeamID->PlayerStartTag = FName(Player->GetName());
-			return PlayerStartByTeamID;
-		}
+		PlayerStartByTeamID->PlayerStartTag = FName(Player->GetName());
+		return PlayerStartByTeamID;
 	}
 
 	return Super::FindPlayerStart_Implementation(Player, IncomingName);
