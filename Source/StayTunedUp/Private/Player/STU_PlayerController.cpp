@@ -4,6 +4,7 @@
 #include "Player/STU_PlayerController.h"
 
 #include "Components/STU_RespawnComponent.h"
+#include "GameFramework/PlayerState.h"
 #include "GameFramework/SpectatorPawn.h"
 #include "STU_GameModeBase.h"
 
@@ -12,14 +13,53 @@ ASTU_PlayerController::ASTU_PlayerController()
 	RespawnComponent = CreateDefaultSubobject<USTU_RespawnComponent>("RespawnComponent");
 }
 
+void ASTU_PlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (!bRotateSpectator)
+		return;
+
+	const auto OwnedPawn = GetPawnOrSpectator();
+	if (!OwnedPawn)
+		return;
+
+	const float RotationAngle = RotationSpeed * DeltaSeconds;
+
+	const FVector OwnedPawnLocation = OwnedPawn->GetActorLocation();
+	const FVector FromRotationPoint = OwnedPawnLocation - RotationPoint;
+	const FVector ToRotationPoint = -FromRotationPoint;
+
+	const FVector NewLocation = RotationPoint + FromRotationPoint.RotateAngleAxis(RotationAngle, RotationAxis);
+	const FRotator NewRotation = FRotationMatrix::MakeFromX(ToRotationPoint).Rotator();
+
+	OwnedPawn->SetActorLocation(NewLocation);
+	SetControlRotation(NewRotation);
+}
+
 void ASTU_PlayerController::GetControllerViewPoint(FVector& OutLocation, FRotator& OutRotation) const
 {
 	GetPlayerViewPoint(OutLocation, OutRotation);
 }
 
+FName ASTU_PlayerController::GetStartTag() const
+{
+	return !bOnlySpectator ? PlayerStartTag : SpectatorStartTag;
+}
+
+bool ASTU_PlayerController::IsStartTag(const FName& StartTag) const
+{
+	return StartTag.IsEqual(PlayerStartTag) || StartTag.IsEqual(SpectatorStartTag);
+}
+
 void ASTU_PlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (PlayerState)
+	{
+		PlayerState->SetIsOnlyASpectator(bOnlySpectator);
+	}
 
 	if (const auto STU_GameModeBase = GetWorld()->GetAuthGameMode<ASTU_GameModeBase>())
 	{

@@ -19,9 +19,6 @@ struct FSTU_GameData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
-	bool bPlayerIsOnlySpectator = false;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	ESTU_GameRules GameRules = ESTU_GameRules::TDM;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ClampMin = "0", ClampMax = "64"))
@@ -107,8 +104,6 @@ private:
 	int32 CurrentRoundIndex = 1;
 	int32 CurrentRoundRemainingSeconds = 0;
 	FTimerHandle UpdateRoundTimerHandle;
-
-	void SetOnlySpectator() const;
 
 	void SetGameMatchState(ESTU_GameMatchState GameMatchStateParam);
 

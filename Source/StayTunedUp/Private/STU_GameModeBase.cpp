@@ -27,8 +27,6 @@ void ASTU_GameModeBase::StartPlay()
 {
 	Super::StartPlay();
 
-	SetOnlySpectator();
-
 	SpawnAIControllers();
 	SetTeams();
 
@@ -89,8 +87,7 @@ AActor* ASTU_GameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 	if (const auto STU_PlayerController = Cast<ASTU_PlayerController>(
 		GEngine->GetFirstLocalPlayerController(GetWorld())))
 	{
-		if (PlayerStart->PlayerStartTag.IsEqual(STU_PlayerController->PlayerStartTag) ||
-			PlayerStart->PlayerStartTag.IsEqual(STU_PlayerController->SpectatorStartTag))
+		if (STU_PlayerController->IsStartTag(PlayerStart->PlayerStartTag))
 		{
 			UE_LOG(LogTemp, Error, TEXT("Dedicated PlayerStart was chosen. Having more players than PlayerStarts?"));
 			return nullptr;
@@ -212,20 +209,6 @@ ASTU_PlayerState* ASTU_GameModeBase::GetPlayerState(const AController* Controlle
 	return Cast<ASTU_PlayerState>(Controller->PlayerState);
 }
 
-void ASTU_GameModeBase::SetOnlySpectator() const
-{
-	if (!GameData.bPlayerIsOnlySpectator)
-		return;
-
-	if (const auto PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld()))
-	{
-		if (const auto PlayerState = PlayerController->PlayerState)
-		{
-			PlayerState->SetIsOnlyASpectator(true);
-		}
-	}
-}
-
 void ASTU_GameModeBase::SetGameMatchState(ESTU_GameMatchState GameMatchStateParam)
 {
 	if (GameMatchState == GameMatchStateParam)
@@ -253,14 +236,7 @@ FName ASTU_GameModeBase::StartTagForController(const AController* Controller) co
 
 	if (const auto STU_PlayerController = Cast<ASTU_PlayerController>(Controller))
 	{
-		if (!GameData.bPlayerIsOnlySpectator)
-		{
-			StartTag = STU_PlayerController->PlayerStartTag;
-		}
-		else
-		{
-			StartTag = STU_PlayerController->SpectatorStartTag;
-		}
+		StartTag = STU_PlayerController->GetStartTag();
 	}
 
 	return StartTag;
