@@ -209,6 +209,18 @@ ASTU_PlayerState* ASTU_GameModeBase::GetPlayerState(const AController* Controlle
 	return Cast<ASTU_PlayerState>(Controller->PlayerState);
 }
 
+void ASTU_GameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void ASTU_GameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	GetWorld()->GetTimerManager().ClearTimer(UpdateRoundTimerHandle);
+}
+
 void ASTU_GameModeBase::SetGameMatchState(ESTU_GameMatchState GameMatchStateParam)
 {
 	if (GameMatchState == GameMatchStateParam)

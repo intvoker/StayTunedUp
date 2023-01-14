@@ -35,6 +35,13 @@ void USTU_RespawnComponent::BeginPlay()
 	// ...
 }
 
+void USTU_RespawnComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	GetWorld()->GetTimerManager().ClearTimer(UpdateRespawnTimerHandle);
+}
+
 void USTU_RespawnComponent::UpdateRespawn()
 {
 	const auto Controller = Cast<AController>(GetOwner());

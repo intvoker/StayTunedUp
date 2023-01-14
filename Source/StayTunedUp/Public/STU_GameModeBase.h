@@ -98,6 +98,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game")
 	float UpdateRoundTime = 1.0f;
 
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 private:
 	ESTU_GameMatchState GameMatchState = ESTU_GameMatchState::None;
 
