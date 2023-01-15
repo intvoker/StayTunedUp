@@ -34,8 +34,8 @@ public:
 	void AddDeath() { Deaths++; }
 
 private:
-	int32 TeamID;
-	FLinearColor TeamColor;
+	int32 TeamID = 0;
+	FLinearColor TeamColor = FLinearColor::Red;
 
 	int32 Kills = 0;
 	int32 FriendlyKills = 0;

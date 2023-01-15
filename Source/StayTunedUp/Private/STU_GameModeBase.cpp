@@ -5,6 +5,8 @@
 
 #include "AIController.h"
 #include "Components/STU_RespawnComponent.h"
+#include "Damage/STU_DamageController.h"
+#include "Damage/STU_PainCausingVolume.h"
 #include "EngineUtils.h"
 #include "GameFramework/PlayerStart.h"
 #include "Player/STU_Character.h"
@@ -29,6 +31,9 @@ void ASTU_GameModeBase::StartPlay()
 
 	SpawnAIControllers();
 	SetTeams();
+
+	SpawnDamageControllers();
+	SetupDamageActors();
 
 	StartRound();
 
@@ -242,6 +247,30 @@ void ASTU_GameModeBase::SpawnAIControllers() const
 	}
 }
 
+void ASTU_GameModeBase::SpawnDamageControllers()
+{
+	int32 CurrentTeamID = 1;
+
+	DamageControllersMap.Empty();
+
+	for (auto _ = GameData.TeamsMap.Num(); _--;)
+	{
+		FActorSpawnParameters SpawnInfo;
+		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		const auto DamageController = GetWorld()->SpawnActor<ASTU_DamageController>(DamageControllerClass, SpawnInfo);
+		if (!DamageController)
+			continue;
+
+		DamageControllersMap.Add(CurrentTeamID, DamageController);
+
+		SetPlayerTeam(DamageController, CurrentTeamID);
+		SetPlayerName(DamageController, CurrentTeamID);
+
+		CurrentTeamID = GetNextTeamID(CurrentTeamID);
+	}
+}
+
 FName ASTU_GameModeBase::StartTagForController(const AController* Controller) const
 {
 	FName StartTag = NAME_None;
@@ -326,6 +355,10 @@ void ASTU_GameModeBase::RestartPlayers()
 	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
 	{
 		const auto Controller = It->Get();
+
+		if (Controller->IsA(ASTU_DamageController::StaticClass()))
+			continue;
+
 		RestartOnePlayer(Controller);
 	}
 }
@@ -349,11 +382,27 @@ void ASTU_GameModeBase::SetTeams() const
 	{
 		const auto Controller = It->Get();
 
+		if (Controller->IsA(ASTU_DamageController::StaticClass()))
+			continue;
+
 		SetPlayerTeam(Controller, CurrentTeamID);
 		SetPlayerName(Controller, CurrentPlayerIndex);
 
 		CurrentTeamID = GetNextTeamID(CurrentTeamID);
 		CurrentPlayerIndex++;
+	}
+}
+
+void ASTU_GameModeBase::SetupDamageActors() const
+{
+	for (TActorIterator<ASTU_PainCausingVolume> It(GetWorld()); It; ++It)
+	{
+		ASTU_PainCausingVolume* PainCausingVolume = *It;
+
+		if (const auto DamageController = DamageControllersMap.Find(PainCausingVolume->GetTeamID()))
+		{
+			PainCausingVolume->DamageInstigator = *DamageController;
+		}
 	}
 }
 
@@ -377,13 +426,17 @@ void ASTU_GameModeBase::SetPlayerName(const AController* Controller, int32 Playe
 		return;
 
 	FString PlayerName;
-	if (Cast<APlayerController>(Controller))
+	if (Controller->IsA(APlayerController::StaticClass()))
 	{
 		PlayerName = FString::Printf(TEXT("Player %d"), PlayerIndex);
 	}
-	else
+	else if (Controller->IsA(AAIController::StaticClass()))
 	{
 		PlayerName = FString::Printf(TEXT("Bot %d"), PlayerIndex);
+	}
+	else if (Controller->IsA(ASTU_DamageController::StaticClass()))
+	{
+		PlayerName = FString::Printf(TEXT("Damage %d"), PlayerIndex);
 	}
 
 	PlayerState->SetPlayerName(PlayerName);

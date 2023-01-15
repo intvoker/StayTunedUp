@@ -9,6 +9,7 @@
 
 class AAIController;
 class APlayerStart;
+class ASTU_DamageController;
 class ASTU_PlayerState;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameMatchStateChangedSignature, ESTU_GameMatchState, GameMatchState);
@@ -90,6 +91,9 @@ protected:
 	TSubclassOf<AAIController> AIControllerClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
+	TSubclassOf<ASTU_DamageController> DamageControllerClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	TSubclassOf<APawn> AIPawnClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
@@ -108,9 +112,13 @@ private:
 	int32 CurrentRoundRemainingSeconds = 0;
 	FTimerHandle UpdateRoundTimerHandle;
 
+	UPROPERTY()
+	TMap<int32, ASTU_DamageController*> DamageControllersMap;
+
 	void SetGameMatchState(ESTU_GameMatchState GameMatchStateParam);
 
 	void SpawnAIControllers() const;
+	void SpawnDamageControllers();
 
 	FName StartTagForController(const AController* Controller) const;
 	APlayerStart* FindPlayerStartByTag(const FName& PlayerStartTagParam) const;
@@ -124,6 +132,7 @@ private:
 	void RestartOnePlayer(AController* Controller);
 
 	void SetTeams() const;
+	void SetupDamageActors() const;
 
 	void SetPlayerTeam(const AController* Controller, int32 TeamID) const;
 	void SetPlayerName(const AController* Controller, int32 PlayerIndex) const;
