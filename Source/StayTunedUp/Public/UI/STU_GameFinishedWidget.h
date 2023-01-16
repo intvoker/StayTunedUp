@@ -6,10 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "STU_GameFinishedWidget.generated.h"
 
-class ASTU_PlayerState;
 class UButton;
-class USTU_PlayerStateWidget;
-class UVerticalBox;
+class USTU_PlayerStatesWidget;
 
 /**
  * 
@@ -21,13 +19,10 @@ class STAYTUNEDUP_API USTU_GameFinishedWidget : public UUserWidget
 
 protected:
 	UPROPERTY(meta = (BindWidget))
-	UButton* RestartLevelButton;
+	USTU_PlayerStatesWidget* PlayerStatesWidget;
 
 	UPROPERTY(meta = (BindWidget))
-	UVerticalBox* PlayerStatesVerticalBox;
-
-	UPROPERTY(EditDefaultsOnly, Category = "UI")
-	TSubclassOf<UUserWidget> PlayerStateWidgetClass;
+	UButton* RestartLevelButton;
 
 	virtual void NativeConstruct() override;
 
@@ -36,8 +31,4 @@ private:
 	void HandleOnClickedRestartLevel();
 
 	void HandleOnNativeVisibilityChanged(ESlateVisibility InVisibility);
-
-	void SetPlayerStates(TArray<ASTU_PlayerState*> PlayerStates) const;
-
-	USTU_PlayerStateWidget* CreatePlayerStateWidget(const ASTU_PlayerState* PlayerState) const;
 };

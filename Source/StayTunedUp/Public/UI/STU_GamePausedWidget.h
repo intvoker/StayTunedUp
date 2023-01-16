@@ -7,6 +7,7 @@
 #include "STU_GamePausedWidget.generated.h"
 
 class UButton;
+class USTU_PlayerStatesWidget;
 
 /**
  * 
@@ -18,6 +19,9 @@ class STAYTUNEDUP_API USTU_GamePausedWidget : public UUserWidget
 
 protected:
 	UPROPERTY(meta = (BindWidget))
+	USTU_PlayerStatesWidget* PlayerStatesWidget;
+
+	UPROPERTY(meta = (BindWidget))
 	UButton* ClearPauseButton;
 
 	virtual void NativeConstruct() override;
@@ -25,4 +29,6 @@ protected:
 private:
 	UFUNCTION()
 	void HandleOnClickedClearPause();
+
+	void HandleOnNativeVisibilityChanged(ESlateVisibility InVisibility);
 };
