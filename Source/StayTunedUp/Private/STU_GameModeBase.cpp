@@ -140,6 +140,11 @@ bool ASTU_GameModeBase::CanDamage(const AController* Killer, const AController* 
 	const auto KillerPlayerState = GetPlayerState(Killer);
 	const auto VictimPlayerState = GetPlayerState(Victim);
 
+	if (Killer->IsA(ASTU_DamageController::StaticClass()))
+	{
+		return KillerPlayerState->GetTeamID() != VictimPlayerState->GetTeamID();
+	}
+
 	return CanDamageTeam(KillerPlayerState, VictimPlayerState);
 }
 
