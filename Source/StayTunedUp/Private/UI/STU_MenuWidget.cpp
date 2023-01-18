@@ -25,7 +25,7 @@ void USTU_MenuWidget::HandleOnClickedStartGame()
 {
 	if (const auto STU_GameInstance = GetWorld()->GetGameInstance<USTU_GameInstance>())
 	{
-		STU_GameInstance->StartLevel(STU_GameInstance->GetTestLevelName());
+		STU_GameInstance->StartLevel(STU_GameInstance->GetDiskLevelName());
 	}
 }
 

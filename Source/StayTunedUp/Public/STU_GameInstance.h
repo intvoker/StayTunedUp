@@ -21,11 +21,15 @@ public:
 	void ExitGame() const;
 
 	FName GetMenuLevelName() const { return FName(MenuLevel.GetAssetName()); }
+	FName GetDiskLevelName() const { return FName(DiskLevel.GetAssetName()); }
 	FName GetTestLevelName() const { return FName(TestLevel.GetAssetName()); }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta=(AllowedClasses="World"))
 	FSoftObjectPath MenuLevel;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Game", meta=(AllowedClasses="World"))
+	FSoftObjectPath DiskLevel;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game", meta=(AllowedClasses="World"))
 	FSoftObjectPath TestLevel;
