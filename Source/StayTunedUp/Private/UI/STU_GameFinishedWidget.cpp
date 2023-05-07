@@ -8,9 +8,9 @@
 #include "STU_GameModeBase.h"
 #include "UI/STU_PlayerStatesWidget.h"
 
-void USTU_GameFinishedWidget::NativeConstruct()
+void USTU_GameFinishedWidget::NativeOnInitialized()
 {
-	Super::NativeConstruct();
+	Super::NativeOnInitialized();
 
 	if (RestartLevelButton)
 	{

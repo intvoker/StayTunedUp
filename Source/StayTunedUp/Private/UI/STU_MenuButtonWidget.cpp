@@ -6,9 +6,9 @@
 #include "Components/Button.h"
 #include "STU_GameInstance.h"
 
-void USTU_MenuButtonWidget::NativeConstruct()
+void USTU_MenuButtonWidget::NativeOnInitialized()
 {
-	Super::NativeConstruct();
+	Super::NativeOnInitialized();
 
 	if (MenuButton)
 	{

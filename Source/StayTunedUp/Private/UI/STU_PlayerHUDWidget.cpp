@@ -106,9 +106,9 @@ FText USTU_PlayerHUDWidget::GetRoundInfo()
 	return FText::FromString(RoundInfo);
 }
 
-void USTU_PlayerHUDWidget::NativeConstruct()
+void USTU_PlayerHUDWidget::NativeOnInitialized()
 {
-	Super::NativeConstruct();
+	Super::NativeOnInitialized();
 
 	if (const auto PlayerController = GetOwningPlayer())
 	{

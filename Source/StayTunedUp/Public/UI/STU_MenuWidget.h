@@ -23,7 +23,7 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* ExitGameButton;
 
-	virtual void NativeConstruct() override;
+	virtual void NativeOnInitialized() override;
 
 private:
 	UFUNCTION()

@@ -24,7 +24,7 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* ClearPauseButton;
 
-	virtual void NativeConstruct() override;
+	virtual void NativeOnInitialized() override;
 
 private:
 	UFUNCTION()

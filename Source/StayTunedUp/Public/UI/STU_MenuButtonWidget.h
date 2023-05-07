@@ -20,7 +20,7 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* MenuButton;
 
-	virtual void NativeConstruct() override;
+	virtual void NativeOnInitialized() override;
 
 private:
 	UFUNCTION()

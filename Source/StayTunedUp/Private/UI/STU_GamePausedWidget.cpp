@@ -7,9 +7,9 @@
 #include "STU_GameModeBase.h"
 #include "UI/STU_PlayerStatesWidget.h"
 
-void USTU_GamePausedWidget::NativeConstruct()
+void USTU_GamePausedWidget::NativeOnInitialized()
 {
-	Super::NativeConstruct();
+	Super::NativeOnInitialized();
 
 	if (ClearPauseButton)
 	{
