@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "STU_ControllerViewPointInterface.h"
+#include "STU_Types.h"
 #include "STU_PlayerController.generated.h"
 
 class USTU_RespawnComponent;
